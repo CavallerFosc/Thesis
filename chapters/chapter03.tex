@@ -1,0 +1,28 @@
+In this chapter, we will see different quantitative games with single bound. \\
+
+\section{Energy-Reachability Game}
+Given a game graph $G=\langle Q_1, Q_2, E, w, q_0, T \rangle$, with all usual notations, the energy-reachability objective is to reach the target states $T$ starting from $q_0$ in a path $\rho$, such that for all finite prefixes $\pi(rho)$, $w(\pi) \geq 0$.\\
+
+Now, given a game graph, the decision problem for this game is that if Player $1$ can win maintaining energy-reachability objective? We will prove the following theorem:\\
+\begin{theorem}
+The decision problem for Energy-Reachability game is in $NP \cap coNP$. For the lower bound, the problem is mean-payoff hard.
+\end{theorem}
+\begin{proof}
+We will prove that, energy-reachability game is equivalent to infinite-energy game by both side reduction. The theorem will be the consequence of the proof from ~\cite{DBLP:conf/formats/BouyerFLMS08}.\\
+
+Given a game graph $G=\langle Q_1, Q_2, E, w, q_0\rangle$, with all usual notations, the decision problem for infinite-energy game asks, if player $1$ has a strategy such that with zero initial weight for any infinite play $\gamma$ from initial state $q_0$, if $w(\gamma^{\prime}) \geq 0$ for all finite prefixes $\gamma^{\prime}$ of $\gamma$? \\
+First we reduce the infinite-energy game to energy-reachability game.
+Consider a game graph $G=\langle Q_1, Q_2, E, w, q_0\rangle$. We produce another game graph $G^{\prime}=\langle Q_1, Q_2, E^{\prime}, w^{\prime}, q_0,T\rangle$, where we add a target vertex $T$. For every player $1$ vertex $v \in Q_1$, we add an edge $(v,T) \in E^{\prime}$ with $w^{\prime}(v,T) = -\delta$, where $\delta$ is larger than the sum of all the positive weights of the graph $G$. For, all other edges $e \in E$, we have the same corresponding edges $e^{\prime} \in E^{\prime}$ with $w^{\prime}(e^{\prime})= w(e)+ \epsilon$, where $\epsilon << 1/2n$, where $n$ is the total number of vertices.
+\begin{figure}
+    \label{inf-reach}
+    \centering
+    \input{chapters/inf-reach.tex}
+    \caption{Infinite-energy to Energy-reachability}
+\end{figure}
+
+If player $1$ has a strategy to win infinite-energy in $G$, then all the cycles player $1$ forces in the infinite winning path $\rho$ is either a positive or a zero cycle. The same path in $G^{\prime}$ will produce positive cycles for $\epsilon$. Hence, after a large number of iterations, player $1$, will have weight $\geq \delta$ in some of its vertex and then it can reach $T$ in $G^{\prime}$ and win energy-reachability. For the other side, let player $1$ has a winning strategy in energy-reachability in $G^{\prime}$. That means, in every winning path, at some player $1$ vertex it has weight $\geq \delta$, which is impossible without forcing a positive cycle as $\delta$ is large enough. Hence, iterating the same cycle player $1$ wins infinite-energy game in $G$.\\
+\\
+Now, we will show the opposite reduction i.e. from energy-reachability to infinite-energy.  
+\end{proof}
+
+

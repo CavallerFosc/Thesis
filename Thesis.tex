@@ -1,0 +1,148 @@
+\documentclass[a4paper, 11pt, oneside]{book}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 
+\usepackage{fouriernc}
+\usepackage[document]{ragged2e}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\graphicspath{ {images/} }
+\usepackage{hyperref}
+\usepackage[normalem]{ulem}
+\usepackage[]{algorithm2e}
+\usepackage{pgf,tikz}
+\usetikzlibrary{spy}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{intersections}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{textcomp}
+\usetikzlibrary {positioning}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[RO,LE]{Thesis Title}
+\fancyfoot{}
+\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[LO,CE]{Chapter \thechapter}
+\fancyfoot[CO,RE]{Ritam Raha}
+
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+
+
+
+
+\begin{document}
+\begin{titlepage}
+	\centering
+	\scshape 
+	{\LARGE{CHENNAI MATHEMATICAL INSTITUTE}}\\
+          \vskip 0.5cm
+	MASTERS THESIS
+	\vspace*{\baselineskip} 
+	%------------------------------------------------
+	%	Title
+	%------------------------------------------------
+	
+	\rule{\textwidth}{1.6pt}\vspace*{-\baselineskip}\vspace*{2pt}
+	\rule{\textwidth}{0.4pt} 
+
+	\vspace{0.75\baselineskip}
+	
+	{\LARGE THE NAME\\ that is \\ YET TO BE DECIDED\\} 
+	
+	\vspace{0.75\baselineskip} 
+	
+	\rule{\textwidth}{0.4pt}\vspace*{-\baselineskip}\vspace{3.2pt} 
+	\rule{\textwidth}{1.6pt}
+	
+	\vspace{2\baselineskip} 
+	
+	%------------------------------------------------
+	%	Author
+	%------------------------------------------------
+	
+	
+	
+	\textit{Author:}
+	
+	\vspace{0.5\baselineskip} 
+	
+	{\scshape\Large Ritam Raha}\\ % Author
+	\vspace{0.2\baselineskip}
+	{\small Chennai Mathematical Institute}
+	\vspace{2\baselineskip} 
+
+		
+	\textit{Supervised by:}     
+	\vspace{0.5\baselineskip}
+
+	{\scshape\Large Nicolas Markey}\ \ \ \ \&\ \ \ \  {\scshape\Large Loïc Hélouët}\\ % Supervisors
+	\vspace{0.2\baselineskip}
+	{\small INRIA Rennes}
+	\vspace{2\baselineskip}
+
+	\vspace{2\baselineskip} 
+	
+	\textit{A thesis submitted in fulfillment of the requirements\\ for the degree of Master of Science}\\
+	\vspace{1\baselineskip}
+	\textit{in the}\\
+	\vspace{1\baselineskip}
+	{\scshape Department of Computer Science\\ Chennai Mathematical Institute}
+
+	\vspace{4\baselineskip}
+	
+	\includegraphics[width=0.7\textwidth]{cmi.png}
+
+	\vfill % Whitespace between editor names and publisher logo
+	
+\end{titlepage}
+
+
+\chapter*{Abstract}
+Quantitative reachability games are finite two player turn-based games played on weighted graphs. The objective of the game combines reachability objective(qualitative) with the (quantitative) requirement that the weights along a path must satisfy certain constraints (bounds). Beside having direct applications in reactive system synthesis with resource constraints, it is one of the simplest models that combine quantitative and qualitative objectives. In this thesis, we ask the question whether Player $1$ can  reach a target state along a path for which the accumulated weight for any finite prefix satisfies some bound. We look both at single bound and dual bound problems. We also consider the weighted game where we weaken one of the bounds (e.g. we allow violations of a given bound but up to a bounded number of times).
+ 
+\chapter*{Dedication}
+To 
+ 
+\chapter*{Declaration}
+I declare that..
+ 
+\chapter*{Acknowledgements}
+I want to thank...
+
+\tableofcontents
+
+\chapter{Introduction}
+\input{chapters/introduction}
+ 
+\chapter{Preliminaries}
+\input{chapters/chapter02}
+ 
+\chapter{Quantitative Reachability Games with Single Bounds}
+\input{chapters/chapter03}
+ 
+\chapter{Chapter Four Title}
+\input{chapters/chapter04}
+ 
+\chapter{Conclusion}
+\input{chapters/conclusion}
+
+\bibliographystyle{alpha}
+\bibliography{Thesis}
+
+\appendix
+\chapter{Appendix Title}
+\input{chapters/appendix}
+\end{document}

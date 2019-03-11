@@ -1,0 +1,64 @@
+\section{Definitions}
+
+\textbf{Game graphs.}  A \textit{game graph} $G= \langle Q,E,w \rangle$ consists of a finite set $Q$ of states partitioned in to player-$1$ states $Q_1$ and player-$2$ states $Q_2$ (i.e., $Q = Q_1 \cup Q_2$), and a set $E \subseteq Q \times Q$ of edges such that for all $q \in Q$, there exists (at least one) $q^{\prime} \in Q$ such that $(q, q^{\prime}) \in E$. A player-$1$ game is a game graph where $Q_1 = Q$ and $Q_2 = \phi$. A special subset $T \subseteq Q$ of vertices is known as the \textit{Target states} or the \textit{Goal states}. Now, $w : E \rightarrow \mathbb{R}$ is the weight function such that $w(q_j,q_{j+1})$ is the weight of the edge between the vertices $q_j$ and $q_{j+1}$ \\
+\vskip 0.6cm
+
+
+\textbf{Plays and strategies.} A game on $G$ starting from a state $q_0 \in Q$ is played in rounds as follows. If the game is in a player-$1$ state, then player $1$ chooses the successor state from the set of outgoing edges; otherwise the game is in a player-$2$ state, and player $2$ chooses the successor state. We always consider the reachability game, i.e. this ends as soon as any vertex from the set $T$ has been reached. The game results in a play from $q_0$ , i.e., a finite path $\rho = q_0 q_1 \ldots q_n$ such that $q_n \in T$ \& $(q_i , q_{i+1}) \in E$, $\forall i \geq 0$. \\
+A strategy for player $1$ is a function $\sigma : Q^{*} Q_1 \rightarrow Q$ such that $(q, \sigma(\rho . q)) \in E$,
+$\forall q \in Q_1$ and all $\rho \in Q^{*}$. An outcome of $\sigma$ from $q_0$ is a play $q_0 q_1 \ldots$ such that $\sigma(q_0 \ldots q_i) = q_ {i+1}$ for all $i \geq 0$ such that $q_i \in Q_1$ . Strategy and outcome for player 2 are defined analogously.\\
+\vskip 0.6cm 
+
+
+\textbf{Payoff functions.} We consider two different payoff functions:
+\begin{itemize}
+	\item \textit{Finite Total payoff.} For a finite path $p=q_0 q_1 \ldots q_l$, the total payoff of the path $p$ is defined as, $TP(p)= \sum_{i=0}^{l-1} w(q_i,q_{i+1})$.
+
+	\item \textit{Finite Mean payoff.} For a finite path $p=q_0 q_1 \ldots q_l$, the mean payoff of the path $p$ is defined as, $MP(p)= (1/l) \cdot \sum_{i=0}^{l-1} w(q_i,q_{i+1})$.
+\end{itemize}
+\vskip 0.6cm
+
+
+\textbf{Bounds on weights.} We consider two kinds of bounds, strong and week bounds:
+\begin{itemize}
+	\item \textit{Strong bounds.} This is the usual notion of bounds used in literature. Weight of a path $p$ is strongly\\
+	 bounded(upper or lower) by $B$ means, for every finite prefix $\pi$ of the path $p$, $w(\pi) \gtreqless B$.
+
+	\item \textit{Weak bounds.} This is a new notion of boundedness. Weight of a path $p= s_1 \rightarrow s_2 \rightarrow \ldots \rightarrow s_n$, starting from $s_1$ with $c \in \mathbb{R} \cup \{- \infty \}$ as a lower weak bound is defined inductively by $r_1 = max(0, c),\  r_{i+1} = max(r_i + w(s_i, s_{i+1}), c)$. The notion of weak upper bound is analogously defined.\\
+
+	So for computing $w\downarrow_{c}(p)$, costs are accumulated along the transitions of $p$, but if at some point it goes down below $c$. it is reset to $c$ i.e. all possible decreases below $c$ are simply discarded.
+\end{itemize}
+\vskip 0.6cm
+
+\textbf{Finite Memory\& Memoryless strategies.} A strategy for $P1$, $\sigma : Q^{*} Q_1 \rightarrow Q$ is called a \textit{finite-memory} strategy if every move depends on finite amount of history. The strategy is called a \textit{memoryless} one, if it does not depend on the whole history and only depends on the current state he is in. Hence, a memoryless strategy can be seen as a function $\sigma:Q_1 \rightarrow Q$. The definitions are analogous for $P2$.
+\vskip 0.6cm
+
+\textbf{Objectives.} In this thesis, we will focus on \textit{quantitative-reachability} objectives. We consider two kinds of quantitative functions $f: \varrho \rightarrow \mathbb{N}$, where $\varrho$ denotes the set of all finite paths in the corresponding game graph $G$\\
+\begin{itemize}
+\item[--] \textit{Total Payoff.} Total payoff function of a path $\rho= s_1 \rightarrow s_2 \rightarrow \ldots \rightarrow s_n$ is defined as $TP(\rho)= \sum_{i=1}^{n-1} w(s_i,s_i+1)$.\\
+\item[--] \textit{Mean Payoff.} Mean payoff function of a path $\rho= s_1 \rightarrow s_2 \rightarrow \ldots \rightarrow s_n$ is defined as $MP(\rho)= (1/n)\sum_{i=1}^{n-1} w(s_i,s_i+1)$.\\
+
+\end{itemize}
+ We will look at the two kind of objectives:\\
+ \begin{itemize}
+ \item \textit{Single Bound Objectives.} Given a game graph $G$, a starting vertex $q_0$ and a target vertex $t$, a quantitative function $f$ and a bound $b \in \mathbb{N}$, single bound objective of $P1$ asks that, if starting from $q_0$, $P1$ can reach $t$ in a path $\rho$, such that $f(\rho) \lessgtr b$.
+ 
+ \item \textit{Dual Bound Objectives.} Given a game graph $G$, a starting vertex $q_0$ and a target vertex $t$, a quantitative function $f$ and two bounds $U\  \& \ L \in \mathbb{N}$, single bound objective of $P1$ asks that, if starting from $q_0$, $P1$ can reach $t$ in a path $\rho$, such that $L \leq f(\rho) \leq U$. \\
+\vskip 1cm
+Note that, these bounds are kind of strong on the both upper and lower side. Hence, we are going to call these \textit{Strong Dual Bound Objectives}. Consequently, it is obvious that, we are going to define the notion of \textit{Weak Dual Bound Objectives} as follows:
+\vskip 0.5cm
+\textit{Weak Dual Bound Objectives.} Let $A$ be a weighted graph. $c \in \mathbb{R} \cup \{- \infty\}$
+and let $\gamma =s_1 \rightarrow s_2 \rightarrow \cdots \rightarrow s_n \in Runs(A)$, starting from $s_1$. The accumulated weight with
+initial credit 0 under weak lower bound $c$ is $w\mathord{\downarrow}_{c}(\gamma) = r_n$, where $r_1, \ldots, r_n \in \mathbb{R}$
+are defined inductively by $r1 = max(0,c), r_{i+1} = max(r_i + w(s_i, s_{i+1}), c)$.\\
+So for computing $w\downarrow_{c}(\gamma)$, costs are accumulated along the transitions of $\gamma$,
+but if at some point it goes down below $c$. it is reset to $c$  i.e. all possible decreases below $c$ are
+simply discarded. \\
+ \end{itemize}
+ \vskip 0.2cm
+ In this thesis, we will look at the following games:\\
+ In \textbf{Chapter Three}, we will see \textit{Quantitative-Reachability Games with Single Bound}, in \textbf{Chapter Four}, we will see \textit{Quantitative-Reachability Games with Dual Bounds}, both strong and weak objectives. In \textbf{Chapter Five}, we will see a new kind of game, \textit{Quantitative-reachability game with bounded number of violations} which we call as \textit{Apna Game}.
+ 
+ 
+
+	
