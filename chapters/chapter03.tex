@@ -1,7 +1,7 @@
 In this chapter, we will see different quantitative games with single bound. \\
 
 \section{Energy-Reachability Game}
-Given a game graph $G=\langle Q_1, Q_2, E, w, q_0, T \rangle$, with all usual notations, the energy-reachability objective is to reach the target states $T$ starting from $q_0$ in a path $\rho$, such that for all finite prefixes $\pi(rho)$, $w(\pi) \geq 0$.\\
+Given a game graph $G=\langle Q_1, Q_2, E, w, q_0, T \rangle$, with all usual notations, the energy-reachability objective is to reach the target states $T$ starting from $q_0$ in a path $\rho$, such that for all finite prefixes $\pi(\rho)$, $w(\pi) \geq 0$.\\
 
 Now, given a game graph, the decision problem for this game is that if Player $1$ can win maintaining energy-reachability objective? We will prove the following theorem:\\
 \begin{theorem}
@@ -30,7 +30,7 @@ Now, we will show the opposite reduction i.e. from energy-reachability to infini
 \section{Finite Mean-Payoff Reachability}
 In this section, we will take the mean-payoff function as our quantitative function. In general mean-payoff is used in theory mostly for the case of infinite games, but in this thesis we restrict ourselves to reachability, hence finite games. For this reason, we will define a notion of mean payoff for the finite case:\\
 \vskip 0.5cm
-Given a game graph $G=\langle Q_1, Q_2, E, w, q_0,T\rangle$ and a bound $b \in \mathbb{N}$, the decision problem for finite mean-payoff reachability game asks, if player $1$ has a strategy such that with zero initial weight for any infinite play $\gamma$ from initial state $q_0$, if $MP(\gamma^{\prime}) \lessgtr b$ for all finite prefixes $\gamma^{\prime}$ of $\gamma$? We will only consider the case of  $MP(\gamma^{\prime}) \leq b$ here. The other case is just the dual. Remember that, for a prefix $\gamma^{\prime}= q_0,q_1,\ldots q_l$, $MP(\gamma^{\prime})= (1/l) \cdot \Sigma_{i=0}^{l-1} w(q_i,q_i+1)$.\\ Now, we will prove the following result about the finite mean-payoff reachability game:\\
+Given a game graph $G=\langle Q_1, Q_2, E, w, q_0,T\rangle$ and a bound $b \in \mathbb{N}$, the decision problem for finite mean-payoff reachability game asks, starting from $q_0$ with zero initial weight, if player $1$ has a strategy to reach $T$ in some path $\gamma$ such that, for all finite prefixes $\gamma^{\prime}$ of $\gamma$, if $MP(\gamma^{\prime}) \lesseqgtr b$? We will only consider the case of  $MP(\gamma^{\prime}) \leq b$ here. The other case is just the dual. Remember that, for a prefix $\gamma^{\prime}= q_0,q_1,\ldots q_l$, $MP(\gamma^{\prime})= (1/l) \cdot \Sigma_{i=0}^{l-1} w(q_i,q_i+1)$.\\ Now, we will prove the following result about the finite mean-payoff reachability game:\\
 \\
 \begin{theorem}
 \label{fin-meanpayoff-thm}
@@ -56,4 +56,16 @@ Hence, we prove that, finite mean-payoff reachability is equivalent to energy-re
 
 \end{proof}
 
+\section{Finite Total Payoff Reachability}
+Now, it comes down to the final quantitative function we are concerned with in this thesis, which is total payoff. Given a game graph $G=\langle Q_1, Q_2, E, w, q_0,T\rangle$ and a bound $b \in \mathbb{N}$, the decision problem for finite total payoff reachability game asks, starting from $q_0$ with zero initial weight, if player $1$ has a strategy to reach $T$ in some path $\gamma$ such that, for all finite prefixes $\gamma^{\prime}$ of $\gamma$, if $TP(\gamma^{\prime}) \lesseqgtr b$? We will only consider the case of  $TP(\gamma^{\prime}) \geq b$ here. The other case is just the dual. Remember that, for a prefix $\gamma^{\prime}= q_0,q_1,\ldots q_l$, $TP(\gamma^{\prime})= \Sigma_{i=0}^{l-1} w(q_i,q_i+1)$. Note that, energy-reachability is just a special case of total payoff reachability, where $b=0$. We will show that, it is equivalent to energy-reachability game. From that, the following theorem is evident:\\
+\begin{theorem}
+\label{fin-totalpayoff-thm}
+The decision problem for finite mean-payoff reachability game is in $NP \cap coNP$ and also mean-payoff hard. 
+\end{theorem}
+\begin{proof}
+\huge\fcolorbox{blue}{red}{Incomplete}
+\end{proof}
+
+\section{Conclusion}
+This brings us to the end of the Quantitative Reachability Games with Single Bounds. We showed that, all the reachability games with single bounds (for the quantitative functions we are concerned with in this thesis) are equivalent to energy-reachability game which is complexity-wise equivalent to infinite energy games. So, we have $NP \cap coNP$ complexity for all of them. For the lower bound also, all of them are at least mean-payoff hard. Next we move to the chapters for the similar kind of games with two bounds. 
 
