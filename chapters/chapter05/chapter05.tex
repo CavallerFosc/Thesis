@@ -16,7 +16,7 @@ Given a game graph $G$ , a strong upper bound $U$ and a lower weak bound $0$, de
   
   \begin{figure}[htb]
   \label{energy-negativecycle}
-  \input{chapters/energy-negativecycle}
+  \input{chapters/chapter05/energy-negativecycle}
   \end{figure}
   \vskip 0.1cm
   In the example, $U=15$. Hence, $a=5$ and $b=1$, i.e. if player $1$ can reach $s1$ with at most 10 energy level, he can rotate the cycle as much as he wants, and can get the energy level down to energy 1.\\
@@ -67,29 +67,19 @@ Given a game graph $G$ , a strong upper bound $U$ and a lower weak bound $0$, de
  
 \section{Two Player QR Games with Weak Dual Bounds}
 
-Now, we will show the memory requirements for both the players.\\
-\\
-\textbf{Lemma 3.}  \textit{For reachability game with strict upper bound and weak lower bound, exponential memory may be necessary for $P_1$. For $P_2$, memoryless strategies are sufficient.}\\
-\\
-\textit{Proof of Lemma 2:} As reachability is one of the objective, trivially finite memories are sufficient for both the players. Now, we will show, a class of game graphs, where exponential memory may be necessary for $P_1$.\\
+Now, $Q_2 \not = \phi$ anymore. We will first prove the following lemma about the memory requirements for both the players in the game.\\
+\begin{lemma}
+\label{mem-lemma}
+For two player QR games with weak dual bounds, exponential memory may be necessary for player $1$. For player $2$, memoryless strategies are sufficient.
+\end{lemma}
+\begin{proof}
+As reachability is one of the objective, trivially finite memories are sufficient for both the players. Now, we will show, a class of game graphs, where exponential memory may be necessary for player $1$.\\
 \begin{figure}[htb]
 \hskip 6cm
-\begin {tikzpicture}[-latex ,auto ,node distance =1 cm,
-state/.style ={ circle ,top color =white , bottom color = processblue!20 ,
-draw,processblue , text=blue , minimum width =1 cm}]
-
-\node[state] (A) [] {$q_0$};
-\node[state] (B) [right=of A] {$v$};
-\node[state] (C) [right=of B] {$T$};
-
-\path (A) edge [] node[above =0.15 cm] {$U$} (B);
-\path (B) edge [loop above] node[above =0.15 cm] {$-1$} (B);
-\path (B) edge [] node[above =0.15 cm] {$U$} (C);
-\end{tikzpicture}
-\caption{Exponential memory is necessary for $P_1$ }
+\label{expmem-p1}
+\input{chapters/chapter05/expmem-p1}
 \end{figure}
 
-In the game graph of Figure 2, all the vertices are $P_1$  vertices and $U$ is the strict upper bound. It is easy to see, $P_1$ needs at least $U$- memory to win this game. Considering binary encoding. the value of $U$ is exponential in the size of the input. Hence, follows.\\
-\\
-Now, we will prove that, memoryless strategies are enough for $P_2$. Let's fix a winning strategy $\sigma$ for $P_2$  WLOG, every $P_2$ vertices have two outgoing ages. Fix one $P_2$ vertex, say $q_2$. Let the weight of the two outgoing edges from $q_2$ are $e_l$ and $e_r$ to $q_l$ and $q_r$ respectively. Now, let iff any path reaches $q_l$ with at most $w_l$ energy, $P_1$ can win from $q_l$ and similarly  iff any path reaches $q_r$ with at most $w_r$ energy, $P_1$ can win from $q_r$. Clearly, if any path reaches $q_2$ with at most $min(w_l-e_l, w_r-e_r)= w^{\prime}$,say, energy, no matter what $P_2$ chooses from $q_2$, $P_1$ wins. As, $\sigma$ is winning for $P_2$, no outcome of $\sigma$ reaches $q_2$ with $\leq w^{\prime}$ energy. WLOG, let $w^{\prime}= w_l -e_l$. It is easy to see that, we can construct a memoryless strategy $\sigma^{\prime}$ for $P_2$, such that $\sigma^{\prime}(q_2)=q_l$. Hence, memoryless strategy is enough for $P_2$.
-hat, 
+In the game graph of Figure \ref{expmem-p1}, all the vertices are player $1$  vertices and $U$ is the strict upper bound. It is easy to see, player $1$ needs at least $U$- memory to win this game. Considering binary encoding. the value of $U$ is exponential in the size of the input.\\
+Now, we will prove that, memoryless strategies are enough for player $2$. Let's fix a winning strategy $lambda$ for player $2$  WLOG, every player $2$ vertices have two outgoing ages. Fix one player $2$ vertex, say $q_2$. Let the weight of the two outgoing edges from $q_2$ are $e_l$ and $e_r$ to $q_l$ and $q_r$ respectively. Now, if any path reaches $q_l$ with at most $w_l$ energy, player $1$ can win from $q_l$ and similarly if any path reaches $q_r$ with at most $w_r$ energy, player $1$ can win from $q_r$. Clearly, if any path reaches $q_2$ with at most $min(w_l-e_l, w_r-e_r)= w^{\prime}$,say, energy, no matter what player $2$ chooses from $q_2$, player $1$ wins. As, $\lambda$ is winning for player $2$, no outcome of $\lambda$ reaches $q_2$ with $\leq w^{\prime}$ energy. W.L.O.G., let $w^{\prime}= w_l -e_l$. It is easy to see that, we can construct a memoryless strategy $\lambda^{\prime}$ for player $2$, such that $\lambda^{\prime}(q_2)=q_l$. Hence, memoryless strategy is enough for player $2$.
+\end{proof}

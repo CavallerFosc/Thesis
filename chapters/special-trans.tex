@@ -1,13 +1,12 @@
  \begin {tikzpicture}[-latex ,auto ,node distance =1 cm,
- state/.style ={ circle ,top color =white , bottom color = processblue!20 ,
- draw,processblue , text=blue , minimum width =1 cm}]
+ state/.style ={ circle,draw, minimum width =1 cm}]
 
  \node[state] (A) [] {$q_0$};
  \node[state,label=above:{$i$}] (B) [right= 4cm of A] {$v$};
  \node (01) [right =1cm of B] {$$};
  \node[state,label=above:{$j$}] (C) [right=2.5cmof B] {$v$};
  \node (02) [right =1cm of C] {$$};
- \node[state] (D) [right=4cmof C] {$T$};
+ \node[state] (D) [right=4cm of C] {$T$};
 
  \path (A) edge [dashed] node[above =0.15 cm] {$$} (B);
  \path (B) edge [] node[above =0.15 cm] {$:=b$} (01);
