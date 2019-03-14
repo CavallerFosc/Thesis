@@ -10,16 +10,61 @@ We will consider the case where $Q_2= \phi$. Hence, all the vertices are player 
 One player LU-reachability game is PSPACE-complete.
 \end{theorem}
 \begin{proof}
+We will first show that the one player LU-reachability game is in PSPACE.
+\fcolorbox{red}{white}{Prove that it is in PSPACE}.\\
+Now, we will prove the hardness. We will prove it by reduction from the reachability of bounded one counter automaton, which is proven to be PSPACE-complete in ~\cite{DBLP:conf/icalp/FearnleyJ13}.\\
+A bounded one-counter automaton has a single counter that can store values between $0$ and some bound $b \in \mathbb{N}$. The automaton may add or subtract values from the counter as long as the bounds of $0$ and $b$ are not overstepped.\\
+For two integers $a, b \in \mathbb{Z}$ we define $[a, b] = \{n \in \mathbb{Z} : a \leq n \leq b\}$ to be the subset of integers between $a$ and $b$. A bounded one-counter automaton is defined by a tuple $(L, b,\Delta ,l_0)$, where $L$ is a finite set of locations, $b \in \mathbb{N}$ is a global counter bound,  specifies the set of transitions, and $l_0 \in L$ is the initial location. Each transition in $\Delta$ has the form
+$(l, p, g_1, g_2,l^{\prime})$, where $l$ and $l^{\prime}$ are locations, $p \in [−b, b]$ specifies how the counter should be modified, and $g_1, g_2 \in [0,b]$ give lower and upper guards for the transition. All numbers used in the specification of a bounded one-counter automaton are encoded in binary.\\
+Each state of the automaton consists of a location $l \in L$ along with a counter value $c$. Thus, we define the set of states $S$ to be $L \times [0, b]$. A transition exists between a state $(l, c) \in S$, and a state $(l^{\prime},c^{\prime}) \in S$ if there is a transition $(l, p, g_1, g_2,l^{\prime}) \in \Delta$, where $g_1 \leq c \leq g_2$, and $c^{\prime} = c + p$.\\
+The reachability problem for bounded one-counter automata is specified as follows. An input to the problem is a pair $(\beta,t)$, where $\beta$ is a bounded one-counter automaton, and $t$ is a target location. To solve the problem, we must decide whether there is a sequence of transitions between state $(l_0, 0)$ and the state $(t, 0)$.\\
+\vskip 0.2cm
+Now, we will give reduce this problem to our game. Given the instance of a bounded one counter automaton and a target location $(\beta,t)$, we construct the following graph $G$.\\
+The states of the graph are exactly the locations of the counter automaton. For every transition in $(l, p, g_1, g_2,l^{\prime}) \in \Delta$, we create following transitions in our graph: \\
+\begin{figure}[htb]
+\hskip 2cm
+\begin {tikzpicture}[-latex ,auto ,node distance =1 cm,
+state/.style ={ circle,draw, minimum width =1 cm}]
+
+\node[state] (A) [] {$l$};
+\node[state] (B) [right= 3cm of A] {$Sp^{l}_1$};
+\node[state] (C) [right=3cm of B] {$Sp^{l}_2$};
+\node[state] (D) [right=3cm of C] {$l^{\prime}$};
+
+\path (A) edge [] node[above =0.15 cm] {$-g_1$} (B);
+\path (B) edge [] node[above =0.15 cm] {$g_1+b-g_2$} (C);
+\path (C) edge [] node[above =0.15 cm] {$g_2-b+p$} (D);
+\end{tikzpicture}
+\end{figure}
+\vskip 0.5cm
+We add a new target $t^{\prime}$ for $G$ and add the edge $t \xrightarrow[]{b} t^{\prime}$. Now, in this new graph $G$, with upper bound $b$ and lower bound $0$ we ask, if there exists a path from $q_0$ to $t^{\prime}$ such that the bounds are respected.\\
+Notice that, if in a location $l$, the counter value $c$ does not follow the constraint $g_1 \leq c \leq g_2$, then here we cannot reach from $l$ to $l^{\prime}$ as that will violate the bound constraints in $Sp^{l}_1$ or $Sp^{l}_2$ vertices.\\
+Now, player $1$ wins the game in graph $G$ iff it can reach $t^{\prime}$ maintaining the bound constraint which is possible if it reaches $t$ with weight $0$ i.e. it reaches $(t,0)$ configuration in the one counter automata. This completes the reduction and hence the hardness result is proved.
 \end{proof}
 
-\subsection{Two player LU Game}
+\subsection{Two player LU-Reachability Game}
 Now we will move to the case of two player LU-reachability Game. Here $Q_2 \not = \phi$ anymore. We will prove the following theorem:
 \begin{theorem}
 \label{exp-complete}
 Two players LU-reachability game is EXPTIME-complete
 \end{theorem}
 \begin{proof}
+We will first give a very obvious EXPTIME algorithm to solve two player LU game. The algorithm is simply to blow up the state space. In details, given the game graph $G=\langle Q_1, Q_2, E, w, q_0, T \rangle$ and two bounds $l$ and $U$, we will create a new game graph, $G^{\prime}= \langle {Q_1}^{\prime},{Q_2}^{\prime},E^{\prime}, {q_0}^{\prime}, T^{\prime}\rangle$, where for every state $q \in Q_i$, $i \in \{1,2\}$ and for all $j \in [l,U]$,  $(q,j) \in {Q_i}^{\prime}$. Now, for all $(u,v) \in E$ with $w(u,v)=w$, we have $\langle (u,j),(v,j+w)\rangle \in E^{\prime}$ for all $j \in [l,U]$ iff $j+w \in [l,U]$. Otherwise, it goes in to a dead state. This construction intuitively means, we encode the energy levels in the state space instead of edges. Now, the game is just reduced to check, if for some $j$, $(T,j)$ is reachable from $(q_0,0)$ in $G^{\prime}$. We know that, reachability can be solved in linear time. Hence, our game can be solved using linear time reachability algorithm on this new exponential size graph. Hence, we have an EXPTIME algorithm for two player LU-reachability game.\\
+Now, we come to the hardness part. We will give a reduction from \textit{countdown game} to our game. Countdown game has been proved to be EXPTIME-complete in ~\cite{DBLP:conf/tacas/JurdzinskiLS07}.\\
+A countdown game $C$ consists of a weighted graph $(S, T)$, where $S$ is the set of states and $T \subseteq S \times \mathbb{N} \setminus \{0\} \times S$ is the transition relation. If $t=(s,d,s^{\prime}) \in T$, then we say
+that the duration of the transition $t$ is $d$. A configuration of a countdown game is a
+pair $(s,c)$, where $s \in S$ is a state and $c \in \mathbb{N}$. A move of a countdown game from a
+configuration $(s,c)$ is performed in the following way: first player $1$ chooses a number $d$, such that $0 < d \leq c$ and $(s,d,s^{\prime}) \in T$, for some state $s^{\prime} \in S$; then player $2$ chooses a transition $(s,d,s^{\prime}) \in T$ of duration $d$. The resulting new configuration is $(s^{\prime},c − d)$. There are two types of terminal configurations, i.e., configurations $(s,c)$ in which no moves are available. If $c = 0$ then the configuration $(s, c)$ is terminal and is a winning
+configuration for player $1$. If for all transitions $(s, d, s^{\prime}) \in T$ from the state $s$, we have
+that $d > c$, then the configuration $(s, c)$ is terminal and it is a winning configuration for player $2$. The algorithmic problem of deciding the winner in countdown games is, given a weighted graph $(S, T)$ and a configuration $(s, c)$, where all the durations of transitions in $C$ and the number $c$ are given in binary, to determine whether player $1$ has a winning
+strategy from the configuration $(s, c)$.
 
+Given a countdown game $(S, E)$ with initial configuration $(s_0 , c_0)$, we construct a weighted game as follows: let $S_1 = S$, $S_2 = \{(s, d) | (s, d, s^{\prime}) \in E\}$, $T$ a target state and  
+$$
+T= \{s\xrightarrow{d}(s,d)|(s,d)\in S_2\}\cup \{(s,d)\xrightarrow{0} s^{\prime}| (s,d,s^{\prime}) \in E\}\cup \{s \xrightarrow{-c_0}T|s \in S\}
+$$
+The upper bound is set to $c_0$ and the lower bound is $0$ . Player $1$ can now from a state $s \in S$ choose a particular number $d$ and Player $2$ from the temporary state $(s, d)$ choose a transition to a state $s^{\prime} \in S$. The number $d$ is added to the accumulated weight and the same repeats. As the accumulated weight is bounded by $c_0$ , Player $1$ has to eventually take some transition labeled $−c_0$ and reach the target state $T$ . In order not to drop below zero, this is only possible if the accumulated weight is exactly $c_0$ , hence the first player in the countdown game has a winning strategy if and only if Player $1$ has a winning strategy in the two player LU-reachability game.
 \end{proof}
 
-\se
+\section{Conclusion}
+In this chapter we have seen that for LU-reachability game, one player version is PSPACE-complete and two player version is EXPTIME-complete. Now, in the next chapter we will move to the cases, when one of the bound is weak and the other bound remains strict.

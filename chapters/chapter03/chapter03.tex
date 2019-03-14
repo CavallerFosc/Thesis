@@ -23,8 +23,7 @@ Consider a game graph $G=\langle Q_1, Q_2, E, w, q_0\rangle$. We produce another
 
 If player $1$ has a strategy to win infinite-energy in $G$, then all the cycles player $1$ forces in the infinite winning path $\rho$ is either a positive or a zero cycle. The same path in $G^{\prime}$ will produce positive cycles for $\epsilon$. Hence, after a large number of iterations, player $1$, will have weight $\geq \delta$ in some of its vertex and then it can reach $T$ in $G^{\prime}$ and win energy-reachability. For the other side, let player $1$ has a winning strategy in energy-reachability in $G^{\prime}$. That means, in every winning path, at some player $1$ vertex it has weight $\geq \delta$, which is impossible without forcing a positive cycle as $\delta$ is large enough. Hence, iterating the same cycle player $1$ wins infinite-energy game in $G$.\\
 \\
-Now, we will show the opposite reduction i.e. from energy-reachability to infinite-energy. Again consider, a game graph $G=\langle Q_1, Q_2, E, w, q_0, T\rangle$. We produce another game graph $G^{\prime}=\langle Q_1, Q_2, E^{\prime}, w^{\prime}, q_0\rangle$, where we add a self loop of weight $0$ on $T$.\\
-\huge\fcolorbox{blue}{red}{Incomplete}
+Now, we will show the opposite reduction i.e. from energy-reachability to infinite-energy. Again consider, a game graph $G=\langle Q_1, Q_2, E, w, q_0, T\rangle$. We produce another game graph $G^{\prime}=\langle {Q_1}^{\prime}, {Q_2}^{\prime}, E^{\prime}, w^{\prime}, q_0\rangle$, where we add a self loop of weight $0$ on $T$ and we keep only those vertices and corresponding edges in $G^{\prime}$ which are in the attractor set of $T$ in $G$. Clearly, if player $1$ wins energy-reachability in $G$, he wins infinite-energy in $G^{\prime}$ by taking the zero loop in $T$ after reaching there. The other direction is also true as if player $1$ wins infinite energy in $G^{\prime}$, either he takes the loop in $T$ or he goes into a positive loop inside. If he reaches $T$, he wins energy-reachability in $G$ trivially. If he can loop inside, as the graph is restricted to attractor set of $T$, he can force to reach $T$ and win energy-reachability in $G$. Hence, it is proved that, both the games are equivalent complexity -wise.
 \end{proof}
 
 \section{Finite Mean-Payoff Reachability}
@@ -60,7 +59,7 @@ Hence, we prove that, finite mean-payoff reachability is equivalent to energy-re
 Now, it comes down to the final quantitative function we are concerned with in this thesis, which is total payoff. Given a game graph $G=\langle Q_1, Q_2, E, w, q_0,T\rangle$ and a bound $b \in \mathbb{N}$, the decision problem for finite total payoff reachability game asks, starting from $q_0$ with zero initial weight, if player $1$ has a strategy to reach $T$ in some path $\gamma$ such that, for all finite prefixes $\gamma^{\prime}$ of $\gamma$, if $TP(\gamma^{\prime}) \lesseqgtr b$? We will only consider the case of  $TP(\gamma^{\prime}) \geq b$ here. The other case is just the dual. Remember that, for a prefix $\gamma^{\prime}= q_0,q_1,\ldots q_l$, $TP(\gamma^{\prime})= \Sigma_{i=0}^{l-1} w(q_i,q_i+1)$. Note that, energy-reachability is just a special case of total payoff reachability, where $b=0$. We will show that, it is equivalent to energy-reachability game. From that, the following theorem is evident:\\
 \begin{theorem}
 \label{fin-totalpayoff-thm}
-The decision problem for finite mean-payoff reachability game is in $NP \cap coNP$ and also mean-payoff hard. 
+The decision problem for finite total payoff reachability game is in $NP \cap coNP$ and also mean-payoff hard. 
 \end{theorem}
 \begin{proof}
 \huge\fcolorbox{blue}{red}{Incomplete}
