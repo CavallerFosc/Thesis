@@ -36,7 +36,6 @@ The decision problem for finite mean-payoff reachability game is in $NP \cap coN
 \begin{proof}
 We will reduce this game to and from energy-reachability game. As usual, we consider a game graph\\ $G=\langle Q_1, Q_2, E, w, q_0,T\rangle$. We produce another game graph, $G^{\prime}=\langle Q_1, Q_2, E, w^{\prime}= b-w (\text{or } w-b, \text{accordingly}), q_0,T\rangle$. We claim that, player $1$ wins energy-reachability in $G$ iff he wins finite mean-payoff reachability in $G^{\prime}$ and also vice-versa. This will prove that, energy-reachability is equivalent to mean-payoff reachability complexity-wise. The result of the theorem will be then the consequence of Theorem \ref{energy-reach-thm}\\
 First we prove the reduction from energy reachability to mean-payoff reachability. The opposite reduction will be exactly similar. Let player $1$ has a winning strategy $\lambda$ in $G$ for energy reachability. That means, for all the path $\rho$ conforming $\lambda$, reaches $T$ and for all finite prefixes $\rho^{\prime}$ of $\rho$, $w(\rho)\geq 0$. Consider such a prefix $q_0,q_1,\ldots q_l$. We have, $\Sigma_{i=0}^{l-1} w(q_i,q_{i+1}) \geq 0$. Now, let in $G^{\prime}$, also player $1$ plays with same strategy $\lambda$. Now, for the same prefix, mean-payoff will be:
-\begin{equation}
 \begin{align}
 \notag
 \centering
@@ -46,7 +45,7 @@ MP(\rho^{\prime})&= (1/l)\Sigma_{i=0}^{l-1} w^{\prime}(q_i,q_{i+1})\\
 &=b- (1/l)\Sigma_{i=0}^{l-1} w(q_i,q_{i+1})\\
 &\leq b
 \end{align}
-\end{equation}
+
 
 Hence, player $1$ wins in finite mean-payoff reachability objective in $G^{\prime}$. The other proofs can be obtained similarly.\\
 Hence, we prove that, finite mean-payoff reachability is equivalent to energy-reachability.
