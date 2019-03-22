@@ -17,12 +17,11 @@ Consider a game graph $G=\langle Q_1, Q_2, E, w, q_0\rangle$. We produce another
 \begin{figure}
     \label{inf-reach}
     \centering
-    \input{chapters/chapter03/inf-reach.tex}inf-reach.tex}
+    \input{chapters/chapter03/inf-reach.tex}
     \caption{Infinite-energy to Energy-reachability}
 \end{figure}
 
 If player $1$ has a strategy to win infinite-energy in $G$, then all the cycles player $1$ forces in the infinite winning path $\rho$ is either a positive or a zero cycle. The same path in $G^{\prime}$ will produce positive cycles for $\epsilon$. Hence, after a large number of iterations, player $1$, will have weight $\geq \delta$ in some of its vertex and then it can reach $T$ in $G^{\prime}$ and win energy-reachability. For the other side, let player $1$ has a winning strategy in energy-reachability in $G^{\prime}$. That means, in every winning path, at some player $1$ vertex it has weight $\geq \delta$, which is impossible without forcing a positive cycle as $\delta$ is large enough. Hence, iterating the same cycle player $1$ wins infinite-energy game in $G$.\\
-\\
 Now, we will show the opposite reduction i.e. from energy-reachability to infinite-energy. Again consider, a game graph $G=\langle Q_1, Q_2, E, w, q_0, T\rangle$. We produce another game graph $G^{\prime}=\langle {Q_1}^{\prime}, {Q_2}^{\prime}, E^{\prime}, w^{\prime}, q_0\rangle$, where we add a self loop of weight $0$ on $T$ and we keep only those vertices and corresponding edges in $G^{\prime}$ which are in the attractor set of $T$ in $G$. Clearly, if player $1$ wins energy-reachability in $G$, he wins infinite-energy in $G^{\prime}$ by taking the zero loop in $T$ after reaching there. The other direction is also true as if player $1$ wins infinite energy in $G^{\prime}$, either he takes the loop in $T$ or he goes into a positive loop inside. If he reaches $T$, he wins energy-reachability in $G$ trivially. If he can loop inside, as the graph is restricted to attractor set of $T$, he can force to reach $T$ and win energy-reachability in $G$. Hence, it is proved that, both the games are equivalent complexity -wise.
 \end{proof}
 
@@ -30,16 +29,15 @@ Now, we will show the opposite reduction i.e. from energy-reachability to infini
 In this section, we will take the mean-payoff function as our quantitative function. In general mean-payoff is used in theory mostly for the case of infinite games, but in this thesis we restrict ourselves to reachability, hence finite games. For this reason, we will define a notion of mean payoff for the finite case:\\
 \vskip 0.5cm
 Given a game graph $G=\langle Q_1, Q_2, E, w, q_0,T\rangle$ and a bound $b \in \mathbb{N}$, the decision problem for finite mean-payoff reachability game asks, starting from $q_0$ with zero initial weight, if player $1$ has a strategy to reach $T$ in some path $\gamma$ such that, for all finite prefixes $\gamma^{\prime}$ of $\gamma$, if $MP(\gamma^{\prime}) \lesseqgtr b$? We will only consider the case of  $MP(\gamma^{\prime}) \leq b$ here. The other case is just the dual. Remember that, for a prefix $\gamma^{\prime}= q_0,q_1,\ldots q_l$, $MP(\gamma^{\prime})= (1/l) \cdot \Sigma_{i=0}^{l-1} w(q_i,q_i+1)$.\\ Now, we will prove the following result about the finite mean-payoff reachability game:\\
-\\
 \begin{theorem}
 \label{fin-meanpayoff-thm}
 The decision problem for finite mean-payoff reachability game is in $NP \cap coNP$ and also mean-payoff hard. 
 \end{theorem}
 \begin{proof}
 We will reduce this game to and from energy-reachability game. As usual, we consider a game graph\\ $G=\langle Q_1, Q_2, E, w, q_0,T\rangle$. We produce another game graph, $G^{\prime}=\langle Q_1, Q_2, E, w^{\prime}= b-w (\text{or } w-b, \text{accordingly}), q_0,T\rangle$. We claim that, player $1$ wins energy-reachability in $G$ iff he wins finite mean-payoff reachability in $G^{\prime}$ and also vice-versa. This will prove that, energy-reachability is equivalent to mean-payoff reachability complexity-wise. The result of the theorem will be then the consequence of Theorem \ref{energy-reach-thm}\\
-\\First we prove the reduction from energy reachability to mean-payoff reachability. The opposite reduction will be exactly similar. Let player $1$ has a winning strategy $\lambda$ in $G$ for energy reachability. That means, for all the path $\rho$ conforming $\lambda$, reaches $T$ and for all finite prefixes $\rho^{\prime}$ of $\rho$, $w(\rho)\geq 0$. Consider such a prefix $q_0,q_1,\ldots q_l$. We have, $\Sigma_{i=0}^{l-1} w(q_i,q_{i+1}) \geq 0$. Now, let in $G^{\prime}$, also player $1$ plays with same strategy $\lambda$. Now, for the same prefix, mean-payoff will be:
+First we prove the reduction from energy reachability to mean-payoff reachability. The opposite reduction will be exactly similar. Let player $1$ has a winning strategy $\lambda$ in $G$ for energy reachability. That means, for all the path $\rho$ conforming $\lambda$, reaches $T$ and for all finite prefixes $\rho^{\prime}$ of $\rho$, $w(\rho)\geq 0$. Consider such a prefix $q_0,q_1,\ldots q_l$. We have, $\Sigma_{i=0}^{l-1} w(q_i,q_{i+1}) \geq 0$. Now, let in $G^{\prime}$, also player $1$ plays with same strategy $\lambda$. Now, for the same prefix, mean-payoff will be:
 \begin{equation}
-\begin{align*}
+\begin{align}
 \notag
 \centering
 MP(\rho^{\prime})&= (1/l)\Sigma_{i=0}^{l-1} w^{\prime}(q_i,q_{i+1})\\
@@ -47,7 +45,7 @@ MP(\rho^{\prime})&= (1/l)\Sigma_{i=0}^{l-1} w^{\prime}(q_i,q_{i+1})\\
 &=(1/l)(lb- \Sigma_{i=0}^{l-1} w(q_i,q_{i+1})\\
 &=b- (1/l)\Sigma_{i=0}^{l-1} w(q_i,q_{i+1})\\
 &\leq b
-\end{align*}
+\end{align}
 \end{equation}
 
 Hence, player $1$ wins in finite mean-payoff reachability objective in $G^{\prime}$. The other proofs can be obtained similarly.\\
