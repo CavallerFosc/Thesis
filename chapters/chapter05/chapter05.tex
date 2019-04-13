@@ -86,8 +86,23 @@ Now, we will prove that, memoryless strategies are enough for player $2$. Let's 
 \vskip 0.5cm
 \fcolorbox{blue}{red}{To be added the short certificate for the NP proof}
 \vskip 0.2cm
+\section{A step towards NP}
 Now, we prove the existence of a small certificate for the strategy of player $1$. We have already shown that in the original game, player $1$ might need exponential memory. Now, we construct the exponential size graph $G^{\prime}$ with vertices $\langle q_i, E_i \rangle$ explicitly keeping track of the energy level. There is a edge between $\langle q_i, E_i \rangle$ to $\langle q_j, E_j \rangle$ iff there is an edge from $q_i$ to $q_j$ with weight $E_j -E_i$ in the graph $G$, where $E_i, E_j \leq U$. We also add a dead state $q_{dead}$, where any time the energy level goes beyond the upper bound $U$, we move to a dead state. Now, in this exponential graph $G^{\prime}$, the objective of player $1$ is to reach $\langle T,E \rangle$ for some $E \leq U$ from $\langle q_0,0 \rangle$.\\
-Clearly, player $1$ has a memoryless strategy to win in $G^{\prime}$ iff he has a strategy to win in $G$. Primarily the idea is that, if player $1$ reaches a same state with same energy level in different paths, all the time he can play the same edge which is the "best" for him and that implies, if player $1$ can win in $G^{\prime}$, he can win memorylessly.
+Clearly, player $1$ has a memoryless strategy to win in $G^{\prime}$ iff he has a strategy to win in $G$. Primarily the idea is that, if player $1$ reaches a same state with same energy level in different paths, all the time he can play the same edge which is the "best" for him and that implies, if player $1$ can win in $G^{\prime}$, he can win memorylessly. Now, we will prove the following lemma:
+\begin{lemma}
+\label{NP-cert}
+For a vertex $q$ in $G$, if there exists $E$ and $E^{\prime} \in \mathbb{N}$ such that, in $G^{\prime}$ player $1$ has a memoryless winning strategy $\lambda$ from $\langle q, E \rangle$ and $\lambda^{\prime}$ from $\langle q, E^{\prime} \rangle$ where, $\lambda(\langle q, E \rangle) = \lambda^{\prime}(\langle q, E^{\prime} \rangle)$, then for every $\langle q,E^{\prime \prime} \rangle$ where $E \leq E^{\prime \prime} \leq E^{\prime}$, there exists a memoryless winning strategy $\lambda^{\prime \prime}$ for player $1$ such that,  $\langle q, E^{\prime} \rangle$ where, $\lambda(\langle q, E \rangle) = \lambda^{\prime \prime}(\langle q,E^{\prime \prime})=\lambda^{\prime}(\langle q, E^{\prime} \rangle)$.
+\end{lemma}
+\vskip 0.1cm
+\begin{proof}
+The lemma says simply that, if player $1$ can play same action $a$ from a vertex $q$ with energy level $E$ and $E^{\prime}$, then he can play the same action from $q$ with any energy level between $E$ and $E^{\prime}$. First thing to notice that, it may look like if player $1$ plays a memoryless winning strategy with action $b$ from some vertex $v$ with energy level $E$, then he can play $b$ from $v$ with any energy level $\leq E$ and win. But, this is not true.To see this consider the figure \ref{not_true}. Lets say, $U=4$. So, player $1$ can play self loop action from $\langle v,4 \rangle$ and then win. But, from $\langle v,0 \rangle$ he cannot play the self loop action and win with a memoryless strategy in the exponential graph.\\
+\begin{figure}[htb]
+\hskip 6cm
+\label{not_true}
+\input{chapters/chapter05/not_true}
+\end{figure}
+But from $\langle v,1 \rangle$ he can play the same action and win with a memoryless strategy. So, the lemma says, from $\langle v,3 \rangle$ and $\langle v,2 \rangle$ also, he can play the same self loop action and win with a memoryless strategy in the exponential graph.
+\end{proof}
 \vskip 0.5cm
 \section{Conclusion}
 In this chapter, we have showed that QR games with weak dual bounds are in $P$ for the single player case and is in $coNP$ for the two player case. We also believe that the two player version of the game is in $NP$. We have shown the short certificate for the problem, but unfortunately could not prove the verification part.\\

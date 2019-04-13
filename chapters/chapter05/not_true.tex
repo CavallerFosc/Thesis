@@ -5,9 +5,8 @@ state/.style ={ circle, draw, minimum width =1 cm}]
 \node[state] (B) [right=of A] {$v$};
 \node[state] (C) [right=of B] {$T$};
 
-\path (A) edge [] node[above =0.15 cm] {$U$} (B);
+\path (A) edge [] node[above =0.15 cm] {$4$} (B);
 \path (B) edge [loop above] node[above =0.15 cm] {$-1$} (B);
-\path (B) edge [] node[above =0.15 cm] {$U$} (C);
+\path (B) edge [] node[above =0.15 cm] {$1$} (C);
 \end{tikzpicture}
-\caption{Exponential memory is necessary for player $1$ }
-
+\caption{Player $1$ cannot play same memoryless strategy from $\langle v,4 \rangle$ and $\langle v,0 \rangle$}
