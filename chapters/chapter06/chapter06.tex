@@ -1,4 +1,17 @@
- game.In the previous chapters, we have explored all kind of weighted games, where the weight functions were bounded. In this chapter, we will explore a new kind of a game. Here also, we have strong bounds on weights, but player $1$ can violate one of the bounds, w.l.o.g, say the upper bound. The number of vertices, he traverses along his path with weights higher than the upper bound are called \textbf{violations}. In this game, we have a bound on the number of violations. We call this bounded violations reachability game as \textit{Apna Game}. We formally define it in the following section.\\
+ In the previous chapters, we have explored all kind of weighted games, where the weight functions were bounded. In this chapter, we will explore a new kind of a game. Here also, we have strong bounds on weights, but player $1$ can violate one of the bounds, w.l.o.g, say the upper bound. The number of vertices, he traverses along his path with weights higher than the upper bound are called \textbf{violations}. In this game, we have a bound on the number of violations. We call this bounded violations reachability game as \textit{Apna Game}. We formally define it in the following section.\\
 
 \section{Description of the Game}
-Consider a game graph $G=\langle Q_1, Q_2, E, w, q_0, T \rangle$, a lower bound $l$ and an upper bound $U$. As mentioned before, there are two kinds of objectives definable: Apna upper-bound violation game and Apna lower-bound violation game. We will consider here the upper-bound violation game as Apna Game; the other game will just be its dual.
+Consider a game graph $G=\langle Q_1, Q_2, E, w, q_0, T \rangle$, $b \in \mathbb{N}$, a lower bound $l$ and an upper bound $U$. As mentioned before, there are two kinds of objectives definable: Apna upper-bound violation game and Apna lower-bound violation game. We will consider here the upper-bound violation game as Apna Game; the other game will just be its dual. Consider a path $\rho= q_0,q_1,q_2,\ldots,q_l$ in $G$. We define $q_i$ as a \textit{violation}, if $\Sigma_{j=0}^{i-1} w(q_j,q_{j+1}) > U$. For a path $\rho$, we denote the number of violations by $v(\rho)$. Now, starting from $q_0$, player $1$'s objective is to reach $T$ in a path $\rho$, such that for all finite prefixes $\pi$ of $\rho$, $w(\pi) \geq l$ and $v(\rho) \leq b$. 
+
+\section{Decision Problems and Complexity}
+
+Given $G,l,U,b$ the decision problem asks, does player $1$ have a winning strategy for Apna Game objective (upper/lower bound violation) in $G$? Notice that, lower bound violation game can be easily seen as a upper bound violation game by just negating the weights on the edges. Hence, we can only reason about the upper bound violation part of Apna Game in different results and theorems. We will prove the following theorem:
+\begin{theorem}
+Given $G,l,U,b$ in there usual notations, deciding if player $1$ has a winning strategy for Apna Game in $G$ is EXPTIME-complete.
+\end{theorem}
+
+\begin{proof}
+	
+\end{proof}
+
+

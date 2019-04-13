@@ -85,6 +85,9 @@ Now, we will prove that, memoryless strategies are enough for player $2$. Let's 
 \end{proof}
 \vskip 0.5cm
 \fcolorbox{blue}{red}{To be added the short certificate for the NP proof}
+\vskip 0.2cm
+Now, we prove the existence of a small certificate for the strategy of player $1$. We have already shown that in the original game, player $1$ might need exponential memory. Now, we construct the exponential size graph $G^{\prime}$ with vertices $\langle q_i, E_i \rangle$ explicitly keeping track of the energy level. There is a edge between $\langle q_i, E_i \rangle$ to $\langle q_j, E_j \rangle$ iff there is an edge from $q_i$ to $q_j$ with weight $E_j -E_i$ in the graph $G$, where $E_i, E_j \leq U$. We also add a dead state $q_{dead}$, where any time the energy level goes beyond the upper bound $U$, we move to a dead state. Now, in this exponential graph $G^{\prime}$, the objective of player $1$ is to reach $\langle T,E \rangle$ for some $E \leq U$ from $\langle q_0,0 \rangle$.\\
+Clearly, player $1$ has a memoryless strategy to win in $G^{\prime}$ iff he has a strategy to win in $G$. Primarily the idea is that, if player $1$ reaches a same state with same energy level in different paths, all the time he can play the same edge which is the "best" for him and that implies, if player $1$ can win in $G^{\prime}$, he can win memorylessly.
 \vskip 0.5cm
 \section{Conclusion}
 In this chapter, we have showed that QR games with weak dual bounds are in $P$ for the single player case and is in $coNP$ for the two player case. We also believe that the two player version of the game is in $NP$. We have shown the short certificate for the problem, but unfortunately could not prove the verification part.\\
