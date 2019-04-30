@@ -83,9 +83,17 @@ As reachability is one of the objective, trivially finite memories are sufficien
 In the game graph of Figure \ref{expmem-p1}, all the vertices are player $1$  vertices and $U$ is the strict upper bound. It is easy to see, player $1$ needs at least $U$- memory to win this game. Considering binary encoding. the value of $U$ is exponential in the size of the input.\\
 Now, we will prove that, memoryless strategies are enough for player $2$. Let's fix a winning strategy $lambda$ for player $2$  WLOG, every player $2$ vertices have two outgoing ages. Fix one player $2$ vertex, say $q_2$. Let the weight of the two outgoing edges from $q_2$ are $e_l$ and $e_r$ to $q_l$ and $q_r$ respectively. Now, if any path reaches $q_l$ with at most $w_l$ energy, player $1$ can win from $q_l$ and similarly if any path reaches $q_r$ with at most $w_r$ energy, player $1$ can win from $q_r$. Clearly, if any path reaches $q_2$ with at most $min(w_l-e_l, w_r-e_r)= w^{\prime}$,say, energy, no matter what player $2$ chooses from $q_2$, player $1$ wins. As, $\lambda$ is winning for player $2$, no outcome of $\lambda$ reaches $q_2$ with $\leq w^{\prime}$ energy. W.L.O.G., let $w^{\prime}= w_l -e_l$. It is easy to see that, we can construct a memoryless strategy $\lambda^{\prime}$ for player $2$, such that $\lambda^{\prime}(q_2)=q_l$. Hence, memoryless strategy is enough for player $2$.
 \end{proof}
-\vskip 0.5cm
-\fcolorbox{blue}{red}{To be added the short certificate for the NP proof}
 \vskip 0.2cm
+
+Now, based on the previous lemma we can conclude the following theorem:\\
+\begin{theorem}
+\label{two-player-weak-thm}
+Given a game graph $G$ , a strong upper bound $U$ and a lower weak bound $0$, deciding if $P_1$ can win the 2 player QR games with weak dual bound game in $G$ is in $coNP$.
+\end{theorem}
+\begin{proof}
+A priori, lemma \ref{mem-lemma} says if $P_2$ has a winning strategy, he has a memoryless one. Now, we can guess a strategy for Player $2$ (i.e. select one transition per state in $Q_2$) and verify that this strategy is winning for Player $2$ by solving the one player game, which has been proved to be in polynomial time in theorem \ref{one-player-weak-thm}.
+\end{proof}
+\vskip 0.5cm
 \section{A step towards NP}
 Now, we prove the existence of a small certificate for the strategy of player $1$. We have already shown that in the original game, player $1$ might need exponential memory. Now, we construct the exponential size graph $G^{\prime}$ with vertices $\langle q_i, E_i \rangle$ explicitly keeping track of the energy level. There is a edge between $\langle q_i, E_i \rangle$ to $\langle q_j, E_j \rangle$ iff there is an edge from $q_i$ to $q_j$ with weight $E_j -E_i$ in the graph $G$, where $E_i, E_j \leq U$. We also add a dead state $q_{dead}$, where any time the energy level goes beyond the upper bound $U$, we move to a dead state. Now, in this exponential graph $G^{\prime}$, the objective of player $1$ is to reach $\langle T,E \rangle$ for some $E \leq U$ from $\langle q_0,0 \rangle$.\\
 Clearly, player $1$ has a memoryless strategy to win in $G^{\prime}$ iff he has a strategy to win in $G$. Primarily the idea is that, if player $1$ reaches a same state with same energy level in different paths, all the time he can play the same edge which is the "best" for him and that implies, if player $1$ can win in $G^{\prime}$, he can win memorylessly. Now, we will prove the following lemma:
@@ -101,9 +109,13 @@ The lemma says simply that, if player $1$ can play same action $a$ from a vertex
 \label{not_true}
 \input{chapters/chapter05/not_true}
 \end{figure}
-But from $\langle v,1 \rangle$ he can play the same action and win with a memoryless strategy. So, the lemma says, from $\langle v,3 \rangle$ and $\langle v,2 \rangle$ also, he can play the same self loop action and win with a memoryless strategy in the exponential graph.
+But from $\langle v,1 \rangle$ he can play the same action and win with a memoryless strategy. So, the lemma says, from $\langle v,3 \rangle$ and $\langle v,2 \rangle$ also, he can play the same self loop action and win with a memoryless strategy in the exponential graph.\\
+Now, we will go to the proof of the lemma. 
+\fcolorbox{blue}{red}{Trying to work out the proof.}
 \end{proof}
 \vskip 0.5cm
+Now, the previous lemma takes us to a step towards proving that the $2$ player QR game with weak dual bound is in NP. This is because, though the energy levels are exponential when expressed in binary, the number of actions player $1$ can take from each vertex is linear in size. Now, lemma \ref{NP-cert} suggests that, for a fixed vertex we can group energy levels into intervals from where we can take the same action, hence the number of groups in also at most linear in size.\\
+This works as our short certificate. Given a game graph $G$ with weak dual bounds objective, we can guess a grouping of energy levels to produce a game graph $G^{\prime \prime}$ with vertices as $\langle s, I\rangle$, where $s$ is a vertex in $G$ and $I$ is an interval of energy levels. Note that, $G^{\prime \prime}$ has at most $O(n^2)$ many vertices. After guessing the short certificate, the verification process will be to check reachability of $\langle T, I\rangle$ for any interval $I$ and target state $T$ from $\langle q_0, I^{\prime} \rangle$, with $I^{\prime}$ containing 0. But, we do not know, how to execute this verification process in polynomial time. 
 \section{Conclusion}
 In this chapter, we have showed that QR games with weak dual bounds are in $P$ for the single player case and is in $coNP$ for the two player case. We also believe that the two player version of the game is in $NP$. We have shown the short certificate for the problem, but unfortunately could not prove the verification part.\\
 This ends all the QR game versions with bounds on weight functions. In the next chapter, we will introduce a new QR game, with a notion of bound on number of violations.
