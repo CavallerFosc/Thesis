@@ -1,4 +1,5 @@
-\documentclass[a4paper, 11pt, oneside]{book}
+\documentclass[a4paper, 12pt, twoside]{book}
+\usepackage{scrextend}
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc} 
@@ -8,15 +9,17 @@
 \usepackage{amssymb}
 \graphicspath{ {images/} }
 \usepackage{hyperref}
+\usepackage{macros}
 \usepackage[normalem]{ulem}
 \usepackage[]{algorithm2e}
 \usepackage{pgf,tikz}
 \usepackage{pgfplots}
+\usepackage[signature=default_signature, date=01.06.2019]{mysignature}
 \usetikzlibrary{spy}
 \usetikzlibrary{backgrounds}
 \usetikzlibrary{decorations.pathreplacing}
 \usetikzlibrary{intersections}
-\usepackage[margin=0.5in]{geometry}
+\usepackage[margin=0.8in, right= 0.6in]{geometry}
 \usepackage{textcomp}
 \usetikzlibrary {positioning}
 %\usepackage {xcolor}
@@ -24,13 +27,12 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhead{}
-\fancyhead[RO,LE]{Thesis Title}
+\fancyhead[RO,LE]{Reachability Games with strong and relaxed energy constraints}
 \fancyfoot{}
 \fancyfoot[LE,RO]{\thepage}
 \fancyfoot[LO,CE]{Chapter \thechapter}
 \fancyfoot[CO,RE]{Ritam Raha}
 \usepackage[nottoc,numbib]{tocbibind}
-
 \usepackage{amsthm}
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}[section]
@@ -43,10 +45,6 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{remark}[theorem]{Remark}
-
-
-
-
 
 \begin{document}
 \begin{titlepage}
@@ -65,7 +63,7 @@
 
 	\vspace{0.75\baselineskip}
 	
-	{\LARGE THE NAME\\ that is \\ YET TO BE DECIDED\\} 
+	{\LARGE REACHABILITY GAMES WITH\\ strong and relaxed \\ ENERGY CONSTRAINTS\\} 
 	
 	\vspace{0.75\baselineskip} 
 	
@@ -116,14 +114,46 @@
 
 
 \chapter*{Abstract}
-Quantitative reachability games are finite two player turn-based games played on weighted graphs. The objective of the game combines reachability objective(qualitative) with the (quantitative) requirement that the weights along a path must satisfy certain constraints (bounds). Beside having direct applications in reactive system synthesis with resource constraints, it is one of the simplest models that combine quantitative and qualitative objectives. In this thesis, we ask the question whether Player $1$ can  reach a target state along a path for which the accumulated weight for any finite prefix satisfies some bound. We look both at single bound and dual bound problems. We also consider the weighted game where we weaken one of the bounds (e.g. we allow violations of a given bound but up to a bounded number of times).
- 
-\chapter*{Dedication}
-To 
+\thispagestyle{empty}
+Quantitative reachability games are finite two player turn-based games played on weighted graphs. The objective of the game combines reachability objective(qualitative) with the (quantitative) requirement that the weights along a path must satisfy certain constraints (bounds). Besides having direct applications in reactive system synthesis with resource constraints, it is one of the simplest models that combine quantitative and qualitative objectives.
+\vskip 0.5cm
+In this thesis, we~first prove that under strict energy constraints (either only
+lower-bound constraint or interval constraint), those games are
+LOGSPACE-equivalent to energy games with the same energy constraints but without reachability objective (i.e., for infinite
+runs). We~then consider two kinds of
+relaxations of the upper-bound constraints (while keeping the
+lower-bound constraint strict): in the first one, called \emph{weak
+upper bound}, the upper bound is \emph{absorbing}, in the sense that
+it allows receiving more energy when the upper bound is already
+reached, but the extra energy will not be stored; in the second one,
+we~allow for \emph{temporary violations} of the upper bound, imposing
+limits on the number or on the amount of violations.
+
+%
+We prove that when considering weak upper bound, reachability
+objectives require memory, but can still be solved in polynomial-time
+for one-player arenas; we~prove that they are in coNP in the two-player
+setting. Allowing for bounded violations makes the
+problem PSPACE-complete for one-player arenas and EXPTIME-complete
+for two players.
+
+\chapter*{%Dedication}
+}
+I dedicate this to 
  
 \chapter*{Declaration}
-I declare that..
- 
+I, Ritam RAHA, declare that this thesis titled, \textit{“Reachability Games with strong and relaxed energy constraints”} and the work presented in it are my own. I confirm that:
+\vskip 1cm
+\begin{itemize}
+    \item This work was done wholly or mainly while in candidature for a masters degree(from CMI) at INRIA Rennes and CMI.
+    \item The thesis has been prepared without resorting to plagiarism.
+    \item Where I have consulted the published work of others, this is always clearly attributed.
+    \item I have acknowledged all main sources of help.
+    \item The thesis has not been submitted elsewhere for a degree.
+\end{itemize}
+\vskip 2cm
+\mysignature[left]{full}
+
 \chapter*{Acknowledgements}
 I want to thank...
 

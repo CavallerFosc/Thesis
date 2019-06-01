@@ -1,0 +1,327 @@
+\section{Proofs of Section~\ref{sec-weak}}
+
+\noindent{\bf Lemma \ref{lemma-higherrun}: }
+  Let $\pi$ be a finite path in a one-player arena~$G$.
+  If $(q,u) \xrightarrow{\pi}_{LW} (q',u')$,
+  then for any~$v\geq u$,
+  $(q,v) \xrightarrow{\pi}_{LW} (q',v')$ for some~$v'\geq u'$.
+
+\begin{proof}
+Write $\pi=(e_i)_{0\leq i<n}$, with $e_i=(q_i,p_i,q'_i)$ for each~$i$.
+The sequence defined as
+\begin{xalignat*}2
+  u_0&= u & u_{i+1} &= \min{W,u_i+p_i}
+\end{xalignat*}
+is the sequence of energy levels along the run $(q,u) \xrightarrow{\pi}_{LW}
+(q',u')$.  For~$v\geq u$, letting
+\begin{xalignat*}2
+  v_0&= v & v_{i+1} &= \min{W,v_i+p_i},
+\end{xalignat*}
+we~easily prove by induction that for all~$i$, $u_i\leq v_i\leq W$,
+which entails that $(q,v) \xrightarrow{\pi}_{LW} (q',v')$ with $v'=v_n\geq
+u_n=u'$.
+\end{proof}
+
+
+\noindent{\bf Proof of Lemma~\ref{lemma-hitW}}
+  Let $\pi$ be a finite path in a one-player arena~$G$, and consider two LW-runs 
+  $(q,u)\xrightarrow{\pi}_{LW} (q',u')$ and $(q,v)\xrightarrow{\pi}_{LW}(q',v')$ with $u\leq
+  v$. Then $u'-u\geq v'-v$, and if the inequality is strict, then
+  the energy level along the run $(q,v)\xrightarrow{\pi}_{LW}(q',v')$ must have hit~$W$.
+
+
+\begin{proof}
+  The first statement is proven by induction: we~again write
+  $\pi=(e_i)_{0\leq i<n}$, with $e_i=(q_i,p_i,q'_i)$ for each~$i$, and
+  \begin{xalignat*}2
+    u_0&= u & u_{i+1} &= \min(W,u_i+p_i)\\
+    v_0&= v & v_{i+1} &= \min(W,v_i+p_i).
+  \end{xalignat*}
+  Then $u_{i+1}-u_i=\min(W-u_i,p_i)$ and
+  $v_{i+1}-v_i=\min(W-v_i,p_i)$.  Since $u_i\leq v_i$ for all~$i$,
+  we~also have $W-u_i\geq W-v_i$, and $u_{i+1}-u_i \geq
+  v_{i+1}-v_i$. By~summing up these inequalities, we~get $u_{i+1}-u_0
+  \geq v_{i+1}-v_0$. Now, as long as $W-v_i\geq p_i$ (then also
+  $W-u_i\geq p_i$), the inequalities above are equalities. It~follows
+  that if the inequality is strict, then the run
+  $(q,v)\xrightarrow{\pi}_{LW}(q',v')$ must have hit~$W$.
+\end{proof}
+
+
+\noindent{\bf Proof of Lemma~\ref{lemma-W}}
+Let $\pi$ be a finite path in a one-player arena~$G$, for which there
+  is an LW-runs $(q,u)\xrightarrow{\pi}_{LW} (q',u')$. 
+  %with $u\leq u'$. (suppressed this info otherwise the second statement makes no sense) 
+  If $u'$ is the maximal energy level along that run, then
+  $(q,W)\xrightarrow{\pi}_{LW} (q',W)$;
+  if $u$ is the maximal energy level along the run above, then
+  $(q,W)\xrightarrow{\pi}_{LW} (q',W+u'-u)$.
+
+
+\begin{proof}
+  Write $\pi=(e_i)_{0\leq i<n}$, with $e_i=(q_i,p_i,q'_i)$ for
+  each~$i$. If~$u'$ is the maximal energy level, then for all~$i$,
+  we~have $\sum_{j=i}^{n-1} p_j\geq 0$.  Now, define
+  \begin{xalignat*}2
+    v_0&= W & v_{i+1} &= \min(W,v_i+p_i).
+  \end{xalignat*}
+  If~$v_n<W$, then by induction we also have $v_i<W$ for all~$i$,
+  contradicting the fact that~$v_0=W$. This proves our first result.
+
+  Similarly, if~$u$ is the maximal energy level, then for all~$i$,
+  we~have $\sum_{j=0}^{i} p_j\leq 0$. Then for all~$i$,
+  $v_{i+1}=v_i+p_i\leq W$, so that $v_{n}-v_0=u'-u$. Our second result
+  follows.
+\end{proof}
+
+
+\noindent{\bf Proof of Lemma~\ref{lemma-iteratepos}}
+Let $\pi$ be a finite path in a one-player arena~$G$.
+  If
+  $(q,u)\xrightarrow{\pi}_{LW} (q',u')$ with $u'> u$
+  and 
+  $(q,w)\xrightarrow{\pi}_{LW} (q',w')$ with $w'> w$,
+  then
+  for any $u\leq v\leq w$, it~holds
+  $(q,v)\xrightarrow{\pi}_{LW} (q',v')$ with $v'> v$.
+
+\begin{proof}  
+Using Lemma~\ref{lemma-higherrun}, we~immediately have
+$(q,v)\xrightarrow{\pi}_{LW} (q',v')$. As~in the previous proof, we~define
+sequences
+\begin{xalignat*}2
+  u_0&= u & u_{i+1} &= \min(W,u_i+p_i)\\
+  v_0&= v & v_{i+1} &= \min(W,v_i+p_i)\\
+  w_0&= w & w_{i+1} &= \min(W,w_i+p_i).
+\end{xalignat*}
+We~still have $u_i\leq v_i\leq w_i$ for all~$i$. Moreover, 
+%if $v_j<M$
+if $v_j<\wub$
+for all~$j\leq i$, then $v_i-u_i=v-u$. As~a consequence, if $v'\leq
+v$, then it must be the case that 
+%$v_j=M$ 
+$v_j=\wub$ 
+for some~$j$; but then $w_j=v_j$, 
+%since $v_j\leq w_j\leq M$. 
+since $v_j\leq w_j\leq \wub$. 
+It~follows that $w_k=v_k$ for
+all~$k\geq j$, so at the end of $\pi$ we have $w'=v'$. Assuming $v'\leq v$ raises a contradiction since we have $v'=w'>w\geq v$.
+%This is a contradiction, since we assumed $v'\leq v$ and have $w'>w$ by hypothesis. 
+Hence $v'>v$.
+\end{proof}
+
+\noindent{\bf Proof of Lemma~\ref{lemma-removeneg}}
+Let $\pi$ be a finite path in a one-player arena~$G$.
+  If $(q,u) \xrightarrow{\pi}_{LW} (q',u')$ and $\pi$ can be decomposed as
+  $\pi_1\cdot\pi_2\cdot \pi_3$ in such a way that
+  $(q,u) \xrightarrow{\pi_1}_{LW}
+%  (s,v)\LWarrow{\pi_2}(s',v') \LWarrow{\pi_3}(q',u')$ with $v'\leq
+  (s,v)\xrightarrow{\pi_2}_{LW}(s,v') \xrightarrow{\pi_3}_{LW}(q',u')$ with $v'\leq
+  v$, then $(q,u)\xrightarrow{\pi_1\cdot\pi_3}_{LW} (q',u'')$ with $u''\geq
+  u'$.
+
+\begin{proof}
+%Since $(s',v') \LWarrow{\pi_3}(q',u')$ and $v'\leq v$, by
+Since $(s,v') \xrightarrow{\pi_3}_{LW}(q',u')$ and $v'\leq v$, by
+Lemma~\ref{lemma-higherrun} 
+%we also have $(s',v)
+we also have $(s,v)
+\xrightarrow{\pi_3}_{LW}(q',u'')$ for some~$u''\geq u'$. The~result follows.
+\end{proof}
+
+
+\noindent{\bf Proof of Lemma~\ref{lemma-iteratecycles}}
+Let $\pi$ be a cycle on~$q$ such that $(q,u) \xrightarrow{\pi}_{LW} (q,v)$
+  for some $u\leq v$. Then $(q,u) \xrightarrow{\pi^{W-L}}_{LW} (q,v')$ for
+  some~$v'$, and $(q,v')\xrightarrow{\pi}_{LW} (q,v')$.
+
+
+\begin{proof}
+  The case where $u=v$ is trivial. We~assume $u<v$.  Applying
+  Lemma~\ref{lemma-higherrun} inductively, we get that the cycle can
+  be iterated arbitrarily many times; this~also proves that the
+  sequence of energy levels reached at the end of each iteration is
+  non-decreasing.
+
+  Now, assume that $(q,v')\xrightarrow{\pi}_{LW} (q,v'')$ for
+  some~$v''\not=v'$.  Then $v''>v'$. Lemma~\ref{lemma-iteratepos} then
+  entails that the sequence of energy levels reached at the end of
+  each iteration is increasing. Since the loop has been iterated $W-L$
+  times, the~energy level in~$v''$ would exceed~$W$, which is
+  impossible. This proves our result.
+\end{proof}
+
+
+\noindent{\bf Proof of Lemma~\ref{lemma-DAGlabel}}
+  Let~$[q,d]$ be a state of the DAG, and $M$ and~$m$ be two integers
+  such that $0\leq m\leq M$.  Upon termination of this algorithm, 
+  state~$[q,d]$ of the DAG is labelled with~$(M,m)$ if, and only if,
+  there is an LW-run of length~$d$ from~$(q_0,L)$ to~$(q,M-m)$ along
+  which the energy level always remains in the interval~$[L,M]$.
+
+\begin{proof}
+  The proof is by induction on~$d$. The result is trivial for~$d=0$.
+  Now, assume it holds for some depth~$d-1$, and pick a
+  state~$[q,d]$. For the first direction, if~$[q,d]$ is labelled
+  with~$(M,m)$, then this label was added using some
+  transition~$([q',d-1],w,[q,d])$ and some label~$(M',m')$
+  of~$[q',d-1]$. By~induction, there is an LW-run~$\rho$ of
+  length~$d-1$ from~$(q_0,L)$ to~$(q',M'-m')$ in~$G$ along which the
+  energy level remains in the interval~$[L,M']$. We~consider two cases,
+  corresponding to the two ways of updating the pair of values:
+  \begin{itemize}
+  \item if $w>m'$, then we~have $M=min(\wub,M'-m'+w)$ and $m=0$. %$M=\max(W,M'-m'+w)$ and $m=0$. 
+  Now, the transition $([q',d-1],w,[q,d])$ in the DAG originates from a
+    transition~$(q',w,q)$ in~$G$; taking this transition after~$\rho$
+    provides us with the run of length~$d$ from~$(q_0,L)$ to~$(q,M-m)$
+    along which the energy level remains in~$[L,M]$, as required;
+  \item if $m'+L-M'\leq w\leq m'$, then $M=M'$ and $m=m'-w$. Again,
+    taking transition~$(q',w,q)$ after~$\rho$ provides us with the
+    LW-run we are looking for.
+  \end{itemize}
+
+  Conversely, if there is an LW-run~$\rho$ of length~$d$
+  from~$(q_0,L)$ to~$(q,M-m)$ along which the energy level always
+  remains in the interval~$[L,M]$, then we~write $\rho=\rho'\cdot
+  ((q',l'),w,(q,M-m))$, distinguishing its last transition. By~induction, $[q',d-1]$ must have been labelled with a pair~$(M',m')$ such that $l'=M'-m'$ and the energy level
+  along $\rho'$ remained within $[L,M']$. Now, from the existence of a transition $((q',l'),w,(q,M-m))$, we~know that there is a
+  transition~$([q',d-1],w,[q,d])$ in the~DAG, which will generate the required label of~$[q,d]$.
+\end{proof}
+
+\noindent{\bf Proof of Lemma~\ref{lemma-univcycle}}
+  Let~$[q_0,d]$ be a state of the DAG, with~$d>0$. Let $m$ be a
+  non-negative integer such that $L<W-m$.  Upon termination of this algorithm, state~$[q_0,d]$ is labelled with~$(M,m)$ such that $M-m>L$ if, and only if, there is a universal  positive cycle~$\phi$ on~$q_0$ of length~$d$ such that $(q_0,L) \xrightarrow{\phi^{W-L}}_{LW} (q_0,W-m)$.
+
+\begin{proof}
+First assume that~$[q_0,d]$ is labelled with~$(M,m)$ for some~$M$ such
+that $M-m>L$. From Lemma~\ref{lemma-DAGlabel}, there is a cycle~$\phi$
+on~$q_0$ of length~$d$ generating a run $(q_0,L)\xrightarrow{\phi}_{LW}(q_0,M-m)$
+along which the energy level is within~$[L,M]$.  Then~$M-m\geq L$, so
+that Lemma~\ref{lemma-iteratecycles} applies: we~then get $(q_0,L)
+\xrightarrow{\phi^{W-L}}_{LW} (q_0,E)$ with $(q_0,E)\xrightarrow{\phi}_{LW}(q_0,E)$.
+Write $(p_i)_{0\leq i<|\phi|}$ for the sequence of weights along~$\phi$.
+Also write $\rho$ for the run $(q_0,L)\xrightarrow{\phi}_{LW}(q_0,M-m)$, and
+$\sigma$ for the run $(q_0,E)\xrightarrow{\phi}_{LW}(q_0,E)$.
+
+%Assume $L=M-m$: iterating~$\phi$ would not modify the energy level
+%reached at the end of those cycles, so that we would have
+%$L=W-m$. Since this is not the case, it~must be 
+As $L<M-m$, then by Lemma~\ref{lemma-hitW}, it~must be the case that energy level~$W$ is
+reached along~$\sigma$.  Write~$i_0$ and $j_0$ for the first and last
+positions along~$\rho$ for which the energy level along~$\rho$ is~$M$.
+That is, the subpath from index $0$ to index $i_0$ has growing energy level, and the subpath from $j_0$ to $|\rho|$ has a decreasing energy level. 
+Assume $\tilde\sigma_{i_0}\not=W$: by~Lemma~\ref{lemma-higherrun},
+we~must have $M=\tilde\rho_{i_0}\leq \tilde\sigma_{i_0}<W$.  Then for
+all~$k\geq i_0$, $\sum_{l=i_0}^k p_l\leq 0$, and $\sum_{l=i_0}^{j_0}
+p_l= 0$. Since $\tilde\sigma_{i_0}<W$, then also $\tilde\sigma_{k}<W$
+for all~$k\geq i_0$. According to Lemma~\ref{lemma-hitW}, energy level $\wub$ is reached in $\sigma$, so 
+%HERE 
+there exists some~$k_0<i_0$ such that $\tilde\sigma_{k_0}=W$;
+%$\tilde\rho_{k_0}<M$, 
+However, as $i_0$ is the index of the first maximal value in $\rho$, we have $\tilde\rho_{k_0}<M$, and the energy level increases in run $\rho$ between $k_0$ and $i_0$. So according to Lemma~\ref{lemma-W}, we should have $\tilde\sigma_{i_0}<W$, which raises a contradiction.
+Hence we proved $\tilde\sigma_{i_0}=W$; applying
+the second result of Lemma~\ref{lemma-W}, we~get $E=W-m$.
+
+\medskip
+Conversely, if there is a universal positive cycle~$\phi$ satisfying the
+conditions of the lemma, let $F$ be such that $(q_0,L)\xrightarrow{\phi}_{LW}
+(q_0,F)$, and~$M$ be the the maximal energy level encountered along
+the run $(q_0,L)\xrightarrow{\phi}_{LW} (q_0,F)$. By
+Lemma~\ref{lemma-DAGlabel}, state~$[q_0,d]$ is labelled with~$(M,m')$
+for some~$m'\geq 0$ such that $F=M-m'$.
+By~Lemma~\ref{lemma-iteratecycles}, we~must have $(q_0,L)
+\xrightarrow{\phi^{W-L}}_{LW} (q_0,W-m')$.
+%, so that $m'=m$.
+\end{proof}
+
+
+\noindent{\bf Proof of Lemma~\ref{lemma-order-cycle}}
+Consider two paths~$\pi$ and~$\pi'$ such that
+$first(\pi)=first(\pi')$ and $last(\pi)=last(\pi')$, and with
+respective values~$(M,m)$ and~$(M',m')$ such that $(M,m)\preceq (M',m')$.
+If~$\pi$ is a prefix of a universal cycle~$\phi$, then $\pi'$~is a
+prefix of a universal cycle~$\phi'$ with $\phi'\triangleright\phi$.
+
+\begin{proof}
+  Let $q=first(\pi)$ and $q'=last(\pi)$.  We~write~$\psi$ for the
+  path such that $\phi=\pi\cdot\psi$; $\psi$~is a path from~$q'$
+  to~$q$. Then $(q,L)\xrightarrow{\pi}_{LW} (q'',M-m)
+  \xrightarrow{\psi}_{LW}(q',F)$. Also, $(q,L)\xrightarrow{\pi}_{LW} (q'',M'-m')$.  Since
+  $M-m\leq M'-m'$, we have $(q'',M'-m')\xrightarrow{\psi}_{LW}(q',F')$. We~can
+  thus let $\phi'=\pi'\cdot\psi$: by~Lemma~\ref{lemma-univcycle},
+  the~final energy level reached after iterating~$\phi'$ is higher
+  than the energy level reached after iterating~$\phi$, since $m'\leq
+  m$. Hence $\phi'\triangleright\phi$.
+\end{proof}
+
+
+
+\noindent{\bf Proof of Lemma~\ref{lemma-DAG-construction-poly}}
+%If in our algorithm we only store maximal labels (for~$\preceq$), then
+%the algorithm runs in polynomial time.
+If the DAG construction algorithm only stores maximal labels (for~$\preceq$), then
+it runs in polynomial time.
+
+\begin{proof}
+We prove that, when attaching to each node $[q,d]$ of the DAG only the maximal labels (w.r.t $\preceq$) reached for a path of length $d$ ending in state $q$, the number of
+values for the first component of the different labels that appear at
+depth~$d>0$ in the DAG is at most $d\cdot |Q|$. Since it only
+stores optimal labels, our algorithm will never associate to a state $[q,d]$
+two labels having the same value on their first component. So, any
+state at depth~$d$ will have at most $d\cdot |Q|$ labels.
+
+So we prove, by induction on~$d$, that the number of different values
+for the first component among the labels appearing at depth~$d>0$ is
+at most~$d\cdot|Q|$. 
+%
+This is true for~$d=1$ since the initial state~$(q,0)$ only
+contains~$(M=0,m=0)$, and each transition with nonnegative weight~$w$
+will create one new label~$(w,0)$ (transitions with negative weight
+are not prefixes of universal cycles). Now, since all those labels
+%have the same value on their second component,
+have value 0 as second component, each state $[q,1]$ in the DAG will be attached at most one label. Hence, the total number of labels (and the total number of different values for their first
+component) is at most~$|Q|$ at depth 1 in the DAG.
+
+Now, assume that the labels appearing 
+%at depth~$q$ 
+at depth $d>1$ are all drawn from a set of labels~$L=\{M_i,m_i) \mid 1\leq i\leq n\}$ in which the
+number of different values of~$M_i$ is at most $d\cdot|Q|$.
+Consider a state~$[q',d]$, labelled with $\{(M_i,m_i) \mid 1\leq i\leq
+n_{q',d}\}$ (even if it means reindexing the labels). Pick~a
+transition from~$[q',d]$ to~$[q'',d+1]$, with weight~$w$. For each
+pair~$(M_i,m_i)$ associated with $[q,d]$, it~creates a new label in~$(q'',d+1)$; this label
+is
+\begin{itemize}
+\item either $(M_i-m_i+w,0)$ if~$m_i<w$;
+\item or $(M_i,m_i+w)$ if $m_i=M_i\leq w\leq m_i$.
+\end{itemize}
+Now, for a state~$(q'',d+1)$, the~set of labels created by all
+incoming transitions can be grouped as follows:
+\begin{itemize}
+\item labels having~zero as their second component; among those, our
+  algorithm only stores the one with maximal first component, as $(M_i,0) \preceq (M_j,0)$ as soon as $M_i\leq M_j$;
+\item for each $M_i$ appearing at depth~$d$, labels having~$M_i$ as
+  their first component; again, we only keep the one with minimal
+  second component, as $(M,m_i) \preceq (M,m_j)$ when $m_j \leq m_i$.
+\end{itemize}
+In~the end, for this state~$[q'',d+1]$, we keep at most one label for
+each distinct value among the first components $M_i$ of labels appearing at depth~$d$, and possibly one extra
+label with second value~$0$. In~other terms, at depth $d+1$ the values that appear as first component of labels are 
+obtained from values at depth~$d$, plus possibly one per state; Hence, at depth $d+1$, there exists at most $(d+1)\cdot|Q|$ labels, which completes the proof of the induction step.\qed
+\end{proof}
+
+
+
+\noindent{\bf Proof of Lemma~\ref{lemma-higherstrat}}
+  Let $G$ be a two-player arena, equiped with an \LWenergy-reachability
+  objective. Let~$q$ be a state of~$G$, and~$u\leq u'$ in $[L;W]$. If
+  \Pl1 wins the game from~$(q,u)$, then she also wins from~$(q,u')$.
+
+\begin{proof}
+Let~$\sigma$ be a winning strategy for \Pl1 from~$(q,u)$. If she plays
+the same strategy from~$(q,u')$, then for any strategy of~\Pl2, the
+resulting outcome from~$(q,u')$ follows the same transitions as the
+outcome of the same strategies from~$u$, with higher energy
+level. Since~$\sigma$ is winning from~$(q,u)$, it~is also winning
+from~$(q,u')$.
+\end{proof}

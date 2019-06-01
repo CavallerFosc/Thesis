@@ -1,121 +1,429 @@
-In this chapter, we will explore the dual bound quantitative reachability games where one bound is weak. Recall the notion of weak bound: a bound(w.l.o.g say, lower bound) $l$ is weak means, if the weight hits $l$, it never goes below $l$, it stays at $l$ until it goes higher. Also recall that, the weight of a path $\gamma$ with weak lower bound l is denoted as $w\mathord{\downarrow}_{l}(\gamma)$. Here we will consider the case where the upper bound is strong and the lower bound is weak. Note that, the other case can be obtained just by reversing the sign of the weights. Also, we will take the lower weak bound as $0$. Note that, the game with the lower weak bound as $c$ can be simulated with the game with lower weak bound as $0$ converting all weights $w$ to $w-c$. Now, like the strong bound case, we will consider both the one player version and two player version of this game:\\
+In this chapter, we will explore the dual bound quantitative reachability games(LW games) where one bound is weak. Recall the notion of weak bound: a bound(w.l.o.g say, upper bound) $U$ is weak means, if the weight hits $U$, it never goes above $U$, it stays at $U$ until it goes lower. Also recall that, the weight of a path $\gamma$ with weak lower bound $U$ is denoted as $w\mathord{\uparrow}_{U}(\gamma)$. Here we will consider the case where the lower bound is strong and the upper bound is weak. Note that, the other case can be obtained just by reversing the sign of the weights. Infinite version of LW-games have been studied in ~\cite{BouyerFLMS08}. The objective for player $1$ there is to find an infinite path, where strong lower bound and weak upper bound constraints are maintained. This problem is conceptually easy: they show that it is in PTIME for one-player arenas, and in NP $\cup$ coNP for two-player arenas in the same paper. In this chapter, at first we see why adding reachability makes the LW-energy game harder and then later we try to solve these games.\\
+
+\section{LW-energy Games: Infinite vs Reachability}
+
+LW-energy infinite games require player $1$ to find an infinite path which is feasible under LW constraints; it suffices to find a cycle that can be iterated once with a positive effect. It follows that memoryless strategies are enough for both the players.\\
+
+The situation is different when we have a reachability condition: players may have to keep track of the exact energy level in order to find their way to the target state. Lets see an example:
+\begin{example}
+\label{ex-LW}
+Consider the one-player arena of Fig.~\ref{fig-exLW}, where the lower bound is~$L=0$ and the weak-upper bound is~$W=5$, and the target state is~$q_T$. Starting with initial credit~$0$, we~first have to move to $q_1$, and then iterate the positive cycle $\beta_1=(q_1,2,q_2).(q_2,-2,q3).$\\
+$(q_3,+1,q_1)$ of total weight~$+1$ three times, ending up in~$q_1$ with energy level~$3$. We~then take the cycle $\beta_2=(q_1,+2,q_2).(q_2,-5,q4).(q_4,+5,q_1)$,
+which raises the energy level to~$5$ when we come back to~$q_1$, so
+that we can reach~$q_T$. Notice that $\beta_1$ has to be chosen $3$ times before taking cycle $\beta_2$, and that repeating $\beta_1$ more than $4$ times maintains the energy level at $4$, which is not sufficient to reach $q_T$. This shows that one cannot rely on a single cycle to win a LW-energy reachability game.
+\end{example}
+\vskip 1cm    
+\begin{figure}[htbp]
+  \centering
+  \scalebox{1}{
+  \begin{tikzpicture}
+    \draw (0,0) node[rond,rouge] (a) {} node {$q_i$};
+    \draw (3,0) node[rond,jaune] (b) {} node {$q_1$};
+    \draw (3,2) node[rond,jaune] (c) {} node {$q_2$};
+    \draw (1,2) node[rond,jaune] (d) {} node {$q_3$};
+    \draw (5,2) node[rond,jaune] (e) {} node {$q_4$};
+%    \draw (5,0) node[rond,jaune] (f) {} node {$q_5$};
+    \draw (6,0) node[rond,vert] (g) {} node {$q_T$};
+    \draw (a) edge[-latex'] node[below] {$0$} (b)
+    (b) edge[-latex'] node[above left] {$+2$} (c)
+    (c) edge[-latex'] node[above] {$-2$} (d)
+    (d) edge[-latex'] node[below left] {$+1$} (b)
+    (c) edge[-latex'] node[above] {$-5$} (e)
+    (e) edge[-latex'] node[below right] {$+5$} (b)
+    (b) edge[-latex'] node[below] {$-5$} (g);    
+      \end{tikzpicture}
+}
+  \caption{A one-player arena with LWenergy reachability objective}
+  \label{fig-exLW}
+\end{figure}
+
+
+Now, we try to solve LW-energy reachability games. Like the strong bound games, here also we first solve the one player version of the game and then move to the two player's case.
 
 \section{One Player QR Games with Weak Dual Bounds}
+\label{sec-weak}
 
 We consider the one player version of this game, where $Q_2= \phi$. We will prove the following theorem:\\
 
 \begin{theorem}
 \label{one-player-weak-thm}
-Given a game graph $G$ , a strong upper bound $U$ and a lower weak bound $0$, deciding if $P_1$ can win the one player QR games with weak dual bound game in $G$ is is $P$.
+Given a game graph $G$ , a weak upper bound $W$ and a strong lower weak bound $0$, deciding if $P_1$ can win the one player QR games with weak dual bound game in $G$ is in PTIME.
 \end{theorem}
 
 \begin{proof}
-  Before proving it formally, let us look at some intuition: consider a winning strategy $\sigma$ of $P_1$. Intuitively, any outcome of $\sigma$ will not have any positive cycle, as $P_1$ can just ignore the cycle and still win. Hence, it will be either an acyclic path maintaining the objective, or he has to choose a negative cycle where he can rotate enough number of times maintaining the objective, lowers the energy to a certain stable value and then continues forward along the path.\\
+  Before proving it formally, let us look at some intuition: consider a winning strategy $\sigma$ of $P_1$. Intuitively, any outcome of $\sigma$ will not have any negative or zero cycle, as player $1$ can just ignore the cycle and still win. Hence, it will be either an acyclic path maintaining the objective, or he has to choose a negative cycle where he can rotate enough number of times maintaining the objective, lowers the energy to a certain stable value and then continues forward along the path.\\
   \vskip 0.2cm
-  Now, we examine a negative cycle in a graph from a vertex $v$. Starting, from initial energy $0$ from $v$, we will reach $v_1$ in the cycle, where the energy is the highest, let's say $a$. Then, the energy level decreases along the cycle and reaches $v_2$, where the energy level is minimum in the cycle,let's say $x$. Then, it goes back to $v$, with energy, say $y$. Let $b=y-x$. Now, if player $1$ can reach vertex $v$, with at most $U-a$ energy, he will be able to rotate through this negative cycle many times and as the lower weak bound is $0$, after sufficient number of rotation, he can reach $v_2$ with energy level $0$ and reach $v$ with $b$ amount of energy. Hence, we associate the pair $(a,b)$ with the vertex $v$ i.e. if $P_1$ can manage to reach $v$ with at most $U-a$ energy, he can lower his energy level up to $b$ in $v$. The phenomena has been depicted with an example in Figure \ref{energy-negativecycle}.\\
+  Now, we examine a positive cycle in a graph from a vertex $v$. Starting, from some initial energy $e_{init}$ from $v$, we will reach $v_1$ in the cycle, where the energy is the lowest, say $e_{min}$. Then, the energy level decreases along the cycle and reaches $v_2$, where the energy level is highest in the cycle,let's say $M$. Then, it goes back to $v$, with energy, say $e_{out}$. Let $m=M - e_{out}$. Now, if player $1$ can reach vertex $v$, with at least $a= e_{init} - e_{min}$ energy, she will be able to rotate through this negative cycle many times as it will never violate the strong lower bound constraint. Now, as the weak upper bound is $W$, after sufficient number of rotation, she can reach $v_2$ with energy level $W$ and reach $v$ with $W-m$ amount of energy. The phenomena has been depicted with an example in Figure \ref{energy-positivecycle}.\\
   
   \begin{figure}[htb]
-  \label{energy-negativecycle}
-  \input{chapters/chapter05/energy-negativecycle}
+  \label{energy-positivecycle}
+  \input{chapters/chapter05/energy-positivecycle}
   \end{figure}
   \vskip 0.1cm
-  In the example, $U=15$. Hence, $a=5$ and $b=1$, i.e. if player $1$ can reach $s1$ with at most 10 energy level, he can rotate the cycle as much as he wants, and can get the energy level down to energy 1.\\
-  Consider a winning path $\rho$ in $G$. Suppose a negative cycle $C$ exists in that path. That means, the path visits the vertex $v_1$, the point with the highest energy level in $C$ at least once. As, the path is winning, it visits $v_1$ with energy level $\leq U$. Hence, if we can compute $(U,b)$ for that vertex $v_1$, we can say that, after visiting the cycle $C$, $P_1$ can rotate around the cycle and get the energy level down to $b$ at $v_1$. Using the idea, we can do the following:\\
-  \begin{itemize}
-  \item For every vertex $v$, we will check, if it is the highest point of any negative cycle i.e. will check if pair $(U,b)$ exists for some $b \in \mathbb{N} \cup \{0\}$. If yes, then we will calculate the optimal $b$.
-  \item We will fill the table $H_{vertex \times steps}$ such that, $H(v,i)=$ The minimum energy level we can have at $v$ after at least $i$ - steps starting from $q_0$. 
-  \end{itemize}
+  In the example, $a=5$ and $m=1$, i.e. if player $1$ can reach $s_1$ with at least 5 energy level, she can rotate the cycle as much as she wants, and can increase the output energy level up to 14.\\
+  
+  Now, we express this intuition formally by proving a series of lemmas:\\
+\vskip 1cm
+\begin{lemma}
+\label{lemma-higherrun}
+Let $\pi$ be a finite path in a one-player arena~$G$. 
+If $(q,u) \xrightarrow{\pi}_{LW} (q',u')$, then for any~$v\geq u$,
+$(q,v) \xrightarrow{\pi}_{LW} (q',v')$ for some~$v'\geq u'$.
+\end{lemma}
+
+Notice that, even if we add condition~$u'>u$ in the
+hypotheses of Lemma~\ref{lemma-higherrun}, it~need not be the case that
+$v'>v$. In~other terms, a~sequence of transitions may have a positive
+effect on the final energy level from some configuration, and a negative effect from another one, due to the weak upper bound limit.
+%But we can prove the following lemmas:
+Below, we prove a series of results related to this issue, and that
+will be useful for the rest of the proof.
+
+\vskip 0.5cm
+\begin{lemma}
+\label{lemma-hitW}
+  Let $\pi$ be a finite path in a one-player arena~$G$, and consider two LW-runs $(q,u)\xrightarrow{\pi}_{LW} (q',u')$ and $(q,v)\xrightarrow{\pi}_{LW}(q',v')$ with $u\leq
+  v$. Then $u'-u\geq v'-v$, and if the inequality is strict, then
+  the energy level along the run $(q,v)\xrightarrow{\pi}_{LW}(q',v')$ must have hit~$W$.
+\end{lemma}
+
+\vskip 0.5cm
+\begin{lemma}
+\label{lemma-W}
+  Let $\pi$ be a finite path in a one-player arena~$G$, for which there
+  is an LW-runs $(q,u)\xrightarrow{\pi}_{LW} (q',u')$. 
+  %with $u\leq u'$. (suppressed this info otherwise the second statement makes no sense) 
+  If $u'$ is the maximal energy level along that run, then
+  $(q,W)\xrightarrow{\pi}_{LW} (q',W)$;
+  if $u$ is the maximal energy level along the run above, then
+  $(q,W)\xrightarrow{\pi}_{LW} (q',W+u'-u)$.
+\end{lemma}
+
+\vskip 0.5cm
+\begin{lemma}\label{lemma-iteratepos}
+  Let $\pi$ be a finite path in a one-player arena~$G$.
+  If
+  $(q,u)\xrightarrow{\pi}_{LW} (q',u')$ with $u'> u$
+  and 
+  $(q,w)\xrightarrow{\pi}_{LW} (q',w')$ with $w'> w$,
+  then
+  for any $u\leq v\leq w$, it~holds
+  $(q,v)\xrightarrow{\pi}_{LW} (q',v')$ with $v'> v$.
+\end{lemma}
+
+From Lemma~\ref{lemma-higherrun}, it~follows that any run witnessing
+LW-energy reachability can be assumed to contain no cycle with
+non-positive effect. Formally:
+
+\vskip 0.5cm
+\begin{lemma}
+\label{lemma-removeneg}
+  Let $\pi$ be a finite path in a one-player arena~$G$.
+  If $(q,u) \xrightarrow{\pi}_{LW} (q',u')$ and $\pi$ can be decomposed as
+  $\pi_1\cdot\pi_2\cdot \pi_3$ in such a way that
+  $(q,u) \xrightarrow{\pi_1}_{LW}
+  (s,v)\xrightarrow{\pi_2}_{LW}(s,v') \xrightarrow{\pi_3}_{LW}(q',u')$ with $v'\leq
+  v$, then $(q,u)\xrightarrow{\pi_1\cdot\pi_3}_{LW} (q',u'')$ with $u''\geq
+  u'$.
+\end{lemma}
+
+
+The following lemma states that any LW-feasible cycle with
+non-negative effect can be iterated, and that the energy level reached after a certain number of  iterations
+eventually converges.
+\vskip 0.5cm
+\begin{lemma}\label{lemma-iteratecycles}
+  Let $\pi$ be a cycle on~$q$ such that $(q,u) \xrightarrow{\pi}_{LW} (q,v)$
+  for some $u\leq v$. Then $(q,u) \xrightarrow{\pi^{W-L}}_{LW} (q,v')$ for
+  some~$v'$, and $(q,v')\xrightarrow{\pi}_{LW} (q,v')$.
+\end{lemma}
+
+
+Fix a path~$\pi$ in~$G$, and assume that some cycle~$\phi$ appears
+(at~least) twice along~$\pi$: the~first time from some
+configuration~$(q,u)$ to some configuration~$(q,u')$, and the second
+time from~$(q,v)$ to~$(q,v')$. First, we~may assume that $\phi$ has
+length at most~$|Q|$, since otherwise we can take an inner
+subcycle.  We~may also assume that $v>u'$, as otherwise we~can apply
+Lemma~\ref{lemma-removeneg} to get rid of the resulting non-positive cycle between~$(q,u')$ and~$(q,v)$. For the same reason we may assume
+$u'>u$ and $v'>v$.  As~a consequence, by Lemma~\ref{lemma-iteratepos},
+by repeatedly iterating~$\phi$ 
+from~$(q,u)$, we~eventually reach some
+configuration~$(q,w)$ with $w\geq v'$, from which we can follow the
+suffix of~$\pi$ after the second occurrence of~$\phi$. It~follows that
+all~occurrences of~$\phi$ along~$\pi$ can be grouped together, and
+we~can restrict our attention to runs of the form $\alpha_1\cdot
+\phi_1^{n_1}\cdot \alpha_2\cdot\phi_2^{n_2}\cdots
+\phi_k^{n_k}\cdot\alpha_{k+1}$ where the cycles~$\phi_j$ are distinct
+and have size at most~$|Q|$, and the finite runs~$\alpha_j$ are
+acyclic.  Notice that by Lemma~\ref{lemma-iteratecycles}, we~may
+assume $n_j=W-L$ for all~$j$.
+
+
+
+
+While this allows us to only consider paths of a special form, this
+does not provide \emph{short} witnesses, since there may be
+exponentially many cycles of length less than or equal to $|Q|$,
+and the witnessing run may need to iterate several cycles looping on
+%the same state (see~Example~\ref{ex-cycles}). 
+the same state (see~Example~\ref{ex-LW}).
+In~order to circumvent this problem, we have to show that all cycles need not be considered, and that one 
+can compute the "useful" cycles efficiently. 
+For this, we first
+introduce \emph{universal} cycles, which are cycles
+that can be iterated from any initial energy level greater than the lower bound $L$.
+
+\vskip 0.7cm
+\begin{definition}
+A \emph{universal cycle} on~$q$ is a cycle~$\phi$ with
+$first(\phi)=last(\phi)=q$ such that $(q,L)\xrightarrow{\phi}_{LW}(q,v_{\phi,L})$ for some~$v_{\phi,L}$. A universal cycle is \emph{positive} if $v_{\phi,L}>L$
+\end{definition}
+
+\vskip 0.4cm
+Note that, when a cycle $\phi$ is iterated $W-L$ times in a row, then some universal cycle $\sigma$ is also iterated $W-L-1$ times (by~considering the state with minimal energy level along~$\phi$). 
+In figure~\ref{unicycle}, $abcde$ is not a universal cycle as it can not be iterated from initial energy level 0, but $bcdea$ is a universal one as it can be iterated infinitely from initial energy level 0. Also, note that $b$ is actually the lowest point of the cycle.
+
+\begin{figure}[htb]
+    \centering
+  \input{chapters/chapter05/unicycle}
+  \label{unicycle}
+\end{figure}
+    
+    
+
+Hence, every cycle can be replaced by a universal cycle. As~a consequence, iterating only universal cycles is enough: we~may now only look for runs of the form $\beta_1\cdot \sigma_1^{n_1}\cdot \beta_2\cdot\sigma_2^{n_2}\cdots
+\sigma_k^{n_k}\cdot\beta_{k+1}$ where ~$\sigma_j$'s are \emph{universal} cycles
+of length at most~$|Q|$. Now, assume that some state~$q$ admits
+two universal cycles~$\sigma$ and~$\sigma'$, and that both cycles
+appear along a given run~$\pi$. Write~$e$ (resp.~$e'$) for the energy
+levels reached after iterating~$\sigma$ (reap.~$\sigma'$) $W-L$
+times. We~define an order on universal cycles of~$q$ by letting
+$\sigma \triangleright \sigma'$ when $e>e'$.  Then if~$\sigma \triangleright
+\sigma'$, each occurrence of~$\sigma'$ along~$\pi$ can be replaced
+with~$\sigma$, yielding a run~$\pi'$ that still satisfies the LW-energy condition (and~has the same first and last states). in figure \ref{unicycle}, both $bcdea$ and $bde$ are universal cycles on the vertex $b$. But, for $bcdea$, output energy is 2 while for $bde$ it is 1. Hence, $bcdea \triangleright bde$.\\
+%
+Generalizing this argument, each state that admits universal cycles has an optimal universal cycle
+of length at most~$|Q|$, and it is enough to iterate only this
+universal cycle to find a path witnessing reachability. This provides us with a \emph{small witness}, of the form $\gamma_1\cdot
+\tau_1^{W-L}\cdot \gamma_2\cdot\tau_2^{W-L}\cdots
+\tau_k^{W-L}\cdot\gamma_{k+1}$ where $\tau_j$ are optimal universal
+cycles of length at most~$|Q|$ and $\gamma_j$ are acyclic
+paths. Since it~suffices to consider at most one universal cycle per state, we~have $k\leq |Q|$.
+%
+From this, we~immediately derive an NP algorithm for solving
+LW-energy reachability for one-player arenas: it~suffices to
+non-deterministically select each portion of the path, and compute
+that each portion is LW-feasible (notice that there is no need for
+checking universality nor optimality of cycles; those properties were only used to prove that small witnesses exist). Checking
+LW-feasibility requires computing the final energy level reached after iterating a cycle $W-L$ times; this can be performed by detecting the highest energy level along that cycle, and computing how much the energy level decreases from that point on until the end of the
+cycle.
+
   \vskip 0.1cm
-  Notice that, if $(U,b)$ pair exists for a vertex $v$, there must exist a negative edge out of it. From the above observation about the energy levels of a negative cycle, it is easy to see that, if $(U,b)$ exists for $v$, from $v$, along the negative cycle, there will be a vertex $u$, where the energy level will be minimum, say $x$. Similarly, there must be a positive weight edge out of $t$. Then, starting from $t$, there will be a path back to $v$. Hence, for every vertex $v$, which has at least one negative edge out of it, we will start with energy level $U$, and for every other vertex $t$ with at least one positive weight edge out of it, we will try to find, if there exists a path of at most length $|V|$, such that it reaches $t$ maintaining the strict upper and the weak lower bound, with energy level $x$, and along the path the energy level never goes below $x$. If we can find such vertex $t$, with energy level $x$, similarly we will try to find, starting from $t$ with $x$ energy, do we have a path of length at most $|V|$ back to $v$, maintaining all the bounds and also such that $x$ is the minimum energy level along the path. Let, we reach $v$ with energy $y$. Then, $b=y-x$. If, we find several such $b$, we will take the minimum one as the optimal. Both the path-checking can be done by simple DFS maintaining the energy level with the vertices. We stop at each path in the DFS when the bound is violated or the length of the path becomes $|V|$. We can also, maintain a counter to remember the minimum energy level seen along the path. Hence, we can compute $(U,b)$ pair for vertices, if exists, in polynomial time.\\
-  \vskip 0.1cm
-  Once, we have computed the $(U,b)$ pairs for vertices, we can add the following special edges in the graph:\\
-  If $(U,b)$ exists for $v$, we add a special loop $v \xrightarrow{\text{:=b}} v$ in the game graph. The idea is, if player $1$ can reach $v$ with at most $U$ energy, he can take some negative cycle in the original graph and get the energy level to $b$ after sufficient many steps. In this new graph, player $1$ can take this special loop and in one step he can lower the energy level of $v$, down to $b$ at one step. Clearly, player $1$ can win in the original graph iff he can win in this new graph with the special transitions.\\
-  Now, in this special graph, we will calculate the table $H_{vertex \times steps}$. For any vertex $v$, let \\$e_i=min\{H(u,i-1) + w(u,v) | (u,v)\in E\  \&\  H(u,i-1) \leq U\}$. Then,
-   $$
-   H(v,i)=
-   \begin{cases}
-    min(e_i,b), \hskip 0.5cm &\text{if $v \xrightarrow{\text{:=b}} v$ exists and
-    $H(v,i-1) \leq U$}\\ 
-   e_i, \hskip 1cm &\text{otherwise}
- \end{cases}
- $$
- Now, if for some $i$, $H(T,i)\leq U$, player $1$ wins, otherwise, he loses.\\
- \vskip 0.1cm
- Consider a winning path $\rho$ for player $1$. We have already argued that, there is no positive cycle in this path. Now, the claim is, every special loop can appear at most once in $\rho$. This can be easily seen as the following:\\
- Let, same special transition appears twice in the winning path $\rho$ at $i^{th}$ and $j^{th}$ positions.\\
- \begin{figure}[htb]
- \hskip 2cm
- \input{chapters/special-trans}
- \end{figure}
- \vskip 0.1cm
- Then, the configuration of the path $\rho$ in both the positions are same. Hence, player $1$ can just forget the middle part between the positions, and continue similarly from the $i^{th}$ position, as progressed from the $j^{th}$ position. As, the original path is winning, the new truncated path will also be winning for player $1$.\\
- Now, to prove the correctness of the algorithm proposed earlier, it is enough to prove the following lemma:\\
- \vskip 0.1cm
- \begin{lemma}
- \label{poly-lemma}
-  If there exists a winning path for player $1$ in $G$, there exists a winning path of length at most $|Q|^2$ for player $1$.
-  \end{lemma}
-  \vskip 0.1cm
-  \textit{Proof of Lemma \ref{poly-lemma}} Let the optimal shortest winning path for player $1$ has length $>|V|^2$. By pigeon hole principle, $\exists u \in Q$, which appears in the path $|Q|+1$ times. Therefore the path has admitted at least $|Q|+1$ cycles through $u$. As, there can not be any positive cycle in the optimal winning path, all of them are negative cycles. For every negative cycles, the will admit a special transition of the form $v \xrightarrow{\text{:=b}} v$ as shown earlier. Hence, there exists at least $|Q|+1$ special transitions in the path. But the number of unique special transitions are bounded by $|Q|$ and we know, each special transition can appear at most once in the optimal path. Then the contradiction arises\\
- \vskip 0.3cm
-  From Lemma \ref{poly-lemma}, it is evident that, calculating $H_{vertex \times steps}$ up to at most $|Q|^2$ many steps are enough.\\
-  This completes the proof for our theorem.
- \end{proof}
- \vskip 0.1cm
- Now, we will move to the case for the two player version.
- 
+  We~now prove that optimal universal cycles of length at most~$|Q|$ can be computed for a given state~$q_0$. For~this we unwind the graph from~$q$ as a DAG of depth~$|Q|$, so that it includes all cycles of length at most~$|Q|$. We~name the states of this DAG $[q',d]$ (using square brackets to avoid confusion with configurations~$(q,l)$ where $l$ is the energy level) where $q'$ is the name of a state of the arena and $d$ is the depth of this state; hence there are transitions $([q',d],w,[q'',d+1])$ in the DAG as soon as there is a transition $(q',w,q'')$ in the arena.
+  
+    We~then explore this DAG from its initial state~$[q_0,0]$,
+    looking for (paths corresponding~to) universal cycles. Our~aim is to keep track of all runs from~$[q_0,0]$ to~$[q',d]$ that are prefixes of universal cycles starting from~$q_0$. Actually, we~do not need to keep track of those runs explicitly, and it suffices for each such run to remember the following two values:
+    \begin{itemize}
+    \item the maximal energy level~$M$ that has been observed along the run so~far (starting from energy level~$L$, with weak upper bound~$W$);
+    \item the difference~$m$ between the maximal energy level~$M$ and the final energy level in~$[q',d]$. Notice that~$m\geq 0$, and that the final energy level in~$[q',d]$ is~$M-m$. 
+    \end{itemize}
+    
+    Figure~\ref{fig-ex_cycles} shows two example cycles. The first one ends with $M_1=5, m_1=4$, i.e. with an energy level of $1$. The second cycle has a maximal energy level $M_2=4$ and ends with $m_2=2$. Hence, iterating this cycle, one can end in state $q_0$ with energy level $\wub-m_2=3$.
+    
+    \begin{figure}[htbp]
+        \centering
+        \scalebox{1}{
+        \input{chapters/chapter05/fig_cycles}
+        }
+        \caption{Two cycles with upper bound $\wub=5$}
+        \label{fig-ex_cycles}
+    \end{figure}
+    
+    
+    
+    If~we know the values~$(M,m)$ of some path from~$[q_0,0])$ to~$[q',d]$, we~can decide if a given transition with weight~$w$ from~$[q',d]$ to~$[q'',d+1]$ can be taken 
+    (the resulting path can still be a prefix of a universal cycle if $M-m+w \geq L$ ), and how the values of~$M$ and~$m$ have
+    to be updated: if $w>m$, the~run will reach a new maximal energy level, and the new pair of values is $(min(W;M-m+w),0)$; if $m+L-M\leq w\leq m$, then the transition can be taken: the new energy level~$M-m+w$ will remain between~$L$ and~$M$, and we update the pair of values to~$(M,m-w)$; finally, if $w<m+L-M$, the energy level would go below~$L$, and the resulting run would not be a prefix of a universal cycle.
+    
+    
+    Following these ideas, we inductively attach to states of the DAG sets of labels:
+    initially, $[q_0,0]$ is labelled with~$(M=L,m=0)$; then if a
+    state~$[q',d]$ is labelled with~$(M,m)$, and if there is a transition from~$[q',d]$ to~$[q'',d+1]$ with weight~$w$:
+    \begin{itemize}
+    \item if $w>m$, then we~label $[q'',d+1]$ with the pair $(\max(W;M-m+w),0)$;
+    \item if $m+L-M\leq w\leq m$, we label $[q'',d+1]$ with $(M,m-w)$.
+    \end{itemize}
+    
+    \begin{lemma}
+    \label{lemma-DAGlabel}
+    Let~$[q,d]$ be a state of the DAG, and $M$ and~$m$ be two integers
+    such that $0\leq m\leq M$.  Upon termination of this algorithm,
+    state~$[q,d]$ of the DAG is labelled with~$(M,m)$ if, and only if, there is an LW-run of length~$d$ from~$(q_0,L)$ to~$(q,M-m)$ along which the energy level always remains in the interval~$[L,M]$.
+    \end{lemma}
+    
+    \begin{lemma}
+    \label{lemma-univcycle}
+    Let~$[q_0,d]$ be a state of the DAG, with~$d>0$. Let $m$ be a
+    non-negative integer such that $L<W-m$.  Upon termination of this algorithm, state~$[q_0,d]$ is labelled with~$(M,m)$ such that $M-m>L$ if, and only if, there is a universal positive cycle~$\phi$ on~$q_0$ of length~$d$ such that $(q_0,L) \xrightarrow{\phi^{W-L}}_{LW} (q_0,W-m)$.
+    \end{lemma}
+    
+    
+    The algorithm above computes optimal universal cycles, but it still runs in exponential time (in the worst case) since it may generate exponentially many different labels in each state~$[q,d]$ (one per path from~$[q_0,0]$ to~$[q,d]$). We~now explain how to only generate polynomially-many pairs~$(M,m)$. This is based on the following partial order on labels: we~let $(M,m) \preceq (M',m')$ whenever $M-m\leq M'-m'$ and $m'\leq m$. Notice in particular that
+    \begin{itemize}
+    \item if~$M=M'$, then $(M,m)\preceq (M',m')$ if, and only~if, $m'\leq m$;
+    \item if $m=m'$, then $(M,m)\preceq (M',m')$ if, and only~if, $M\leq M'$.
+    \end{itemize}
+    We~then have the following lemma:
+    
+    \vskip 0.5cm
+    \begin{lemma}
+    \label{lemma-order-cycle}
+    Consider two paths~$\pi$ and~$\pi'$ such that
+    $first(\pi)=first(\pi')$ and $last(\pi)=last(\pi')$, and with
+    respective values~$(M,m)$ and~$(M',m')$ such that $(M,m)\preceq (M',m')$.
+    If~$\pi$ is a prefix of a universal cycle~$\phi$, then $\pi'$~is a
+    prefix of a universal cycle~$\phi'$ with $\phi'\triangleright \phi$.
+    \end{lemma}
+    
+    
+    In our algorithm above, it~suffices to keep track of the maximal labels for $\preceq$, since our aim is to compute optimal universal cycles. It~remains to prove that this way, we only store a polynomial number of labels:
+    
+    \vskip 0.5cm
+    \begin{lemma}
+    \label{lemma-DAG-construction-poly}
+    If the DAG construction only stores maximal labels (for~$\preceq$), then it runs in polynomial time.
+    \end{lemma}
+    \vskip 0.3cm
+    
+    
+    Using the algorithm above, we can compute, for each state~$q$ of the
+    original arena, the~smallest value~$m_q$ for which there exists a
+    universal cycle on~$q$ that, when iterated sufficiently many times,
+    leads to configuration~$(q,W-m_q)$. Since universal cycles can be
+    iterated from any energy level, if $q$ is reachable, then it is
+    reachable with energy level~$W-m_q$. We~make this explicit by adding
+    to our arena a special self-loop on~$q$, labelled with~$set(W-m_q)$,
+    which sets the energy level to~$W-m_q$ (in~the same way as
+    \emph{recharge transitions} of~\cite{EjsingDuun2013InfiniteRI}).
+    
+    In~the resulting arena, we know that we can restrict to paths of the
+    form $\gamma_1\cdot \nu_1\cdot \gamma_2\cdot\nu_2\cdots
+    \nu_k\cdot\gamma_{k+1}$, where $\nu_i$ are newly added transitions labelled with~$set(W-m)$, and $\gamma_i$ are acyclic paths. Such paths have length at most~$(|Q|+1)^2$. We~can then inductively compute the maximal energy level that can be reached (under our LW-energy constraint) in any state after paths of length less than or equal to~$(|Q|+1)^2$.  This can be performed by unwinding (as~a~DAG) the modified arena from the source state~$\qinit$ up to depth~$(|Q| +1)^2$, and labelling the states of this DAG by the maximal energy level with which that state can be reached from~$(\qinit,L)$; this is achieved in a way similar to our algorithm for computing the effect of universal cycles, but this time only keeping the maximal energy level that can be reached (under LW-energy constraint). As there are at most $|Q|$ states per level in this DAG of depth at most $(|Q|+1)^2$.\\
+    This completes the proof for our theorem.
+    \end{proof}
+    \vskip 0.1cm
+    Now, let's look at the following example:
+    \begin{example}  
+    Consider the one-player arena of Fig.~\ref{fig-ex}. We~assume $L=0$, and fix an even  weak upper bound~$W$. 
+    %
+    The~state~$s$ has $W/2$ disjoint cycles: for~each odd integer~$i$ in $[0;W-1]$, the~cycle~$c_i$ is made of three consecutive edges with weights $-i$, $+W$ and $-W+i+1$. Similarly, the~state~$s'$ has $W/2$ disjoint cycles: for even integers~$i$ in~$[0;W-1]$, the cycle~$c'_i$ has weights $-i$, $+W$ and~$-W+i+1$.  Finally, there are: two sequences of $k$ edges of weight~$0$ from~$s$ to~$s'$ and from~$s'$ to~$s$; an edge from the initial state to~$s$ with weight~$1$; an edge from~$s'$ to the target state with weight $-W$. The total number of states then is $2W+2k+2$.
+    
+    In order to go from the initial state, with energy level~$0$ to the final state, we have to first take the cycle $c_1$ (with weights~$-1$, $+W$, $-W+2$) on~$s$ (no~other cycles~$c_i$ can be taken). We~then reach configuration~$(s,2)$. Iterating~$c_1$ would have no effect, and the only next interesting cycle is~$c_2$, for which we~have to go to~$s'$. After running~$c_2$< we~end up in~$(s',3)$. Again, iterating~$c_2$ has no effect, and we go back to~$s$, take~$c_3$, and so~on. We~have to take each cycle~$c_i$ (at~least) once, and take the sequences of~$k$ edges between~$s$ and~$s'$ $W/2$ times each. In~the~end, we~have a run of length $3W+Wk+2$. 
+    \vskip 0.5cm
+    \begin{figure}[h]
+      \centering
+    \scalebox{1}{
+      \begin{tikzpicture}
+        \draw (0,0) node[rond,vert] (a) {} node {$s$};
+        \draw (5,0) node[rond,vert] (b) {} node {$s'$};
+        \draw (a) edge[bend left,-latex'] node[above] {$k$ edges} node[below] {weight=$0$} (b);
+        \draw (b) edge[bend left,-latex'] node[above] {$k$ edges} node[below] {weight=$0$} (a);
+        \draw (a) edge[out=160,in=200,looseness=9,-latex'] node[left] {$\genfrac{}{}{0pt}{0}{-i;+W;-W+i+1}{(\text{$i$ odd})}$} (a);
+        \draw (b) edge[out=-20,in=20,looseness=9,-latex'] node[right] {$\genfrac{}{}{0pt}{0}{-i;+W;-W+i+1}{(\text{$i$ even})}$} (b);
+      \end{tikzpicture}
+      }
+      \vspace{-2\medskipamount}
+      \caption{An example showing that more than one cycle per state can be needed.}\label{fig-ex}
+    \end{figure}
+    \vskip 0.4cm
+    Let us look at the universal cycles that we have in this arena:
+    besides the cycles made of the $2k$ edges with weight~zero between~$s$ and~$s'$, the only possible universal cycles can only depart from the first state of each cycle~$c_i$ (as there are the only states having a positive outgoing edge). As~we proved, such cycles can be iterated arbitrarily many times, and set the energy level to some value in~$[L;w]$. Since the only edge available at the end of a universal cycle has weight~$+W$, the exact value of the universal cycles is unimportant: the energy level will be~$W$ anyway when reaching the second state of each cycle~$c_i$. As~a consequence, using set-edges
+    in this example does not shorten the witnessing run, which then cannot be shorter than~$3W+Wk+2$ (which is more than $2|Q|$ but less than~$|Q|^2$). This demonstrates that we cannot avoid looking for quadratic-size runs in the modified arena at the end of our algorithm.
+    \end{example}
+
+    Now, we will move to the case for the two player version.
+
  
 \section{Two Player QR Games with Weak Dual Bounds}
 
-Now, $Q_2 \not = \phi$ anymore. We will first prove the following lemma about the memory requirements for both the players in the game.\\
-\begin{lemma}
-\label{mem-lemma}
-For two player QR games with weak dual bounds, exponential memory may be necessary for player $1$. For player $2$, memoryless strategies are sufficient.
-\end{lemma}
-\begin{proof}
-As reachability is one of the objective, trivially finite memories are sufficient for both the players. Now, we will show, a class of game graphs, where exponential memory may be necessary for player $1$.\\
-\begin{figure}[htb]
-\hskip 6cm
-\label{expmem-p1}
-\input{chapters/chapter05/expmem-p1}
-\end{figure}
-
-In the game graph of Figure \ref{expmem-p1}, all the vertices are player $1$  vertices and $U$ is the strict upper bound. It is easy to see, player $1$ needs at least $U$- memory to win this game. Considering binary encoding. the value of $U$ is exponential in the size of the input.\\
-Now, we will prove that, memoryless strategies are enough for player $2$. Let's fix a winning strategy $lambda$ for player $2$  WLOG, every player $2$ vertices have two outgoing ages. Fix one player $2$ vertex, say $q_2$. Let the weight of the two outgoing edges from $q_2$ are $e_l$ and $e_r$ to $q_l$ and $q_r$ respectively. Now, if any path reaches $q_l$ with at most $w_l$ energy, player $1$ can win from $q_l$ and similarly if any path reaches $q_r$ with at most $w_r$ energy, player $1$ can win from $q_r$. Clearly, if any path reaches $q_2$ with at most $min(w_l-e_l, w_r-e_r)= w^{\prime}$,say, energy, no matter what player $2$ chooses from $q_2$, player $1$ wins. As, $\lambda$ is winning for player $2$, no outcome of $\lambda$ reaches $q_2$ with $\leq w^{\prime}$ energy. W.L.O.G., let $w^{\prime}= w_l -e_l$. It is easy to see that, we can construct a memoryless strategy $\lambda^{\prime}$ for player $2$, such that $\lambda^{\prime}(q_2)=q_l$. Hence, memoryless strategy is enough for player $2$.
-\end{proof}
-\vskip 0.2cm
-
-Now, based on the previous lemma we can conclude the following theorem:\\
-\begin{theorem}
-\label{two-player-weak-thm}
-Given a game graph $G$ , a strong upper bound $U$ and a lower weak bound $0$, deciding if $P_1$ can win the 2 player QR games with weak dual bound game in $G$ is in $coNP$.
-\end{theorem}
-\begin{proof}
-A priori, lemma \ref{mem-lemma} says if $P_2$ has a winning strategy, he has a memoryless one. Now, we can guess a strategy for Player $2$ (i.e. select one transition per state in $Q_2$) and verify that this strategy is winning for Player $2$ by solving the one player game, which has been proved to be in polynomial time in theorem \ref{one-player-weak-thm}.
-\end{proof}
+    Now, $Q_2 \not = \phi$ anymore. We~begin with proving a result
+    similar to Lemma~\ref{lemma-higherrun}:
+    \begin{lemma}
+    \label{lemma-higherstrat}
+      Let $G$ be a two-player arena, equipped with an \LWenergy-reachability
+      objective. Let~$q$ be a state of~$G$, and~$u\leq u'$ in $[L;W]$. If
+      \Pl1 wins the game from~$(q,u)$, then she also wins from~$(q,u')$.
+    \end{lemma}
+    
+    By Martin's theorem~\cite{Mar75}, our games are determined. It~follows that if \Pl2 wins from
+    some configuration~$(q,v)$, she also wins from~$(q,v')$ for
+    all~$L\leq v'\leq v$ (assuming the contrary, i.e. $(q,v')$ winning for \Pl1, would lead to the contradictory statement that $(q,v)$ is both winning for \Pl1 and \Pl2). We~now prove that \Pl1 may need exponential memory, while \Pl2 can play
+    memoryless strategies:
+    \vskip 0.5cm
+    \begin{lemma}
+    \label{mem-lemma}
+    For two player QR games with weak dual bounds, exponential memory may be necessary for player $1$. For player $2$, memoryless strategies are sufficient.
+    \end{lemma}
+    \begin{proof}
+    As reachability is one of the objective, trivially finite memories are sufficient for both the players. Now, we will show, a class of game graphs, where exponential memory may be necessary for player $1$.\\
+    \begin{figure}[htb]
+    \centering
+    \input{chapters/chapter05/expmem-p1}
+    \label{expmem-p1}
+    \end{figure}
+    
+    In the game graph of Figure \ref{expmem-p1}, all the vertices are player $1$  vertices, strong lower bound is $0$ while weak upper bound is $W$. It is easy to see, player $1$ needs at least $W$- memory to win this game. Considering binary encoding. the value of $W$ is exponential in the size of the input.\\
+    \vskip 0.3cm
+    Now, We~now prove that \Pl2 has memoryless optimal strategies. According
+      to Lemma~\ref{lemma-higherstrat}, for each state~$q$, there is an
+      integer $v_q\in[L;W+1]$ such that \Pl1 wins the game from any
+      configuration~$(q,v)$ satisfying $v_q\leq v\leq W$, while \Pl2 wins
+      the game from any configuration~$(q,v)$ with $L\leq v<v_q$.
+    
+      Assume that \Pl2 wins the game from some state~$(q,v)$, with $L\leq
+      v\leq v_q$. Denote with\\~$(q,p_i,q_i)_{1\leq i\leq m}$ for the set of
+      outgoing transitions from~$q$. By~definition of~$v_{q_i}$, \Pl1 wins
+      the game from any configuration of the form~$(q_i,v)$ with $v\geq
+      v_{q_i}$. Since \Pl2 wins from~$(q,v)$, there must exist an
+      index~$1\leq i\leq m$ such that $v+p_i\leq v_{q_i}$. This defines a
+      winning move for \Pl2 from~$(q,v)$. The~same argument applies in all
+      states, and yields a memoryless winning strategy for \Pl2.
+    \end{proof}
+    \vskip 0.2cm
+    
+    Now, based on the previous lemma we can conclude the following theorem:\\
+    \begin{theorem}
+    \label{two-player-weak-thm}
+    Given a game graph $G$ , a strong upper bound $U$ and a lower weak bound $0$, deciding if $P_1$ can win the 2 player QR games with weak dual bound game in $G$ is in $coNP$.
+    \end{theorem}
+    \begin{proof}
+    A priori, lemma \ref{mem-lemma} says if $P_2$ has a winning strategy, he has a memoryless one. Now, we can guess a strategy for Player $2$ (i.e. select one transition per state in $Q_2$) and verify that this strategy is winning for Player $2$ by solving the one player game, which has been proved to be in polynomial time in theorem \ref{one-player-weak-thm}.
+    \end{proof}
 \vskip 0.5cm
-\section{A step towards NP}
-Now, we prove the existence of a small certificate for the strategy of player $1$. We have already shown that in the original game, player $1$ might need exponential memory. Now, we construct the exponential size graph $G^{\prime}$ with vertices $\langle q_i, E_i \rangle$ explicitly keeping track of the energy level. There is a edge between $\langle q_i, E_i \rangle$ to $\langle q_j, E_j \rangle$ iff there is an edge from $q_i$ to $q_j$ with weight $E_j -E_i$ in the graph $G$, where $E_i, E_j \leq U$. We also add a dead state $q_{dead}$, where any time the energy level goes beyond the upper bound $U$, we move to a dead state. Now, in this exponential graph $G^{\prime}$, the objective of player $1$ is to reach $\langle T,E \rangle$ for some $E \leq U$ from $\langle q_0,0 \rangle$.\\
-Clearly, player $1$ has a memoryless strategy to win in $G^{\prime}$ iff he has a strategy to win in $G$. Primarily the idea is that, if player $1$ reaches a same state with same energy level in different paths, all the time he can play the same edge which is the "best" for him and that implies, if player $1$ can win in $G^{\prime}$, he can win memorylessly. Now, we will prove the following lemma:
-\begin{lemma}
-\label{NP-cert}
-For a vertex $q$ in $G$, if there exists $E$ and $E^{\prime} \in \mathbb{N}$ such that, in $G^{\prime}$ player $1$ has a memoryless winning strategy $\lambda$ from $\langle q, E \rangle$ and $\lambda^{\prime}$ from $\langle q, E^{\prime} \rangle$ where, $\lambda(\langle q, E \rangle) = \lambda^{\prime}(\langle q, E^{\prime} \rangle)$, then for every $\langle q,E^{\prime \prime} \rangle$ where $E \leq E^{\prime \prime} \leq E^{\prime}$, there exists a memoryless winning strategy $\lambda^{\prime \prime}$ for player $1$ such that,  $\langle q, E^{\prime} \rangle$ where, $\lambda(\langle q, E \rangle) = \lambda^{\prime \prime}(\langle q,E^{\prime \prime})=\lambda^{\prime}(\langle q, E^{\prime} \rangle)$.
-\end{lemma}
-\vskip 0.1cm
-\begin{proof}
-The lemma says simply that, if player $1$ can play same action $a$ from a vertex $q$ with energy level $E$ and $E^{\prime}$, then he can play the same action from $q$ with any energy level between $E$ and $E^{\prime}$. First thing to notice that, it may look like if player $1$ plays a memoryless winning strategy with action $b$ from some vertex $v$ with energy level $E$, then he can play $b$ from $v$ with any energy level $\leq E$ and win. But, this is not true.To see this consider the figure \ref{not_true}. Lets say, $U=4$. So, player $1$ can play self loop action from $\langle v,4 \rangle$ and then win. But, from $\langle v,0 \rangle$ he cannot play the self loop action and win with a memoryless strategy in the exponential graph.\\
-\begin{figure}[htb]
-\hskip 6cm
-\label{not_true}
-\input{chapters/chapter05/not_true}
-\end{figure}
-But from $\langle v,1 \rangle$ he can play the same action and win with a memoryless strategy. So, the lemma says, from $\langle v,3 \rangle$ and $\langle v,2 \rangle$ also, he can play the same self loop action and win with a memoryless strategy in the exponential graph.\\
-Now, we will go to the proof of the lemma. 
-\fcolorbox{blue}{red}{Trying to work out the proof.}
-\end{proof}
-\vskip 0.5cm
-Now, the previous lemma takes us to a step towards proving that the $2$ player QR game with weak dual bound is in NP. This is because, though the energy levels are exponential when expressed in binary, the number of actions player $1$ can take from each vertex is linear in size. Now, lemma \ref{NP-cert} suggests that, for a fixed vertex we can group energy levels into intervals from where we can take the same action, hence the number of groups in also at most linear in size.\\
-This works as our short certificate. Given a game graph $G$ with weak dual bounds objective, we can guess a grouping of energy levels to produce a game graph $G^{\prime \prime}$ with vertices as $\langle s, I\rangle$, where $s$ is a vertex in $G$ and $I$ is an interval of energy levels. Note that, $G^{\prime \prime}$ has at most $O(n^2)$ many vertices. After guessing the short certificate, the verification process will be to check reachability of $\langle T, I\rangle$ for any interval $I$ and target state $T$ from $\langle q_0, I^{\prime} \rangle$, with $I^{\prime}$ containing 0. But, we do not know, how to execute this verification process in polynomial time. 
+% \section{A step towards NP}
+% Now, we prove the existence of a small certificate for the strategy of player $1$. We have already shown that in the original game, player $1$ might need exponential memory. Now, we construct the exponential size graph $G^{\prime}$ with vertices $\langle q_i, E_i \rangle$ explicitly keeping track of the energy level. There is a edge between $\langle q_i, E_i \rangle$ to $\langle q_j, E_j \rangle$ iff there is an edge from $q_i$ to $q_j$ with weight $E_j -E_i$ in the graph $G$, where $E_i, E_j \leq U$. We also add a dead state $q_{dead}$, where any time the energy level goes beyond the upper bound $U$, we move to a dead state. Now, in this exponential graph $G^{\prime}$, the objective of player $1$ is to reach $\langle T,E \rangle$ for some $E \leq U$ from $\langle q_0,0 \rangle$.\\
+% Clearly, player $1$ has a memoryless strategy to win in $G^{\prime}$ iff he has a strategy to win in $G$. Primarily the idea is that, if player $1$ reaches a same state with same energy level in different paths, all the time he can play the same edge which is the "best" for him and that implies, if player $1$ can win in $G^{\prime}$, he can win memorylessly. Now, we will prove the following lemma:
+% \begin{lemma}
+% \label{NP-cert}
+% For a vertex $q$ in $G$, if there exists $E$ and $E^{\prime} \in \mathbb{N}$ such that, in $G^{\prime}$ player $1$ has a memoryless winning strategy $\lambda$ from $\langle q, E \rangle$ and $\lambda^{\prime}$ from $\langle q, E^{\prime} \rangle$ where, $\lambda(\langle q, E \rangle) = \lambda^{\prime}(\langle q, E^{\prime} \rangle)$, then for every $\langle q,E^{\prime \prime} \rangle$ where $E \leq E^{\prime \prime} \leq E^{\prime}$, there exists a memoryless winning strategy $\lambda^{\prime \prime}$ for player $1$ such that,  $\langle q, E^{\prime} \rangle$ where, $\lambda(\langle q, E \rangle) = \lambda^{\prime \prime}(\langle q,E^{\prime \prime})=\lambda^{\prime}(\langle q, E^{\prime} \rangle)$.
+% \end{lemma}
+% \vskip 0.1cm
+% \begin{proof}
+% The lemma says simply that, if player $1$ can play same action $a$ from a vertex $q$ with energy level $E$ and $E^{\prime}$, then he can play the same action from $q$ with any energy level between $E$ and $E^{\prime}$. First thing to notice that, it may look like if player $1$ plays a memoryless winning strategy with action $b$ from some vertex $v$ with energy level $E$, then he can play $b$ from $v$ with any energy level $\leq E$ and win. But, this is not true.To see this consider the figure \ref{not_true}. Lets say, $U=4$. So, player $1$ can play self loop action from $\langle v,4 \rangle$ and then win. But, from $\langle v,0 \rangle$ he cannot play the self loop action and win with a memoryless strategy in the exponential graph.\\
+% \begin{figure}[htb]
+% \hskip 6cm
+% \label{not_true}
+% \input{chapters/chapter05/not_true}
+% \end{figure}
+% But from $\langle v,1 \rangle$ he can play the same action and win with a memoryless strategy. So, the lemma says, from $\langle v,3 \rangle$ and $\langle v,2 \rangle$ also, he can play the same self loop action and win with a memoryless strategy in the exponential graph.\\
+% Now, we will go to the proof of the lemma. 
+% \fcolorbox{blue}{red}{Trying to work out the proof.}
+% \end{proof}
+% \vskip 0.5cm
+% Now, the previous lemma takes us to a step towards proving that the $2$ player QR game with weak dual bound is in NP. This is because, though the energy levels are exponential when expressed in binary, the number of actions player $1$ can take from each vertex is linear in size. Now, lemma \ref{NP-cert} suggests that, for a fixed vertex we can group energy levels into intervals from where we can take the same action, hence the number of groups in also at most linear in size.\\
+% This works as our short certificate. Given a game graph $G$ with weak dual bounds objective, we can guess a grouping of energy levels to produce a game graph $G^{\prime \prime}$ with vertices as $\langle s, I\rangle$, where $s$ is a vertex in $G$ and $I$ is an interval of energy levels. Note that, $G^{\prime \prime}$ has at most $O(n^2)$ many vertices. After guessing the short certificate, the verification process will be to check reachability of $\langle T, I\rangle$ for any interval $I$ and target state $T$ from $\langle q_0, I^{\prime} \rangle$, with $I^{\prime}$ containing 0. But, we do not know, how to execute this verification process in polynomial time. 
+
 \section{Conclusion}
 In this chapter, we have showed that QR games with weak dual bounds are in $P$ for the single player case and is in $coNP$ for the two player case. We also believe that the two player version of the game is in $NP$. We have shown the short certificate for the problem, but unfortunately could not prove the verification part.\\
 This ends all the QR game versions with bounds on weight functions. In the next chapter, we will introduce a new QR game, with a notion of bound on number of violations.

@@ -12,7 +12,7 @@ One player LU-reachability game is PSPACE-complete.
 \begin{proof}
 We will first show that the one player LU-reachability game is in PSPACE.
 \fcolorbox{red}{white}{Prove that it is in PSPACE}.\\
-Now, we will prove the hardness. We will prove it by reduction from the reachability of bounded one counter automaton, which is proven to be PSPACE-complete in ~\cite{DBLP:conf/icalp/FearnleyJ13}.\\
+Now, we will prove the hardness. We will prove it by reduction from the reachability of bounded one counter automaton, which is proven to be PSPACE-complete in ~\cite{FearnleyJ13}.\\
 A bounded one-counter automaton has a single counter that can store values between $0$ and some bound $b \in \mathbb{N}$. The automaton may add or subtract values from the counter as long as the bounds of $0$ and $b$ are not overstepped.\\
 For two integers $a, b \in \mathbb{Z}$ we define $[a, b] = \{n \in \mathbb{Z} : a \leq n \leq b\}$ to be the subset of integers between $a$ and $b$. A bounded one-counter automaton is defined by a tuple $(L, b,\Delta ,l_0)$, where $L$ is a finite set of locations, $b \in \mathbb{N}$ is a global counter bound,  specifies the set of transitions, and $l_0 \in L$ is the initial location. Each transition in $\Delta$ has the form
 $(l, p, g_1, g_2,l^{\prime})$, where $l$ and $l^{\prime}$ are locations, $p \in [-b,b]$ specifies how the counter should be modified, and $g_1, g_2 \in [0,b]$ give lower and upper guards for the transition. All numbers used in the specification of a bounded one-counter automaton are encoded in binary.\\
@@ -50,7 +50,7 @@ Two players LU-reachability game is EXPTIME-complete
 \end{theorem}
 \begin{proof}
 We will first give a very obvious EXPTIME algorithm to solve two player LU game. The algorithm is simply to blow up the state space. In details, given the game graph $G=\langle Q_1, Q_2, E, w, q_0, T \rangle$ and two bounds $l$ and $U$, we will create a new game graph, $G^{\prime}= \langle {Q_1}^{\prime},{Q_2}^{\prime},E^{\prime}, {q_0}^{\prime}, T^{\prime}\rangle$, where for every state $q \in Q_i$, $i \in \{1,2\}$ and for all $j \in [l,U]$,  $(q,j) \in {Q_i}^{\prime}$. Now, for all $(u,v) \in E$ with $w(u,v)=w$, we have $\langle (u,j),(v,j+w)\rangle \in E^{\prime}$ for all $j \in [l,U]$ iff $j+w \in [l,U]$. Otherwise, it goes in to a dead state. This construction intuitively means, we encode the energy levels in the state space instead of edges. Now, the game is just reduced to check, if for some $j$, $(T,j)$ is reachable from $(q_0,0)$ in $G^{\prime}$. We know that, reachability can be solved in linear time. Hence, our game can be solved using linear time reachability algorithm on this new exponential size graph. Hence, we have an EXPTIME algorithm for two player LU-reachability game.\\
-Now, we come to the hardness part. We will give a reduction from \textit{countdown game} to our game. Countdown game has been proved to be EXPTIME-complete in ~\cite{DBLP:conf/tacas/JurdzinskiLS07}.\\
+Now, we come to the hardness part. We will give a reduction from \textit{countdown game} to our game. Countdown game has been proved to be EXPTIME-complete in ~\cite{JurdzinskiLS07}.\\
 A countdown game $C$ consists of a weighted graph $(S, T)$, where $S$ is the set of states and $T \subseteq S \times \mathbb{N} \setminus \{0\} \times S$ is the transition relation. If $t=(s,d,s^{\prime}) \in T$, then we say
 that the duration of the transition $t$ is $d$. A configuration of a countdown game is a
 pair $(s,c)$, where $s \in S$ is a state and $c \in \mathbb{N}$. A move of a countdown game from a

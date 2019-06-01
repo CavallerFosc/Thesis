@@ -1,0 +1,213 @@
+\paragraph{Games on weighted graphs.}
+Weighted games are a common way to formally address questions
+related to consumption, production and storage of resources: the arena
+of such game are two-player turn-based games in which transitions
+carry positive or negative integers, representing the accumulation or
+consumption of resource.  Various objectives have been considered for
+such arenas, such as optimizing the total or average amount of
+resources that have been collected along the play, or maintaining the
+total amount within given bounds. The~latter kind of objectives,
+usually referred to as \emph{energy
+objectives}~\cite{CdAHS03,BouyerFLMS08}, has been widely studied in
+the untimed
+setting~\cite{ChatterjeeD12,ChatterjeeDHR10,DDGRT10,FahrenbergJLS11,JLR13,
+JLS15,VCDHRR15,BMRLL15,BHMRZ17,DM18}, and to a lesser extent in the
+timed setting~\cite{BFLM10,qest2012-BLM}.
+%
+As their name indicates, energy objectives can be used to model the
+evolution of the available energy in an autonomous system: besides
+achieving its tasks, the~system has to take care of recharging
+batteries regularly enough so as to never run out of power.  Energy
+objectives were also used to model moulding machines: such machines
+inject molten plastic into a mould, using pressure obtained by storing
+liquid in a tank~\cite{CJLRR09}; the~level of liquid has to be
+controlled in such a way that enough pressure is always available, but
+excessive pressure in the tank would reduce the service life of the valve.
+
+Energy games impose strict constraints on the total amount of energy
+at all stages of the play. Two kinds of constraints have been mainly
+considered in the literature: lower-bound constraints (a.k.a. L-energy constraints) impose a strict lower bound (usually~zero), but impose no
+upper bound; on~the other hand, lower- and upper-bound constraints
+(a.k.a. LU-energy constraints) require that the energy level always
+remain within a bounded interval~$[L;U]$. Finding strategies that
+realize L-energy objectives along infinite runs is in PTIME in the
+one-player setting, and in NP $\cap$ coNP for two players;
+for LU-energy objectives, it~is respectively PSPACE-complete
+and EXPTIME-complete~\cite{BouyerFLMS08}. Some works have also considered
+the existence of an initial energy level for which a winning strategy
+exist~\cite{ChatterjeeDHR10}.
+%
+Energy objectives have also been combined with other objectives,
+either qualitative (e.g.~parity~\cite{ChatterjeeD12}) or quantitative
+objectives (e.g.~multi-dimensional
+energy~\cite{ChatterjeeDHR10,FahrenbergJLS11,JLR13}). 
+
+In this paper, we focus on weighted games combining energy objectives
+together with reachability objectives. Our~first result is the
+(expected) proof that L-energy games with or without reachability
+objectives are interreducible; the same holds for LU-energy games.
+
+%
+We~then focus on relaxations of the energy constraints, in two
+different directions. In both cases, the lower bound remains
+unchanged, as it corresponds to running out of energy, which we always
+want to avoid. We~thus only relax the upper-bound constraint.
+The~first direction concerns \emph{weak upper bounds}, already
+introduced in~\cite{BouyerFLMS08}: in~that setting, hitting the upper bound
+is allowed, but there is no overload, i.e. trying to exceed the upper bound will simply maintain the energy level at this maximal level. Yet, a strict lower bound is
+still imposed. We~name these objectives LW-energy
+objectives. This~could be used as a (simplified) model for batteries.
+When considered alone, LW-energy objectives are not much different
+from~ L-energy objectives, in the sense that the aim is to find a
+reachable \emph{positive loop}. LW-energy games are in PTIME for
+one-player games, and in NP $\cap$ coNP for two players. When
+combining LW-energy and reachability objectives, the~situation
+changes: different loops may have different effects on the energy
+level, and we have to keep track of the final energy level reached
+when iterating those loops.
+
+The second way of relaxing upper bounds, which we call \emph{soft
+upper bound}, allows a limited number (or amount) of
+violations: when modeling a pressure tank, the lower-bound constraint
+is strict (pressure should always be available) but the upper bound is
+soft (excessive pressure may be temporarily allowed is
+needed). We~consider different kinds of limits (on the number or
+amount of violations), and prove that (with or without reachability
+objectives) the energy game problems are PSPACE-complete for one-player arenas,
+and EXPTIME-complete for two-player ones.
+
+\fbox{minimization?}
+
+
+\paragraph{Related work.}
+Quantitative games have been the focus of numerous research articles
+ since the~1970s, with various kinds of objectives. 
+%such as ultimately
+% optimizing the total payoff~\cite{}, mean-payoff~\cite{EM79,ZwickP95},
+% or discounted sum~\cite{ZwickP95,Andersson06}.
+% %
+% Energy objectives, which are a kind of safety objectives on the total
+% payoff, were introduced in~\cite{CdAHS03} and rediscovered
+% in~\cite{BouyerFLMS08}.
+% %
+% Several works have extended those works by
+% combining quantitative conditions together, e.g. multi-dimensional
+% energy conditions~\cite{FahrenbergJLS11,JurdzinskiLS15} or
+% conjunctions of energy- and mean-payoff
+% objectives~\cite{ChatterjeeDHR10}. Combinations with qualitative
+% objectives (e.g. reachability~\cite{Chatterjee0H17} or parity
+% objectives~\cite{ChatterjeeD12,ChatterjeeRR14}) were also considered.
+% %
+% Similar objectives have been considered in slightly different
+% settings e.g. Vector Addition Systems with States~\cite{Reichert16} and
+% one-counter machines~\cite{GHOW10,Hun15}.
+% %
+
+
+
+Other types of quantitative games consider mean payoffs. The payoff
+of a run is the mean weight along this run, and the value of a
+mean payoff game is the maximal/minimal mean weight that one can
+enforce with an appropriate strategy. In this setting, one mainly has
+to consider the mean value of cycles, that absorb all other
+costs. \cite{ZwickP95} shows that the value of infinite plays can be
+computed in $??$, where $p$ is the
+maximal absolute value of weights in the arena.
+
+Mean payoff games, however, only address quantitative questions as
+limit values of infinite runs, and do not consider quantitative
+constraints on prefixes of these runs, nor boolean objectives.
+
+Discounted games are another form of quantitative games for which
+polynomial solutions exist. In these games, a discounting
+factor~$\lambda < 1$ is defined, and the contribution of the $i$-th
+transition to the total payoff of a run is the weight of the
+transition multiplied by $\lambda^i$. The value of these games can be
+computed in PTIME using linear programming~\cite{Andersson06}.
+
+
+
+Games with quantitative and reachability objectives have already been
+considered. \cite{Chatterjee0H17} considers total payoff, discounted
+payoff and energy payoff combined with a reachability objective. Given
+a game graph $G$ an initial state~$s$, and a target state~$t$, the
+question addressed is whether there exists a~run~$\rho$ from $s$
+to~$t$ in $G$ such that the total payoff, discounted payoff, or the
+energy level of $\rho$ is non negative. Checking that a run with
+payoff $\geq 0$ exists for a single player, is~in~ PTIME for all payoff functions, and for
+two-player games in NP $\cap$ coNP. For equality, the problems are
+respectively NP-complete and EXPSPACE-complete for total and
+energy payoff, and the question is still open for discounted
+games. The~PTIME algorithms rely on the computation of values in
+games, which can be efficiently done as soon as one does not impose
+constraints on payoff achieved by prefixes of winning runs.
+
+\cite{CdAHS03} combines energy objectives and B\"uchi objectives in
+two players games; the objective is that a pair of components sharing
+resources never consume more than a certain threshold, while
+preserving some liveness properties, i.e. visiting some states
+infinitely often.
+
+\cite{ChatterjeeD12} combines quantitative and boolean objectives in
+Energy-Parity Games: the objective is to win a parity game while
+maintaining an energy constraint, i.e. ensure that the total payoff of
+every prefix of a winning run remains $\geq 0$. Results are the following: first player 1 has winning strategies with memory of
+size $n\cdot d \cdot W$, where $n$ is the number of states, $W$ the
+largest weight, and $d$ the number of priorities in the parity
+condition. Second, memoryless strategies are sufficient for player 2. Last
+memoryless winning strategies exist for player 2 if the boolean condition
+is a coB\"uchi condition.
+
+\cite{ChatterjeeDHR10} generalizes mean payoff and energy games, by considering vectors of payoff functions.
+These games are determined when considering finite-memory
+strategies. In this setting, energy and mean payoff games are
+interreducible, and threshold questions for mean payoff, or unknown
+initial credit (whether there exist initial values for which an energy
+game is winning) are coNP-complete.
+
+\cite{ChatterjeeRR14} considers multiple quantitative mean payoff and
+energy objectives
+combined with parity objectives.  Strategies for such quantitative
+games have to fulfill two objectives: first progress towards a target
+state or enforce a parity condition, and second, satisfy the
+constraint on a vector of quantitative outcomes of the runs: all mean
+payoff are greater than a threshold $\nu$, or all energy levels are
+positive. Usually these games require infinite memory. However, when
+restricting to finite memory strategies, the required memory is
+exponential.
+
+\cite{BouyerFLMS08} considers energy games with strong lower bound
+constraints (L), strong lower bound and strong upper bound (LU) and strong
+lower bound and weak upper bound (LW) constraints. Winning runs in these
+games are infinite runs which prefixes satisfy the L, LU or LW energy
+constraint. For the one player setting, existence of strategies for L,
+and LW games are in PTIME, and LU games are PSPACE-complete. In the two-player setting L, and LW games are in
+NP $\cap$ coNP, and LU games are EXPTIME-complete.
+
+\cite{FahrenbergJLS11} considers energy games in multi-weighted automata,
+and L, LW, LU games similar to those of \cite{BouyerFLMS08} but with
+vectors of energy levels and constraints attached to each energy level
+in these vectors. The complexity of these games depend on the size of
+energy vectors.
+
+\cite{HunterR14} considers multiple quantitative objectives,
+i.e. addresses the problem of determining if a player can attain a
+payoff in a finite union of arbitrary intervals for various payoff
+functions (liminf, mean-payoff, discount sum, total~sum). Given a
+fixed number of intervals $I_1, \dots I_k$ and a payoff function~$f$,
+a play~$\pi$ is winning if $f(\pi) \in I_j$ for some $j\in [1;k]$. The
+complexity of these games depend on the payoff function and ranges from
+NP $\cap$ coNP to EXPSPACE.
+
+
+\cite{JurdzinskiLS15} considers games in multi-weighted automata and
+the initial credit problem, i.e. whether, starting from a vertex~$v$,
+there exists a vector~$B\in \mathbb N^k$ of initial weights such that player 1 has a
+winning strategy starting from configuration $(v,B)$. They show that
+this problem is 2EXPTIME-complete for general multi-dimensional energy
+games.
+
+\cite{Reichert16} Considers reachability in counter games under different semantics. Configurations of the game are counter values, and moves are labeled by integer vectors. The semantics of the arena either imposes no constraint on legal values of counters ($\mathbb{ Z}$ semantics), forbids moves that would result in a negative value of some counter (blocking VASS semantics), or considers VASS semantics with weak lower bounds (all moves are legal, but counter values have $0$ lower bound). A play is winning if it reaches a configuration from a target set. In dimension 2, under every semantics, two-player reachability games are undecidable. In dimension 1, these games are in EXPSPACE. 
+
+
+
