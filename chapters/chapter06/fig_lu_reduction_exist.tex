@@ -1,0 +1,37 @@
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+
+
+\node[ellipse,draw, minimum width = 110, minimum height=80] (ulg) at (4,0) {};
+\node[] (lel) at (4,0) {$LU$};
+\node[state, fill=white] (q0) at (2,0) {$q_0$}; 
+\node [] (d01) at (3,-1){};
+\node [] (d02) at (3,0){};
+\node [] (d03) at (3,1){};
+
+\node[state,fill=white] (t) at (6,0) {$t$}; 
+\node [state,fill=white] (qh) at (8,0) {$q_H$};
+\node [state,fill=white] (qt) at (10,0) {$q_t$};
+
+\node [state,fill=white] (q2h) at (4,2.3) {$q_{2H}$};
+\path[dashed,-latex, bend left] (q0) edge node [xshift=-4mm] {$+H$} (q2h){};
+\path[dashed,-latex, bend left] (q2h) edge node [xshift=2mm,yshift=2mm] {$+H$} (qt){};
+
+
+
+\draw[-latex] (q0) to (d01){};
+\draw[-latex] (q0) to (d02){};
+\draw[-latex] (q0) to (d03){};
+
+\path (t) edge [loop above] node {-1} (t){}; 
+
+\path (t) edge  node [yshift=3mm] {+H} (qh){};
+\path (qh) edge node [yshift=3mm] {-H} (qt){};
+
+
+\end{tikzpicture}
+
+\caption{Reduction from an \LUenergy reachability game with initial state $q_0$ and target state $t$ to an $H$ existence problem with initial state $q_0$ and target state $q_t$, and from an \LUenergy reachability game to a minimization game (with additional dashed moves).}
+\label{fig_lu_reduction_exist}
+\end{figure}

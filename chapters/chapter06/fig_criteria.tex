@@ -1,0 +1,120 @@
+\begin{figure}[htbp]
+\begin{center}
+%\scalebox{0.8}{
+%\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=1.8cm,
+%                    semithick]
+\begin{tikzpicture}[node distance=1.8cm,
+                    semithick]
+\begin{scope}
+\node[rond5,rouge] (q0) at (0,0) {$q_0$};
+\node[rond5,jaune] (q1) [right of =q0] {$q_1$};
+\node[rond5,jaune] (q2) [right of =q1] {$q_2$};
+\node[rond5,jaune] (q3) [right of =q2] {$q_3$};
+\node[rond5,vert] (qT) [below of=q3] {$q_t$};
+
+%\node[] (lab2) at (-1,-1.5) {$U=6$};
+%\node[] (lab1) at (-1,-1) {$S=3$};
+%\node[] (lab0) at (-1,-0.5) {$L=0$};
+\node at (1.5,-1.5) {$L=0$, $S=3$, $U=6$};
+
+
+\path [-latex] (q0) edge node [yshift=0.5cm] {$+2$} (q1) {};
+\path [-latex] (q1) edge [loop above] node  {$+1$} (q1){}; 
+\path [-latex] (q1) edge node [yshift=0.5cm]{$-3$} (q2) {};
+\path [-latex] (q2) edge[bend right] node [yshift=-0.5cm] {$+1$} (q3) {};
+\path [-latex] (q3) edge[bend right] node [yshift=0.5cm] {$+2$} (q2) {};
+\path [-latex] (q3) edge[bend left] node [xshift=0.5cm]{$-5$} (qT) {};
+\path [-latex] (q3) edge [loop above] node {$-1$} (q3){}; 
+
+
+\path [-latex] (qT) edge [loop right] node {0} (qT){}; 
+\end{scope}
+\begin{scope}[xshift=8cm,yshift=-1.5cm,xscale=1.2,inner sep=0pt]
+\draw[->] (-0.2,0) -- (5.5,0) node[below right] {$\rho$}; %{$\sharp steps$};
+\draw[->] (0,-0.2) -- (0,3.4) node[left] {energy};
+
+\foreach  \x in {0.5,1,1.5,2,2.5,3,3.5,4,4.5,5}{
+\draw[] (\x,-0.1) -- (\x,0.1){};
+}
+
+\foreach  \y in {0.5,1,1.5,2,2.5,3}{
+\draw[] (-0.1,\y) -- (0.1,\y){};
+}
+
+\draw[dashed] (0,1.5) -- (5.5,1.5){};
+\draw[dashed] (0,3) -- (5.5,3){};
+\node (lu) at (5.8,1.5) {$S$};
+\node (lh) at (5.8,3) {$U$};
+
+\node[] (l0) at (0,-0.5) {$q_0$};
+\node[red] (p0) at (0,0) {$\bullet$};
+
+\node[] (l1) at (0.5,-0.5) {$q_1$};
+\node[yellow!70!red] (p1) at (0.5,1) {$\bullet$};
+\draw[] (p0)--(p1){};
+
+\node[] (l2) at (1,-0.5) {$q_1$};
+\node[yellow!70!red] (p2) at (1,1.5) {$\bullet$};
+\draw (p1)--(p2){};
+
+\node[] (l3) at (1.5,-0.5) {$q_2$};
+\node[yellow!70!red] (p3) at (1.5,0) {$\bullet$};
+\draw (p2)--(p3){};
+
+\node[] (l4) at (2,-0.5) {$q_3$};
+\node[yellow!70!red] (p4) at (2,0.5) {$\bullet$};
+\draw (p3)--(p4){};
+
+\node[] (l5) at (2.5,-0.5) {$q_2$};
+\node[yellow!70!red] (p5) at (2.5,1.5) {$\bullet$};
+\draw (p4)--(p5){};
+
+\node[] (l6) at (3,-0.5) {$q_3$};
+\node[yellow!70!red] (p6) at (3,2) {$\bullet$};
+\draw (p5)--(p6){};
+
+\node[] (l7) at (3.5,-0.5) {$q_3$};
+\node[yellow!70!red] (p7) at (3.5,1.5) {$\bullet$};
+\draw (p6)--(p7){};
+
+
+\node[] (l8) at (4,-0.5) {$q_2$};
+\node[yellow!70!red] (p8) at (4,2.5) {$\bullet$};
+\draw (p7)--(p8){};
+
+\node[] (l9) at (4.5,-0.5) {$q_3$};
+\node[yellow!70!red] (p9) at (4.5,3) {$\bullet$};
+\draw (p8)--(p9){};
+
+\node[] (l10) at (5,-0.5) {$q_t$};
+\node[green!70!black] (p10) at (5,0.5) {$\bullet$};
+\draw (p9)--(p10){};
+
+%%%%% #>U %%%%%
+
+%% \node (u1) at (3,0.5) {$\sharp$};
+%% \draw [color=red] (3,0) -- (u1){};
+%% \draw [color=red] (u1)--(3.5,0.5){};
+%% \node (u2) at (4,1) {$\sharp$};
+%% \draw [color=red] (3.5,0.5) -- (u2){}; 
+%% \node (u3) at (4.5,1.5) {$\sharp$};
+%% \draw [color=red] (u2) -- (u3){}; 
+%% \draw [color=red] (u3) -- (5,1.5){}; 
+
+\draw[line width=2pt,red] (p6) -- +(0,-.5);
+\draw[line width=2pt,red] (p8) -- +(0,-1);
+\draw[line width=2pt,red] (p9) -- +(0,-1.5);
+
+\path (1.2,2.5) node (v) {violations};
+\draw (v.0) edge[bend left=10,-latex',shorten <=2mm] (2.8,1.8);
+\draw (v.0) edge[bend left,-latex',shorten <=2mm] (3.8,2.2);
+\draw (v.0) edge[bend left,-latex',shorten <=2mm] (4.3,2.5);
+
+\end{scope}
+\end{tikzpicture}
+%}
+\end{center}
+\vspace{-3\medskipamount}
+\caption{Energy level and $\nbV$ along a winning run in a \LVenergynb reachability game.}
+\label{fig_criteria}
+\end{figure}

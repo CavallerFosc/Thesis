@@ -1,4 +1,6 @@
-\documentclass[a4paper, 12pt, twoside]{book}
+\documentclass[a4paper,12pt, twoside]{book}
+\usepackage{lmodern}
+\newlength\longest
 \usepackage{scrextend}
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}
@@ -21,7 +23,7 @@
 \usetikzlibrary{intersections}
 \usepackage[margin=0.8in, right= 0.6in]{geometry}
 \usepackage{textcomp}
-\usetikzlibrary {positioning}
+\usetikzlibrary {automata,positioning}
 %\usepackage {xcolor}
 \definecolor {processblue}{cmyk}{0.96,0,0,0}
 \usepackage{fancyhdr}
@@ -112,9 +114,42 @@
 	
 \end{titlepage}
 
+\chapter*{Declaration}
+I, Ritam RAHA, declare that this thesis titled, \textit{“Reachability Games with strong and relaxed energy constraints”} and the work presented in it are my own. I confirm that:
+\vskip 1cm
+\begin{itemize}
+    \item This work was done wholly or mainly while in candidature for a masters degree(from CMI) at INRIA Rennes and CMI.
+    \item The thesis has been prepared without resorting to plagiarism.
+    \item Where I have consulted the published work of others, this is always clearly attributed.
+    \item I have acknowledged all main sources of help.
+    \item The thesis has not been submitted elsewhere for a degree.
+\end{itemize}
+\vskip 2cm
+\mysignature[left]{full}
+
+\chapter*{
+%Quotes
+}
+
+\thispagestyle{empty}
+\null\vfill
+
+\settowidth\longest{\huge\itshape just as his inclination leads him;}
+\begin{center}
+\parbox{\longest}{%
+  \raggedright{\huge\itshape%
+   "The problem is \\ 
+  not the problem; \\
+  The problem is your attitude \\ 
+  about the problem."\par\bigskip
+  }   
+  \raggedleft\Large\MakeUppercase{- Jack Sparrow}, \textit{Pirates of the Caribbean}\par%
+}
+\end{center}
+
+\vfill\vfill
 
 \chapter*{Abstract}
-\thispagestyle{empty}
 Quantitative reachability games are finite two player turn-based games played on weighted graphs. The objective of the game combines reachability objective(qualitative) with the (quantitative) requirement that the weights along a path must satisfy certain constraints (bounds). Besides having direct applications in reactive system synthesis with resource constraints, it is one of the simplest models that combine quantitative and qualitative objectives.
 \vskip 0.5cm
 In this thesis, we~first prove that under strict energy constraints (either only
@@ -141,18 +176,7 @@ for two players.
 }
 I dedicate this to 
  
-\chapter*{Declaration}
-I, Ritam RAHA, declare that this thesis titled, \textit{“Reachability Games with strong and relaxed energy constraints”} and the work presented in it are my own. I confirm that:
-\vskip 1cm
-\begin{itemize}
-    \item This work was done wholly or mainly while in candidature for a masters degree(from CMI) at INRIA Rennes and CMI.
-    \item The thesis has been prepared without resorting to plagiarism.
-    \item Where I have consulted the published work of others, this is always clearly attributed.
-    \item I have acknowledged all main sources of help.
-    \item The thesis has not been submitted elsewhere for a degree.
-\end{itemize}
-\vskip 2cm
-\mysignature[left]{full}
+
 
 \chapter*{Acknowledgements}
 I want to thank...

@@ -1,0 +1,42 @@
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+
+
+\node[ellipse,draw, minimum width = 110, minimum height=80] (ulg) at (4,0) {};
+\node[] (lel) at (4,0) {$LU$};
+
+\node[state, fill=white] (qi) at (-2,0) {$q_i$}; 
+\node[state, fill=white] (qh) at (0,0) {$q_H$}; 
+
+\node[state, fill=white] (q0) at (2,0) {$q_0$}; 
+\node [] (d01) at (3,-1){};
+\node [] (d02) at (3,0){};
+\node [] (d03) at (3,1){};
+
+
+\node [state,fill=white] (q2h) at (4,2.3) {$q_{2H}$};
+\node[state, fill=white] (q3h) at (6,2.3) {$q_{3H}$}; 
+
+\path[-latex, bend left] (qi) edge node [yshift=2mm] {$+H$} (qh){};
+\path[-latex, bend left] (qh) edge node [yshift=2mm] {$-H$} (q0){};
+
+\path[dashed,-latex, bend left] (qi) edge node [xshift=-4mm,yshift=2mm] {$+2H$} (q2h){};
+\path[dashed,-latex, bend left] (q2h) edge node [yshift=2mm] {$+H$} (q3h){};
+
+
+
+\draw[-latex] (q0) to (d01){};
+\draw[-latex] (q0) to (d02){};
+\draw[-latex] (q0) to (d03){};
+
+\path (q3h) edge [loop above, dashed] node {$0$} (q3h){}; 
+
+
+
+\end{tikzpicture}
+
+\caption{Reduction from an \LUenergy game to an existence question in $\APNA_{L,U}^{+H,X\leq V}$ (vithout dashed edges).
+Reduction from an \LUenergy game to a minimization question in $\APNA_{L,U}^{+H,X\leq V}$ (vith dashed edges).}
+\label{fig_lu_reduction_exist_infrun}
+\end{figure}

@@ -62,7 +62,7 @@ Given a game graph $G$ , a weak upper bound $W$ and a strong lower weak bound $0
   \vskip 0.1cm
   In the example, $a=5$ and $m=1$, i.e. if player $1$ can reach $s_1$ with at least 5 energy level, she can rotate the cycle as much as she wants, and can increase the output energy level up to 14.\\
   
-  Now, we express this intuition formally by proving a series of lemmas:\\
+  Now, we express this intuition formally by stating a series of lemmas; we have given a proof-sketch of all the lemmas in this chapter, all the detailed proofs have been written in the Appendix portion of the thesis.\\
 \vskip 1cm
 \begin{lemma}
 \label{lemma-higherrun}
@@ -233,7 +233,7 @@ cycle.
     
     \begin{figure}[htbp]
         \centering
-        \scalebox{1}{
+        \scalebox{1.2}{
         \input{chapters/chapter05/fig_cycles}
         }
         \caption{Two cycles with upper bound $\wub=5$}
@@ -425,5 +425,5 @@ cycle.
 % This works as our short certificate. Given a game graph $G$ with weak dual bounds objective, we can guess a grouping of energy levels to produce a game graph $G^{\prime \prime}$ with vertices as $\langle s, I\rangle$, where $s$ is a vertex in $G$ and $I$ is an interval of energy levels. Note that, $G^{\prime \prime}$ has at most $O(n^2)$ many vertices. After guessing the short certificate, the verification process will be to check reachability of $\langle T, I\rangle$ for any interval $I$ and target state $T$ from $\langle q_0, I^{\prime} \rangle$, with $I^{\prime}$ containing 0. But, we do not know, how to execute this verification process in polynomial time. 
 
 \section{Conclusion}
-In this chapter, we have showed that QR games with weak dual bounds are in $P$ for the single player case and is in $coNP$ for the two player case. We also believe that the two player version of the game is in $NP$. We have shown the short certificate for the problem, but unfortunately could not prove the verification part.\\
+In this chapter, we have showed that QR game with weak dual bounds is in PTIME for the single player case and is in coNP for the two player case. We also believe that the two player version of the game is in NP and not coNP-hard.\\
 This ends all the QR game versions with bounds on weight functions. In the next chapter, we will introduce a new QR game, with a notion of bound on number of violations.

@@ -1,17 +1,226 @@
- In the previous chapters, we have explored all kind of weighted games, where the weight functions were bounded. In this chapter, we will explore a new kind of a game. Here also, we have strong bounds on weights, but player $1$ can violate one of the bounds, w.l.o.g, say the upper bound. The number of vertices, he traverses along his path with weights higher than the upper bound are called \textbf{violations}. In this game, we have a bound on the number of violations. We call this bounded violations reachability game as \textit{Apna Game}. We formally define it in the following section.\\
+ In the previous chapters, we have explored energy games, where the energy levels were bounded. In Chapter 5, we have seen one kind of relaxation of bounds. In this chapter, we will explore a new kind of a game. Here also, we have lower and upper bounds on weights and one bound\\(W.L.O.G. lower bound) is strong, but the idea of relaxation of the other bound is different. In this game, there is a soft upper bound and a strong upper bound. \Pl1 is allowed to violate the soft upper bound, but the number of violations is bounded. But, with bounded violations also, she is not allowed to violate the strong lower bound $L$ and strong upper bound $U$. The number of vertices, he traverses along his path with weights higher than the upper bound can be taken as one of the simplest \textbf{violation measures}. In this chapter, we have defined in total three kinds of violation measure. We call this bounded violations reachability game as \textit{Apna Game}. Let's formally define the game in the following section.\\
 
 \section{Description of the Game}
-Consider a game graph $G=\langle Q_1, Q_2, E, w, q_0, T \rangle$, $b \in \mathbb{N}$, a lower bound $l$ and an upper bound $U$. As mentioned before, there are two kinds of objectives definable: Apna upper-bound violation game and Apna lower-bound violation game. We will consider here the upper-bound violation game as Apna Game; the other game will just be its dual. Consider a path $\rho= q_0,q_1,q_2,\ldots,q_l$ in $G$. We define $q_i$ as a \textit{violation}, if $\Sigma_{j=0}^{i-1} w(q_j,q_{j+1}) > U$. For a path $\rho$, we denote the number of violations by $v(\rho)$. Now, starting from $q_0$, player $1$'s objective is to reach $T$ in a path $\rho$, such that for all finite prefixes $\pi$ of $\rho$, $w(\pi) \geq l$ and $v(\rho) \leq b$. 
+Consider a game graph $G=\langle Q_1, Q_2, E, w, q_0, T \rangle$, two strict bounds $L$ and $U$ $\in \mathbb{Z}$, a soft upper bound $S$, a threshold $V \in \mathbb{Z}$. For an LU-run $\rho$, the~set of violations along~$\rho$ is the set $\VV(\rho) = \{i \in [0;|\rho|]\mid \tilde\rho_i>S\}$ of positions
+along~$\rho$ where the energy level exceeds the soft upper bound~$S$.
+%We~define the following quantities:
+There are many ways to quantify violations along
+a run. As mentioned before, we~consider three of them in this chapter, namely the total number of violations, the maximal number of consecutive violations, and the sum of the violations. We~thus define the following three quantities:
+$\nbV(\rho) = |\VV(\rho)|$,   $\consnbV(\rho)  = \max\{i-j \mid \forall k\in[i,j].\ k\in \VV(\rho)\}$, and $\hV(\rho) = \sum_{i \in \VV(\rho)} (\tilde\rho_i-U)$.
+
+
+Figure~\ref{fig_criteria} shows the evolution of $\nbV$ along a
+winning run in an \LVenergynb game.
+One can notice that with a strong upper bound of~$3$, state~$q_t$ would not be reachable. On~the other hand, if the strong upper bound is set to~$6$, then then
+there exists a run from~$q_0$ to~$q_T$, but that requires $3$
+violations of soft upper bound $S=3$ (and the total amount of
+violations is~$6$).
+\input{chapters/chapter06/fig_criteria.tex}
+
+  Given three values~$L\leq S \leq U$, the \LVenergynb (resp.~\LVenergyconsnb, \LVenergysum) objective is
+  the set of LU-feasible infinite paths~$\pi$ such that, along their
+  associated runs~$\rho$ from~$(\qinit, L)$, the number~$\nbV(\rho)$ of
+  violations (resp.~maximal number of consecutive
+  violations~$\consnbV(\rho)$, sum~$\hV(\rho)$ of violations) of the
+  soft upper bound~$S$ is at most~$V$.
+  
+  Similarly, for a set of states~$R$, the \LVenergynb
+  (resp.~\LVenergyconsnb, \LVenergysum) reachability objective is the
+  set of LU-feasible paths~$\pi$ reaching~$R$ such that along their
+  associated run from~$(\qinit, L)$, the number~$\nbV(\rho)$ of
+  violations (resp.~maximal number of consecutive
+  violations~$\consnbV(\rho)$, sum~$\hV(\rho)$ of violations) of the
+  upper bound~$U$ is at most~$V$.
+
+We~study the complexity of deciding the existence of a winning
+strategy for the objectives defined above, in both the one- and
+two-player settings. Further, for \LVenergyall games,
+we also address the following problems:
+\begin{itemize}
+
+\item {\bfseries bound existence:} Given $L$, $S$ and~$V$, decide if there exists a value $U\in \mathbb Z$ such that \Pl1 wins the \LVenergyall game;
+\item {\bfseries minimization:} Given $L$ and~$S$, and a bound~$V_{\max}$,
+
+  find a value $U\in \mathbb Z$ such that \Pl1 wins the game
+with the least possible violations less than~$V_{\max}$, if~any.
+\end{itemize}
+ 
 
 \section{Decision Problems and Complexity}
+We now consider games with limited violations, i.e. (reachability)
+games with \LVenergynb, \LVenergyconsnb and \LVenergysum
+objectives. We address the problems of deciding the winner
+in the one-player and two-player settings, and consider the existence and minimizations questions.
 
-Given $G,l,U,b$ the decision problem asks, does player $1$ have a winning strategy for Apna Game objective (upper/lower bound violation) in $G$? Notice that, lower bound violation game can be easily seen as a upper bound violation game by just negating the weights on the edges. Hence, we can only reason about the upper bound violation part of Apna Game in different results and theorems. We will prove the following theorem:
 \begin{theorem}
-Given $G,l,U,b$ in there usual notations, deciding if player $1$ has a winning strategy for Apna Game in $G$ is EXPTIME-complete.
+\label{thm_apna_LUHV_2P}
+\LVenergynb, \LVenergyconsnb and \LVenergysum (reachability) games
+are PSPACE-complete for one-player arenas, and EXPTIME-complete for
+two-player arenas.
+\end{theorem}
+\begin{proof}
+    Membership in PSPACE and EXPTIME can be obtained by building a
+  variant $G_{APNA}$ of the $G_{LU}$ arena: besides storing the energy level in
+  each state, we~can also store the amount of violations (for any of
+  the three measures we consider). More precisely, given an arena~$G$,
+  lower and upper bounds~$L$ and~$U$ on the energy level, a soft bound~$S$,
+  and a
+  bound~$V$ on the measure of violations, for any of our three
+  measures of violations, the maximal energy level that can be reached
+  along a path with violations smaller than or equal to~$V$ is
+  $S+V\cdot w_{\max}$, where $w_{\max}$ is the maximal weight in our
+  arena.  We~then define a new arena\footnote{In order to factor our
+    proof, we~store all three measures of violations in one single
+    arena; we actually have four variables because two of them are used
+    to compute and store the maximal number of consecutive violations
+    (which for solving the decision problem is not needed).}~$G_{APNA}$ with set of
+  states 
+  %$(Q\times([L;U+V\cdot w_{\max}]\cup\{\bot\})\times ([0;V]\cup\{\bot\})^4)$, 
+  $(Q\times([L;U]\cup\{\bot\})\times ([0;V]\cup\{\bot\})^3)$,   
+  and each transition~$(q,w,q')$ of the
+  original arena generates a transition from state
+  %$(q,l,(n,c,m,s))$ to state~$(q',l',(n',c',m',s'))$ 
+  $(q,l,(n,c,s))$ to state~$(q',l',(n',c',s'))$ whenever
+  \begin{itemize}
+  \item $l'$ correctly encodes the evolution of the energy level:
+    \begin{itemize}
+    \item $l'=l+w$ if $l$ and~$l+w$ are in~$[L;U]$; 
+    \item $l'=\bot$ if either $l=\bot$ or $l+w<L$ or $l+w>U$;
+    \end{itemize}
+  \item $n'$ correctly stores the number of violations:
+    \begin{itemize}
+    \item $n'=\bot$ if $l'=\bot$ or $n=\bot$;
+    \item $n'=n$ if $l'\in [L;S]$;
+    \item $n'=n+1$ if $l'\in(S;U]$ and $n+1\leq V$;
+    \item $n'=\bot$ if $l'\in(S;U]$ and $n+1>V$.
+    \end{itemize}
+  \item $c'$ is updated to count the current number of consecutive violations:
+    \begin{itemize}
+    \item $c'=\bot$ if $l'=\bot$ or $c=\bot$;
+    \item $c'=0$ if $l'\in [L;S]$;
+    \item $c'=c+1$ if $l'\in(S;U]$ and $c+1\leq V$;
+    \item $c'=\bot$ if $l'\in(S;U]$ and $c+1>V$.
+    \end{itemize}
+% We have not defiend a measure for m
+% I am not sure it is useful
+%    Then $m'$ stores the maximal number of consecutive violations
+%    observed so far: $m'=\bot$ if~$c'=\bot$, and $m'=\max\{m,c'\}$ otherwise.
+  \item $s'$ encodes the sum of all violations:
+    \begin{itemize}
+    \item $s'=\bot$ if $l'=\bot$ or $s=\bot$;
+    \item $s'=s$ if $l'\in [L;S]$;
+    \item $s'=s+(l'-U)$ if $l'\in(S;U]$ and $s+(l'-S)\leq V$;
+    \item $s'=\bot$ if $l'\in(S;U]$ and $s+(l'-S)>V$.
+    \end{itemize}
+  \end{itemize}
+  In this arena, $n$, $c$ and~$s$ keep tack of the number of
+  violations, number of consecutive violations and sum of violations;
+  their values are set fo~$\bot$ as soon as they exceed the bound, or
+  if the energy level has exceeded its
+  bounds~$[L'U]$. The~arena~$G_{APNA}$ has size exponential, and our
+  \LVenergyall-reachability problems can be reduced to solving
+  reachability of the relevant set of states in that arena (e.g., \Pl1
+  wins the \APNAenergynb reachability game if, and only~if, she~wins in
+  the modified game~$G_{APNA}$ for the objective of reaching the target
+  set without visiting states where~$n=\bot$).
+\vskip 0.5cm  
+  Hardness results are obtained by setting the number\slash amount of
+  allowed violations to~zero, thereby recovering the classical
+  LU-energy reachability games, which we proved are PSPACE-complete
+  and EXPTIME-complete for one-player and two-player arenas,
+  respectively.  
+
+Solving \LVenergynb, \LVenergyconsnb, \LVenergysum games (without reachability objective) can be
+performed with arena $G_{APNA}$ built above. Now, the objective in \LVenergynb, \LVenergyconsnb, \LVenergysum games is to enforce infinite runs, that avoid states with $l=\bot$ and with $n=\bot,c=\bot,s=\bot$, depending on the chosen criterion on violation. Again, these strategies can be found in PSPACE for the one-player case, and in EXPTIME in the two-player case. For the hardness part, reduction from \LUenergy still works. 
+\end{proof}
+\vskip 0.5cm
+Given an arena $G$, a lower bound $L$, a soft upper bound $S$, and a maximal number of violations $V$ (resp. maximal number of consecutive violations, maximal sum of overloads), we know that the energy level cannot exceed $U_{max} = S + V \cdot w_{max}$. But, clearly this is an overestimation. Hence, the natural questions that arise now are \textit{Bound existence} and \textit{Minimization} question, defined in the introduction of the chapter. Let us now see what is the complexity of deciding these two questions in the next section.
+
+\section{Bound Existence and Minimization}
+When the strong upper bound~$U$ is not given, the existence problem
+consists in deciding if such a bound exist under which \Pl1 wins the \APNAenergyall game. We~have:
+
+
+\begin{theorem}
+\label{thm_Apnar_exists_min_exptimec}
+The existence problems for \LVenergynb, \LVenergyconsnb, and
+\LVenergysum (reachability) games are PSPACE complete for the
+one-player case and EXPTIME-Complete for the two-player case.
+\end{theorem}
+
+
+\begin{proof}
+ Given an arena $G$, a lower bound~$L$, a soft
+  upper bound~$S$, and a maximal number of violations $V$
+  (resp.~maximal number of consecutive violations, maximal sum of
+  overloads), we know that the energy level cannot exceed $U_{max}$ . Let~us build the expanded arena $G_{APNA}$ of
+  Theorem~\ref{thm_apna_LUHV_2P}. If there is a strategy in a
+  \LVenergynb reachability game, it will visit only states of $G$ with an energy level smaller than $U_{max}$ and with a number of
+  violations that cannot exceed~$V$. Hence, in $G_{LU}$, this
+  corresponds to a path visiting states of the form $(q,l,(n,c,s))$ in which $l \leq U_{\max}$, and $n\leq V$. Clearly, one can find a path from $(q_0,L,(0,0,0))$ to states of the form $(q_T, l, (n,c,s))$ in PSPACE. Similar reasoning holds for \LVenergyconsnb,\LVenergysum reachability games, considering the $c$ and $s$ component of states in $G_{APNA}$.
+
+For the two-player case, an attractor for $T$ in $G_{APNA}$ can be computed in polynomial time (but on an arena of exponential size w.r.t. $H_max$ and $V$). If state $(q_0,L,(0,0,0))$ appears in the attractor, then there exists a strategy to reach~$q_T$ without exceeding $U_{max}$, and with a number of violations $n$ is smaller than~$V$. So existence for \LVenergyconsnb in the two players setting is solvable in EXPTIME. Notice that the maximal energy level reached when using a strategy need not be $H_{max}$. As in the one-player case similar reasoning holds for \LVenergyconsnb,\LVenergysum reachability games, considering the $c$ and $s$ component of states in $G_{APNA}$.
+
+\input{chapters/chapter06/fig_lu_reduction_exist.tex}
+
+
+For the hardness part of the existence problem, we can transform a
+LU-energy reachability game with strong bounds $L,U$ into an existence problem for an \LVenergynb reachability game with upper bound $H$ and number of violations $V$. Let $G=(Q,E,w)$ be an arena, $t$ be a target state, $L,U$ be rational strong lower and upper bounds. As shown in Figure~\ref{fig_lu_reduction_exist}, we can choose a value $H>U$ and compute an arena $G'=(Q',E',w')$ where $Q' = Q \uplus \{q_h, q_t\}$, $E'=E \uplus \{ (t,q_H),(t,t),(q_H,q_t) \}$ and $w'(q,q') = w(q,q')$ if $(q,q')\in E$, $w'(t,t)=-1$, $w'(t,q_H)=H-L$ and $w'(q_H,q_t)=-H$. Then we set $V=1$, and choose $q_t$ as target state for an \LVenergynb reachability game. Every winning strategy for \Pl1 needs to use transition from $t$ to $q_H$, which causes a violation. Hence every winning strategy for \Pl1 needs to enforce a run from $q_0$ with initial energy budget $B_0$ to state $t$ without causing any violation of upper bound $U$. So, there exists $H$ allowing to find a strategy to win the \LVenergynb reachability game iff \Pl1 has a strategy for the initial LU game. The reduction works both in the one player and two-player setting, and for \LVenergyconsnb,\LVenergysum reachability games as well.
+
+\vskip 0.3cm
+Let us now address the existence question for \LVenergynb (resp. \LVenergyconsnb,\LVenergysum)  games without reachability objective. \Pl1 wins these games iff there exists an infinite path in which the number of violations (resp. the consecutive number of violations, the sum of violations) never exceeds $V$. As already before, the energy level in these runs cannot exceed $H_{max}$. So, cycles can be found in $G_{APNA}$ in PSPACE for the one player case and in EXPTIME for the two-player case. 
+
+\vskip 0.2cm
+For the hardness part, one can easily transform a LU-energy game into an existence question by choosing an arbitrary value $H$, and then building a graph $G_{red}$ by adding a pair of nodes $q_i,q_H$ to the arena, edges $(q_i,q_H), (q_H,q_0)$ with respective weights $+H,-H$, and imposing a number of violations $V=1$ (see Figure~\ref{fig_lu_reduction_exist_infrun}). Then, a maximal energy level greater than $H$ allows for a strategy in the 1 player \LVenergynb game iff the LU-energy game on $G$ has a solution, both for the one-player and two-players cases. 
+The reduction works similarly for \LVenergyconsnb,\LVenergysum games.
+
+\input{chapters/chapter06/fig_lu_reduction_exist_infrun.tex}
+
+\end{proof} 
+\vskip 1cm
+
+Now, we move to the minimization question. We have:
+\begin{theorem}
+\label{thm_minimization}
+Let $G$ be an arena, $L$ and $S$ be integer bounds, and $V_{\max}$
+be an integer. There exist algorithms that compute the value of $U$
+that minimizes the value of~$V$ for which \Pl1 has a winning
+strategy in a \LVenergyall(reachability) game.  These algorithm runs in PSPACE for 1-player games and in EXPTIME for two-player games. These bounds are sharp.
 \end{theorem}
 
 \begin{proof}
-	
+ Let us first consider \LVenergynb  reachability games.
+Given $H$, $V$, one can check in PSPACE for the single player version whether a solution exists without exceeding energy level $H$ nor bound $V$, and in EXPTIME fro the two-payer version. This can be done by computing an arena $G^{H}_{APNA}$ that has 
+maximal energy level $\min(H_{max},H)$ (where $H_{max} = U+V_{max} \cdot w_{max}$).
+
+To find the value for $H$ that minimizes $V$, we can first notice that, for $H'>H$, the minimal possible number of violations is smaller in $G^{H'}_{APNA}$ than in $G^{H}_{APNA}$, as increasing the value of energy threshold can only add new runs in the arena. 
+One can then perform a binary search for an optimal value in $[U,H_{max}]$. Given a tested value $K$, one can associate to each state $(q,E,v)$ of player 1 in the attractor of $T$ a value $v$ if $E\leq K$ or $\infty$ otherwise. Similarly, one can associates value $v$ to each state $(q,E,v)$ of \Pl2 where $E\leq K$ and which successors all have an energy level smaller than $K$, and $\infty$ otherwise. 
+%
+Then it suffices to find the path from $(q_0,B_0,0)$ to $T$ in the attractor which maximal violation level is minimal. 
+This can be done with a slight adaptation of Dijkstra's algorithm~\cite{Dijkstra59}, where the shortest distance only maintains the maximal violation value encountered from $(q_0,B_0,0)$ to the current state. This is done in polynomial time in the size of the attractor (which can be as large as arena $G_{\LVenergynb,H_{max}}$). 
+
+If the value found is $\infty$ for a search with energy bound $K$ in the attractor, then there is no way to win \LVenergynb with maximal number of overload $K$. Otherwise, one gets the optimal number of violations with this bound $K$. One can perform a binary search in $[U,H_{max}]$, by testing successive values for $K$. The number of violations in arena $G_{\LVenergynb,K}$ decreases as $K$ increases.
+If there is no solution for \LVenergynb with bound $K$ then the optimal value is higher than $K$. At every step, we hence search an optimal value in an interval $[K_{min}, K_{max}]$, which size id divided by 2 at each iteration of the binary search. We can return value $H=K_{min}$ as soon as the optimal number of violations is the same in $G_{\LVenergynb,K_{min}}$ and $G_{\LVenergynb,K_{max}}$.
+i.e. after a logarithmic (in $H_{max}-U$) number of steps.
+One can hence find optimal values for $V$ and $H$ in an arena in polynomial space for the one player version of the game and in EXPTIME for the two-players game.
+\vskip 0.5cm
+
+Let us now show that these bounds are sharp. 
+We add to the arena in the proof of thm.~\ref{thm_Apnar_exists_min_exptimec} (Figure~\ref{fig_lu_reduction_exist}) above a state $q_{2H}$ and a pair of transitions $(q_0,q_{2H}), (q_{2H},q_t)$ with weights $w'(q_0,q_{2H})= H$ and $w'(q_{2H},q_t)= H$. With these new moves, the minimal number of violations is $1$, with maximal energy $K=H$ if \Pl1 wins the LU-energy game, and \Pl2 with maximal energy $K=2H$ otherwise. Hence, finding the minimal values for $V,H$ is as hard as solving an LU-energy reachability game. The process to find a bound in \LVenergyconsnb, \LVenergysum reachability games is identical.
+
+The minimization problems in the 1 player setting for \LVenergynb, \LVenergyconsnb, and \LVenergysum games follow the same lines. 
+Given $V$ and $H$, one can check existence of a strategy for Player one in an $\LVenergy^X$ game (for $X\in \{nbV,\consnbV,\hV\}$) in PSPACE for the one player setting, and in EXPTIME for the two-payer setting. 
+If Player 1 has no winning strategy with bound $H_{max}$ then he has no winning strategy for larger values. 
+As for reachability games, we can show that the number of violations decreases when $H$ increases. 
+One can hence perform up to $\log(H_{max}-U)$ test to find the minimal value $H$ such that player 1 has a winning strategy for some bound $H$ and none for bound $H-1$. Hence, the minimization question is also in EXPTIME. 
+
+Let us now prove that this bound is tight. We reuse the same arena as the arena of Figure~\ref{fig_lu_reduction_exist_infrun} in the proof of Theorem~\ref{thm_Apnar_exists_min_exptimec}. We add two additional edges $(q_i,q_{2H})(q_{2H},q_{0H})$ with respective weights $2H$ and $B_0-2H$ and a loop on $q_{0H}$ of weight $0$ to arena $G_{red}$ above. Then  the answer to the minimization question, is $H$ if the 1 player LU-energy game has a solution and $2.H$ otherwise. This shows that minimization is as hard as solving an LU-energy game.
+
 \end{proof}
+
+\section{Conclusion}
+In this chapter, we have seen that all kind of APNA games are PSPACE-complete for the 1-player version and EXPTIME-complete for the 2-player versions. Then, we asked two natural questions: bound existence and minimization, both of which also turned out to have same complexity as the game problems, both for 1 and 2-player cases.
+
+
 
 
