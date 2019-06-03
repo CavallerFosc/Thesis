@@ -1,66 +1,241 @@
-In this chapter, we will see different quantitative games with single bound. \\
+In this section, we focus on the Energy-reachability games with one strong bound. Starting from $q_0$ with 0 energy level, \Pl1 has to reach $T$ in a path $\rho$, where at all the prefixes of $\rho$ energy level stays always over a strict lower bound or strict upper bound. W.L.O.G. we assume the strict bound is lower bound $L$ here and also, we can take $L=0$. We call these games as \Lenergy games. Note that, the infinite version of these games have been studied in ~\cite{BouyerFLMS08} and has been shown to be in PTIME for 1-player case and in NP $\cap$ coNP in 2-player case. We first check that, how the problem changes when we add reachability instead of infinite version of the game in the next section.
+\section{L-Energy Games: Infinite vs Reachability}
+We prove that \Lenergy-reachability and \Lenergy infinite games are inter-reducible.
+\vskip 0.3cm
+\begin{remark}
+These results were already proven in~\cite{Chatterjee0H17}; 
+our reduction follows the same ideas as in that paper, but
+we develop full and direct reductions back and forth. It is worth noticing that these results are not a direct consequence of
+the results of~\cite{ChatterjeeD12} about energy parity games:
+in~that paper, the~authors focus on the \emph{existence of an initial energy level} for which \Pl1 has a winning strategy with energy-parity objectives (which encompass our energy-reachability objectives). When the answer is positive, they can compute the minimal initial energy level for which a winning strategy exists, but the (deterministic) algorithm runs in exponential time.
+\end{remark}
+\vskip 0.3cm
 
-\section{Energy-Reachability Game}
-Given a game graph $G=\langle Q_1, Q_2, E, w, q_0, T \rangle$, with all usual notations, the energy-reachability objective is to reach the target states $T$ starting from $q_0$ in a path $\rho$, such that for all finite prefixes $\pi(\rho)$, $w(\pi) \geq 0$.\\
+\textbf{Reductions: }
+\vskip 0.2cm
 
-Now, given a game graph, the decision problem for this game is that if Player $1$ can win maintaining energy-reachability objective? We will prove the following theorem:\\
-\begin{theorem}
-\label{energy-reach-thm}
-The decision problem for Energy-Reachability game is in $NP \cap coNP$. For the lower bound, the problem is mean-payoff hard.
-\end{theorem}
-\begin{proof}
-We will prove that, energy-reachability game is equivalent to infinite-energy game by both side reduction. The theorem will be the consequence of the proof from ~\cite{BouyerFLMS08}.\\
 
-Given a game graph $G=\langle Q_1, Q_2, E, w, q_0\rangle$, with all usual notations, the decision problem for infinite-energy game asks, if player $1$ has a strategy such that with zero initial weight for any infinite play $\gamma$ from initial state $q_0$, if $w(\gamma^{\prime}) \geq 0$ for all finite prefixes $\gamma^{\prime}$ of $\gamma$? \\
-First we reduce the infinite-energy game to energy-reachability game.
-Consider a game graph $G=\langle Q_1, Q_2, E, w, q_0\rangle$. We produce another game graph $G^{\prime}=\langle Q_1, Q_2, E^{\prime}, w^{\prime}, q_0,T\rangle$, where we add a target vertex $T$. For every player $1$ vertex $v \in Q_1$, we add an edge $(v,T) \in E^{\prime}$ with $w^{\prime}(v,T) = -\delta$, where $\delta$ is larger than the sum of all the positive weights of the graph $G$. For, all other edges $e \in E$, we have the same corresponding edges $e^{\prime} \in E^{\prime}$ with $w^{\prime}(e^{\prime})= w(e)+ \epsilon$, where $\epsilon << 1/2n$, where $n$ is the total number of vertices. The overview of the construction is shown in Figure \ref{inf-reach}.
-\begin{figure}
-    \label{inf-reach}
-    \centering
-    \input{chapters/chapter03/inf-reach.tex}
-    \caption{Infinite-energy to Energy-reachability}
+First consider a two-player arena~$G=\{Q_1,Q_2,E\}$, an initial
+state~$q_{init}$, and an \Lenergy objective.  We~define a new
+arena~$G'=\{Q_1\cup Q_c\cup\{q_T\}, Q_2,E'\}$ (assuming~$q_T\notin Q$)
+where $Q_c=\{q_c\mid  q \in Q\}$ is a copy of all the vertices of~$G$.
+%
+Note that, $q_c$ is always a \Pl1 vertex; intuitively, states in~$Q_c$ are used to allow \Pl1 to stop the game and reach the target state~$q_T$, if enough energy has been stored.
+
+
+The set of transitions~$E'$ is obtained from~$E$ as follows
+(where the (positive)
+rational\footnote{Our definition of arenas do not allow for rational
+weights, but by scaling up all constants (including the energy
+bounds), we~get an equivalent instance of our problem with only
+integer bounds.}  value of~$\epsilon$ will be fixed later):
+\begin{itemize}
+\item for each $(q,w,q')\in E$, there is a
+  transition~$(q,w+\epsilon,q'_c)$ and $(q'_c,0,q')$ in~$E'$;
+\item for each~$q_c\in Q_c$, there is a transition~$(q_c,-\delta,q_T)$
+  in~$E'$, where $\delta=1+\sum_{(q,w,q')\in E} |w|$;
+\item finally, $E'$ contains an edge~$(q_T,0,q_T)$.
+\end{itemize}
+
+We~claim that \Pl1 has a winning strategy
+from~$q_0$ for the \Lenergy-reachability objective in~$G'$ if, and
+only~if, she has a winning strategy from~$q_0$ for the \Lenergy
+objective in~$G$.
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}[scale=1.3]
+    \begin{scope}
+    %% small game + transformation
+    \draw (-.1,.9) node {$G$};
+    \draw[rounded corners=5mm,grisc] (-.3,.1) -- (.6,1.2) -- (2.2,.6) -- (2,-1) -- (1,-1.3) -- (.1,-1.1) -- cycle;
+      \draw (1,.5) node[rond5,rouge] (a) {} node {$q_1$};
+       \draw (1,-.5) node[rond5,jaune] (c) {$q_2$};
+      \draw (a) edge[-latex',bend left] (c); % node[right]{$w_1$}(c);
+      \draw (c) edge[-latex',bend left] (a); %node[left]{$w_2$}(a);
+      \path (1,-1) node {weights~$w$};
+    \end{scope}
+
+    \begin{scope}[xshift=5cm]
+      \begin{scope}[xshift=-8mm]
+      \draw (-.1,.9) node {$G'$};
+        \draw[rounded corners=3mm,grisc] (-.3,.1) -- (.6,1.2) -- (1.5,.6) -- (1.3,-1) node[coordinate,pos=.3] (z) {} -- (.9,-1.3) -- (0,-1.1) --     cycle;
+       \draw (.8,.2) node[rond7,rouge] (a) {} node {$q_1$};
+       \draw (.8,-.8) node[rond7,jaune] (c) {} node {$q_2$};
+      \end{scope}
+       \draw (5.2,-.7) node[rond5,vert] (d) {} node {$q_T$};
+      \draw (d) edge[-latex',out=-30,in=30,looseness=6,densely dotted] node[right] {$0$} (d);
+    \draw[rounded corners=5mm,grisc] (2,.1) -- (2.9,1.2) -- (3.9,.6) -- (3.7,-1) node[coordinate,pos=.3] (z) {} -- (3.1,-1.3) -- (2.2,-1.1) --     cycle;
+      
+      \draw (2.9,.2) node[rond7,rouge] (a') {} node {$q_1^c$};
+       \draw (2.9,-.8) node[rond7,jaune] (c') {} node {$q_2^c$};
+      \draw (a) edge[-latex'] (c'); %node[above]{$w_1+ \epsilon$}(c');
+      \draw (c) edge[-latex'] (a'); %node[below]{$w_2+ \epsilon$}(a');
+      \path (a) edge node[opacity=.8,text width=1cm] {weights $w+\epsilon$} (c');
+      \draw (a') edge[out=45,in=135,densely dotted,looseness=1.2] (z);
+      \draw (c') edge[out=45,in=135,densely dotted,looseness=1.2] (z);
+      \draw (c') edge[bend left,-latex'] node[below left]{$0$}(c);
+      \draw (a') edge[bend right,-latex'] node[above left]{$0$}(a);
+      \draw (z) edge[densely dotted,-latex',out=-45] node[above right] {$-\delta$} (d);
+      \draw (d) edge[-latex',out=-30,in=30,looseness=6,densely dotted] node[right] {$0$} (d);
+      \end{scope}
+    \draw (2.5,0) edge[-latex',double] (3.5,0); 
+  \end{tikzpicture}
+  \caption{Schema of the reduction from \Lenergy to
+    \Lenergy-reachability objectives}\label{fig-redtoreach}
 \end{figure}
 
-If player $1$ has a strategy to win infinite-energy in $G$, then all the cycles player $1$ forces in the infinite winning path $\rho$ is either a positive or a zero cycle. The same path in $G^{\prime}$ will produce positive cycles for $\epsilon$. Hence, after a large number of iterations, player $1$, will have weight $\geq \delta$ in some of its vertex and then it can reach $T$ in $G^{\prime}$ and win energy-reachability. For the other side, let player $1$ has a winning strategy in energy-reachability in $G^{\prime}$. That means, in every winning path, at some player $1$ vertex it has weight $\geq \delta$, which is impossible without forcing a positive cycle as $\delta$ is large enough. Hence, iterating the same cycle player $1$ wins infinite-energy game in $G$.\\
-Now, we will show the opposite reduction i.e. from energy-reachability to infinite-energy. Again consider, a game graph $G=\langle Q_1, Q_2, E, w, q_0, T\rangle$. We produce another game graph $G^{\prime}=\langle {Q_1}^{\prime}, {Q_2}^{\prime}, E^{\prime}, w^{\prime}, q_0\rangle$, where we add a self loop of weight $0$ on $T$ and we keep only those vertices and corresponding edges in $G^{\prime}$ which are in the attractor set of $T$ in $G$. Clearly, if player $1$ wins energy-reachability in $G$, he wins infinite-energy in $G^{\prime}$ by taking the zero loop in $T$ after reaching there. The other direction is also true as if player $1$ wins infinite energy in $G^{\prime}$, either he takes the loop in $T$ or he goes into a positive loop inside. If he reaches $T$, he wins energy-reachability in $G$ trivially. If he can loop inside, as the graph is restricted to attractor set of $T$, he can force to reach $T$ and win energy-reachability in $G$. Hence, it is proved that, both the games are equivalent complexity -wise.
-\end{proof}
+First assume that \Pl1 has a winning strategy~$\sigma$ in~$G$ for
+the \Lenergy objective; then we~can assume that this strategy is
+memoryless~\cite{BouyerFLMS08}; we~define the strategy~$\sigma'$ as follows:
+for any state~$q$ of~$G$, letting $q'=\sigma(q)$, we define
+$\sigma'(\pi\cdot q)=q'_c$, and
+\[
+\sigma'(\pi \cdot q \cdot q'_c)= \begin{cases}
+  q' & \text{ if $|\pi|\leq \frac{\delta}{2 \epsilon} -1$} \\
+  q_T & \text{ otherwise.}
+  \end{cases}
+\]
+Obviously, any outcome~$\mu'$ of~$\sigma'$ from~$q_0$
+reaches~$q_T$. First note that, by~construction of~$\sigma'$, the~prefix~$\nu'$
+of~$\mu'$ just before reaching~$q_T$ has odd length, say of length $2n-1$. Also note that it corresponds to an outcome~$\nu$
+of~$\sigma$ in~$G$ of length $n$. Since~$\sigma$ is assumed winning, $\nu$~must be
+L-feasible; moreover, we~have
+\[
+\tilde\nu'_{2i}=\tilde\nu'_{2i-1} = \tilde\nu_i + i\cdot\epsilon.
+\]
+for all $0\leq i<n$.  Now, $\tilde\nu_i\geq L$ for all~$i$,
+since $\nu$ is an outcome of~$\sigma$, so that also $\tilde\nu'_i\geq L$ for all~$i$. Moreover, $|\nu'|=
+\frac{\delta}{2 \epsilon} -1$ implies that, $|\nu|=
+\delta/\epsilon$, so that $\tilde\nu'_{2n-1} \geq L+\delta$, and
+$\tilde\mu'_{2n}\geq L$. It~follows that $\sigma'$ is winning in~$G'$
+for the \Lenergy-reachability objective.
 
-\section{Finite Mean-Payoff Reachability}
-In this section, we will take the mean-payoff function as our quantitative function. In general mean-payoff is used in theory mostly for the case of infinite games, but in this thesis we restrict ourselves to reachability, hence finite games. For this reason, we will define a notion of mean payoff for the finite case:\\
-\vskip 0.5cm
-Given a game graph $G=\langle Q_1, Q_2, E, w, q_0,T\rangle$ and a bound $b \in \mathbb{N}$, the decision problem for finite mean-payoff reachability game asks, starting from $q_0$ with zero initial weight, if player $1$ has a strategy to reach $T$ in some path $\gamma$ such that, for all finite prefixes $\gamma^{\prime}$ of $\gamma$, if $MP(\gamma^{\prime}) \lesseqgtr b$? We will only consider the case of  $MP(\gamma^{\prime}) \leq b$ here. The other case is just the dual. Remember that, for a prefix $\gamma^{\prime}= q_0,q_1,\ldots q_l$, $MP(\gamma^{\prime})= (1/l) \cdot \Sigma_{i=0}^{l-1} w(q_i,q_i+1)$.\\ Now, we will prove the following result about the finite mean-payoff reachability game:\\
+
+\smallskip
+Conversely, assume that \Pl1 wins the \Lenergy-reachability game~$G'$,
+and write~$\sigma'$ for a winning strategy in~$G'$ from~$q_0$.  We~may
+assume that no negative cycle occurs along any outcome of~$\sigma'$:
+indeed, consider the (finite) execution tree of~$\sigma'$, and assume
+that it involves a negative cycle starting and ending at some
+state~$q$; then there must exists a subtree rooted at~$q$ which
+contains no other occurrences of~$q$; by~redefining~$\sigma'$ so as to play as in this subtree after any occurrence of~$q$, we~remove all occurrences of our negative cycle, while preserving reachability of~$q_T$ and still satisfying the energy constraint (since removing negative cycles may only increase the energy level).
+
+Now, take any outcome~$\rho'$ of~$\sigma'$ from~$q_0$, it~must
+eventually reach~$q_T$. First note that, any prefix of $\rho'$ looks like $q_0 {q_1}^c q_1 \ldots q_T$. Hence, if we take any prefix $\pi'$ of $\rho'$ before reaching $q_T$ and drop the alternate vertices, we get a corresponding path in $G$. Now, as $\rho'$ eventually reaches $q_T$ and since the~edge leading to~$q_T$ has weight~$-\delta$, a~positive cycle must have been visited along~$\rho'$ in~$G'$. From~$\sigma'$, we~can then build a strategy~$\sigma$ that, intuitively, repeats the first positive cycle it~visits(after dropping the alternate vertices). Formally, 
+$\sigma(\pi. q)= q'$ if $\sigma'(\pi',q)= q'_c$ where $\pi$ is obtained dropping alternate vertices from $\pi'$ and $\pi'$ contains no positive cycle.
+When $\pi$ is a run of the form $\pi=\rho_1.\beta_1 \dots \beta_{k-1}.\rho_k$, where each $\beta_i$ is a positive cycle, 
+we take $\sigma(\rho_1.\beta_1)=\sigma(\rho_1)$.
+
+The~resulting strategy~$\sigma$ then never takes the
+edge to~$q_T$, since it only plays moves returned by~$\sigma'$ along
+outcomes that do not contain positive cycles. Moreover, all simple
+cycles generated by~$\sigma$ in~$G'$ are positive cycles; by~taking
+$\epsilon<\frac 1{|Q|+1}$, these cycles still are positive cycles
+in~$G$, so that $\sigma$~is winning in~$G$ for the \Lenergy objective.
+
+\medskip
+
+We now prove the converse reduction, which relies on similar ideas:
+we~consider a two-player arena~$G=\{Q_1,Q_2,E\}$, an initial
+state~$q_{init}$, and an \Lenergy-reachability objective; we~assume
+without loss of generality that there is a unique target state~$q_T$, and write $Attr_{1}(q_T)$ for the \Pl1-attractor of~$q_T$ in~$G$. We~build (in polynomial time) a two-player
+arena~$G'=\{Q'_1,Q'_2,E'\}$ from~$G$ as follows:
+\begin{itemize}
+\item $Q'_1=(Q_1\cap Attr_1{(q_T)})\cup\{q'_{init}, q_s\}$ and $Q'_2=Q_2$.
+  State~$\qinit$ will serve as the new initial state, and $q_s$ is a sink state;
+
+\item letting $E_0=\{(q,w-\epsilon,q') \mid (q,w,q')\in E \text{ and }
+  q\in Q'_1\cup Q'_2\setminus\{q_T\}\}
+  \cup \{(q_T,0,q_T), (q_s,-1,q_s)\} \cup\{(q'_{init},q)\mid
+  q\in \{q_{init}\}\cap \Attr1(q_T)\}$, we~define
+  $E'=E_0 \cup \{(q,0,q_s) \mid qE_0=\emptyset\}$. This way, all states
+  have an outgoing edge, possibly to the sink state if no other
+  transitions exist.
+\end{itemize}
+
+Again, the exact value of~$\epsilon$ will be fixed below.
+We~prove that \Pl1 wins the \Lenergy-reachability game in~$G$
+from~$q_{init}$ if, and only~if, she~wins the \Lenergy game in~$G'$
+from~$q'_{init}$.
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}[scale=1.3]
+    \begin{scope}
+    \draw (-.1,.9) node {$G$};
+    \draw[rounded corners=5mm,grisc] (-.3,.1) -- (.6,1.2) -- (2.2,.6) -- (2,-1) -- (1,-1.3) -- (.1,-1.1) -- cycle;
+      \path (1,-.8) node {weights $w$};
+      \draw (.5,.5) node[rond5,jaune] (a) {} node {$q_i$};
+      \draw (1.5,.4) node[rond5,jaune] (b) {};
+      \draw (1.0,-.3) node[rond5,vert] (c) {} node {$q_T$};
+      \draw (a.-135) edge[latex'-] +(-135:3mm);
+      \draw (a) edge[-latex',bend left] (b);
+      \draw (b) edge[-latex',bend left] (a);
+      \draw (b) edge[-latex'] (c);
+      \draw (c) edge[-latex'] (a);
+      \draw (c) edge[-latex',out=-140,in=160,looseness=6] (c);
+    \end{scope}
+%
+    \begin{scope}[xshift=6cm]
+    \draw (-.1,.9) node {$G'$};
+    \draw[rounded corners=5mm,grisc] (-.3,.1) -- (.6,1.2) -- (2.2,.6) -- (2,-1.2) node[coordinate,pos=.3] (z) {} -- (1,-1.3) -- (.1,-1.2) -- cycle;
+    
+      \path (1,-.9) node[text width=1.9cm,align=center] {weights $w'=w-\epsilon$};
+      \draw (.5,.5) node[rond5,jaune] (a) {} node {$q_i$};% node {$q_0$};
+      \draw (1.5,.4) node[rond5,jaune] (b) {};
+      \draw (2.5,.7) node[rond5,jaune] (s) {$q_s$};
+      \draw (1.0,-.3) node[rond5,vert] (c) {} node {$q_T$};
+      \draw (-.5,-.4) node[rond5,rouge] (d) {} node {$q_i'$};
+      \draw (d.-135) edge[latex'-] +(-135:3mm);
+      \draw (a) edge[-latex',bend left] (b);
+      \draw (b) edge[-latex',bend left] (a);
+      \draw (b) edge[-latex'] (c);
+      \draw (b) edge[-latex', dotted, bend right] (s);
+      \draw (a) edge[-latex', dotted, bend left] (s);
+      \draw (c) edge[-latex', dotted, bend right] (s);
+      \draw (s) edge[-latex',out=10,in=-50,looseness=6,densely dotted] node[right] {$-1$} (s);
+      \draw (c) edge[-latex',out=10,in=-50,looseness=6,densely dotted] node[right] {$0$} (c);
+      \draw (d) edge[-latex',densely dotted] node[below right=-1mm] {$1$} (a);
+    \end{scope}
+    \draw (3.2,0) edge[-latex',double] (4.2,0); 
+  \end{tikzpicture}
+  \caption{Schema of the reduction from \Lenergy-reachability to
+    \Lenergy objectives}\label{fig-redfromreach}
+\end{figure}
+
+
+
+For the first direction, if \Pl1 has a winning strategy to reach~$q_T$ from~$q_0$ in~$G$ while maintaining the energy level above~$L$, then she has such a strategy~$\sigma$ along whose outcomes the energy level is bounded above by~$L+2\delta$ (where $\delta=1+\sum_{(q,w,q')\in E}|w|$):
+indeed, if energy level~$L+\delta$ is reached along some outcome, 
+then \Pl1 can achieve the reachability objective
+by playing her memoryless \emph{attractor strategy}.
+Choosing the attractor strategy ensures reaching~$q_T$,
+and will decrease the energy level by at most $\delta$ along any outcome.
+Similarly, following the attractor strategy can increase the energy level by no more than~$\delta$.
+%}  
+Similarly,
+strategy~$\sigma$ can be assumed to yield no negative cycles, so that
+we can bound the length of the outcomes 
+  by~$(\delta+1)\cdot |Q|$. Now,
+by taking $\epsilon<\frac1{(\delta+1)\cdot |Q|}$, we~can mimic
+strategy~$\sigma$ in~$G'$: all~outcomes only visits states in the
+attractor of~$q_T$, and reach~$q_T$ in at most $(\delta+1)\cdot |Q|+1$
+steps (the~extra step is the transition from~$\qinit'$ to~$\qinit$). The
+$\epsilon$ difference in the weights is compensated by the initial
+credit~$1$ harvested when moving from~$\qinit'$ to~$\qinit$, so that all
+outcomes satisfy the \Lenergy constraint.
+
+Conversely, if~\Pl1 has a winning strategy~$\sigma'$ from~$q'_{init}$ in~$G'$, then we~can assume that this strategy is
+memoryless~\cite{BouyerFLMS08}. Some~of the outcomes may reach~$q_T$, some may~not. Since~$\sigma'$ is memoryless, it~cannot take any negative cycle, as this would yield an outcome whose energy level tends to~$-\infty$. Hence it may only take non-negative cycles in~$G'$, which correspond to positive cycles in~$G$ (since~$\epsilon>0$). As~a consequence, when mimicking~$\sigma'$ in~$G$, for those outcomes that
+do not reach~$q_T$, the~energy level will grow arbitrarily high; when it~exceeds~$\delta$, \Pl1 can play her attractor-strategy to
+reach~$q_T$. This concludes our proof for two-player games.
+\vskip 1cm
+
+Now that, we have shown that for \Lenergy games, infinite and reachability versions are inter-reducible, from ~\cite{BouyerFLMS08} we can state the following theorem:
 \begin{theorem}
-\label{fin-meanpayoff-thm}
-The decision problem for finite mean-payoff reachability game is in $NP \cap coNP$ and also mean-payoff hard. 
+\label{thm_reachability_games}
+Two-player \Lenergy-reachability games are decidable in NP $\cap$ coNP. The one-player version is in PTIME.
 \end{theorem}
-\begin{proof}
-We will reduce this game to and from energy-reachability game. As usual, we consider a game graph\\ $G=\langle Q_1, Q_2, E, w, q_0,T\rangle$. We produce another game graph, $G^{\prime}=\langle Q_1, Q_2, E, w^{\prime}= b-w (\text{or } w-b, \text{accordingly}), q_0,T\rangle$. We claim that, player $1$ wins energy-reachability in $G$ iff he wins finite mean-payoff reachability in $G^{\prime}$ and also vice-versa. This will prove that, energy-reachability is equivalent to mean-payoff reachability complexity-wise. The result of the theorem will be then the consequence of Theorem \ref{energy-reach-thm}\\
-First we prove the reduction from energy reachability to mean-payoff reachability. The opposite reduction will be exactly similar. Let player $1$ has a winning strategy $\lambda$ in $G$ for energy reachability. That means, for all the path $\rho$ conforming $\lambda$, reaches $T$ and for all finite prefixes $\rho^{\prime}$ of $\rho$, $w(\rho)\geq 0$. Consider such a prefix $q_0,q_1,\ldots q_l$. We have, $\Sigma_{i=0}^{l-1} w(q_i,q_{i+1}) \geq 0$. Now, let in $G^{\prime}$, also player $1$ plays with same strategy $\lambda$. Now, for the same prefix, mean-payoff will be:
-\begin{align}
-\notag
-\centering
-MP(\rho^{\prime})&= (1/l)\Sigma_{i=0}^{l-1} w^{\prime}(q_i,q_{i+1})\\
-&=(1/l)\Sigma_{i=0}^{l-1} (b- w(q_i,q_{i+1}))\\
-&=(1/l)(lb- \Sigma_{i=0}^{l-1} w(q_i,q_{i+1})\\
-&=b- (1/l)\Sigma_{i=0}^{l-1} w(q_i,q_{i+1})\\
-&\leq b
-\end{align}
 
-
-Hence, player $1$ wins in finite mean-payoff reachability objective in $G^{\prime}$. The other proofs can be obtained similarly.\\
-Hence, we prove that, finite mean-payoff reachability is equivalent to energy-reachability.
-
-\end{proof}
-
-\section{Finite Total Payoff Reachability}
-Now, it comes down to the final quantitative function we are concerned with in this thesis, which is total payoff. Given a game graph $G=\langle Q_1, Q_2, E, w, q_0,T\rangle$ and a bound $b \in \mathbb{N}$, the decision problem for finite total payoff reachability game asks, starting from $q_0$ with zero initial weight, if player $1$ has a strategy to reach $T$ in some path $\gamma$ such that, for all finite prefixes $\gamma^{\prime}$ of $\gamma$, if $TP(\gamma^{\prime}) \lesseqgtr b$? We will only consider the case of  $TP(\gamma^{\prime}) \geq b$ here. The other case is just the dual. Remember that, for a prefix $\gamma^{\prime}= q_0,q_1,\ldots q_l$, $TP(\gamma^{\prime})= \Sigma_{i=0}^{l-1} w(q_i,q_i+1)$. Note that, energy-reachability is just a special case of total payoff reachability, where $b=0$. We will show that, it is equivalent to energy-reachability game. From that, the following theorem is evident:\\
-\begin{theorem}
-\label{fin-totalpayoff-thm}
-The decision problem for finite total payoff reachability game is in $NP \cap coNP$ and also mean-payoff hard. 
-\end{theorem}
-\begin{proof}
-\huge\fcolorbox{blue}{red}{Incomplete}
-\end{proof}
 
 \section{Conclusion}
-This brings us to the end of the Quantitative Reachability Games with Single Bounds. We showed that, all the reachability games with single bounds (for the quantitative functions we are concerned with in this thesis) are equivalent to energy-reachability game which is complexity-wise equivalent to infinite energy games. So, we have $NP \cap coNP$ complexity for all of them. For the lower bound also, all of them are at least mean-payoff hard. Next we move to the chapters for the similar kind of games with two bounds. 
+This brings us to the end of the Energy Reachability Games with Single Bounds. In this chapter we showed that, replacing infinite objective with reachability for \Lenergy games does not change the complexity. Hence, we have NP $\cap$ coNP complexity for this kind of games. In the next chapter, we move to the case for the similar energy games but with two bounds. 

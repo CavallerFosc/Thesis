@@ -1,66 +1,116 @@
 \section{Definitions}
 
-\textbf{Game graphs.}  A \textit{game graph} $G= \langle Q,E,w \rangle$ consists of a finite set $Q$ of states partitioned in to player-$1$ states $Q_1$ and player-$2$ states $Q_2$ (i.e., $Q = Q_1 \cup Q_2$), and a set $E \subseteq Q \times Q$ of edges such that for all $q \in Q$, there exists (at least one) $q^{\prime} \in Q$ such that $(q, q^{\prime}) \in E$. A player-$1$ game is a game graph where $Q_1 = Q$ and $Q_2 = \phi$. A special subset $T \subseteq Q$ of vertices is known as the \textit{Target states} or the \textit{Goal states}. Now, $w : E \rightarrow \mathbb{R}$ is the weight function such that $w(q_j,q_{j+1})$ is the weight of the edge between the vertices $q_j$ and $q_{j+1}$ \\
-\vskip 0.6cm
+\textbf{\textit{Game arenas, Plays and Strategies.}}
+A \textit{two-player arena} is a $3$-tuple $G=\{Q_1,Q_2,E\}$ where
+$Q=Q_1\uplus Q_2$ is a set of states, $E\subseteq Q \times \mathbb{Z}\times Q$ is a set of weighted edges.
+For~$q\in Q$, we~let $qE=\{(q,w,q')\in E
+\mid w\in\mathbb{Z},\ q'\in Q\}$, which we assume is non-empty for any~$q\in Q$.
+%
+A~one-player arena is a two-player arena where $Q_2=\emptyset$.
 
+\vskip 0.1cm
+Consider a state~$q_0\in Q$.  A \emph{finite path} in an arena~$G$ from an initial state~$q_0$ is an finite sequence of edges $\pi = (e_i)_{0\leq i< n}$ such that for every $0\leq i<n$, writing $e_i=(q_i,w_i,q'_i)$, it~holds $q'_i=q_{i+1}$.  Fix a path $\pi =
+(e_i)_{0\leq i< n}$.  Using the notations above, we~write $|\pi|$ for its size~$n$ of~$\pi$, $\hat\pi_i$~for the $i$-th state~$q_i$ of~$\pi$ (with the convention that $q_n=q'_{n-1}$), and $first(\pi)=\hat\pi_0$ for its first state and $last(\pi)=\hat\pi_n$ for its last state. The~empty path is a special finite path from~$q_0$; its~length is~zero, and $q_0$ is both its first and last state.
+%
+Given two finite paths~$\pi=(e_i)_{0\leq i<n}$ and~$\pi'=(e'_j)_{0\leq j\leq n'}$ such that $last(\pi_1)=first(\pi_2)$, the concatenation~$\pi_1\cdot\pi_2$
+is the finite path $(f_k)_{0\leq k<n+n'}$ such that $f_k=e_k$ if~$0\leq k<n$ and $f_k=e'_{k-n}$ if $n\leq k<n+n'$.
 
-\textbf{Plays and strategies.} A game on $G$ starting from a state $q_0 \in Q$ is played in rounds as follows. If the game is in a player-$1$ state, then player $1$ chooses the successor state from the set of outgoing edges; otherwise the game is in a player-$2$ state, and player $2$ chooses the successor state. We always consider the reachability game, i.e. this ends as soon as any vertex from the set $T$ has been reached. The game results in a play from $q_0$ , i.e., a finite path $\rho = q_0 q_1 \ldots q_n$ such that $q_n \in T$ \& $(q_i , q_{i+1}) \in E$, $\forall i \geq 0$. \\
-A strategy for player $1$ is a function $\sigma : Q^{*} Q_1 \rightarrow Q$ such that $(q, \sigma(\rho . q)) \in E$,
-$\forall q \in Q_1$ and all $\rho \in Q^{*}$. An outcome of $\sigma$ from $q_0$ is a play $q_0 q_1 \ldots$ such that $\sigma(q_0 \ldots q_i) = q_ {i+1}$ for all $i \geq 0$ such that $q_i \in Q_1$ . Strategy and outcome for player 2 are defined analogously.\\
+\vskip 0.1cm
+For~$0\leq k\leq n$, the $k$-th prefix of~$\pi$ is the finite path
+$\pi_{<k}=(e_i)_{0\leq i< k}$.  We~write $\FPath(G,q_0)$ for the set of finite paths in~$G$ issued from~$q_0$ (we~may omit to mention~$G$ in this notation when it is clear from the context).  Infinite paths are defined analogously; we~write $\Path(G,q_0)$ for the set of infinite paths from~$q_0$.
+
+\vskip 0.1cm
+A~\emph{strategy} for \Pl1 (resp.~\Pl2) from~$q_0$ is a function~$\sigma\colon \FPath(q_0)\to E$ associating with any finite path~$\pi$ with $last(\pi)\in Q_1$ (resp.~$last(\pi)\in Q_2$) an edge originating from~$last(\pi)$. 
+%
+A~strategy is said~\emph{memoryless} when $\sigma(\pi)=\sigma(\pi')$ as soon as $last(\pi)=last(\pi')$.
+\vskip 0.1cm
+A~finite path $\pi = (e_i)_{0\leq i<n}$ \emph{conforms} to a
+strategy~$\sigma$ of \Pl1 (resp.~of~\Pl2) from~$q_0$ if
+$first(\pi)=q_0$ and for every $0\leq k<n$, either
+$e_{k}=\sigma(\pi_{<k})$, or $last(\pi_{<k})\in Q_2$
+(resp.~$last(\pi_{<k})\in Q_1$).  This is extended to infinite paths in the natural way. Given a strategy~$\sigma$ of~\Pl1 (resp.~of~\Pl2) from~$q_0$, the outcomes of~$\sigma$ is the set of all paths $\pi$ issued from~$q_0$ that conform to~$\sigma$.
+\vskip 0.1cm
+A \textit{game} is a triple~$(G,q_{init},O)$ where $G$ is a two-player arena, $q_{init}$ is an initial state in~$Q$, and $O \subseteq \Path(G,q_{init})$ is a set of infinite paths (for~\Pl1), also called \emph{objective}.
+A~strategy for \Pl1 from~$q_{init}$ is winning in~$(G,q_{init},H)$ if its infinite outcomes all belong to~$O$.
 \vskip 0.6cm 
 
 
-\textbf{Payoff functions.} We consider two different payoff functions:
+\textbf{\textit{Payoff functions.}} Payoff functions are defined from the set of finite paths to integers. Many types of payoff functions have been considered in the literature. In this thesis we mainly focus on \textit{Total-payoff} as a payoff function. We also talk about \textit{Mean-payoff} and show how it relates to energy in our game settings.
 \begin{itemize}
-	\item \textit{Finite Total payoff.} For a finite path $p=q_0 q_1 \ldots q_l$, the total payoff of the path $p$ is defined as, $TP(p)= \sum_{i=0}^{l-1} w(q_i,q_{i+1})$.
+	\item \textit{Total payoff.} For a finite path $\rho = (e_i)_{0\leq i< n}  \in \FPath$, where $e_i=(q_i,w_i,q'_i)$ the total payoff of the path $\rho$ is defined as, $TP(\rho)= \sum_{i=0}^{n} w_i$.
 
-	\item \textit{Finite Mean payoff.} For a finite path $p=q_0 q_1 \ldots q_l$, the mean payoff of the path $p$ is defined as, $MP(p)= (1/l) \cdot \sum_{i=0}^{l-1} w(q_i,q_{i+1})$.
+	\item \textit{Finite Mean payoff.} For a finite path $\rho$ in its usual notation, the mean payoff of the path $\rho$ is defined as, $MP(\rho)= \frac{1}{n}\cdot TP(\rho)$.
 \end{itemize}
 \vskip 0.6cm
 
 
-\textbf{Bounds on weights.} We consider two kinds of bounds, strong and week bounds:
+\textbf{\textit{Bounds on weights.}} Normally the bounds we deal with in the literature are strong bounds in the sense that they are strict and can not be violated once imposed. We use these bounds on the payoff functions of a path. Fix a payoff function, let's say total payoff. Here in this thesis, we will deal with three kinds of bounds in our game settings. :
 \begin{itemize}
-	\item \textit{Strong bounds.} This is the usual notion of bounds used in literature. Weight of a path $p$ is strongly\\
-	 bounded(upper or lower) by $B$ means, for every finite prefix $\pi$ of the path $p$, $w(\pi) \gtreqless B$.
+	\item \textit{Strong bounds.} As mentioned earlier, this is the usual notion of bounds used in literature. $TP$ of a path $\rho$ is strongly upper bounded(resp. lower) by $B$ means $TP(\rho) \leq B$(resp. $\geq B$).
 
-	\item \textit{Weak bounds.} This is a new notion of boundedness. Weight of a path $p= s_1 \rightarrow s_2 \rightarrow \ldots \rightarrow s_n$, starting from $s_1$ with $c \in \mathbb{R} \cup \{- \infty \}$ as a lower weak bound is defined inductively by $r_1 = max(0, c),\  r_{i+1} = max(r_i + w(s_i, s_{i+1}), c)$. The notion of weak upper bound is analogously defined.\\
+	\item \textit{Weak bounds.} Now, we introduce a notion of relaxing a bound calling it as weak bound. W.L.O.G, let's consider upper bound as weak. $TP$ of a finite path $\rho =q_0 \cdot q_1, \cdots q_n $ in usual notation is weakly upper bounded by $W$ is defined as, $TP_1=0, TP_{i+1}= min(TP_i+w_{i}, W)$. The notion of weak lower bound is analogously defined.\\
 
-	So for computing $w\downarrow_{c}(p)$, costs are accumulated along the transitions of $p$, but if at some point it goes down below $c$. it is reset to $c$ i.e. all possible decreases below $c$ are simply discarded.
+	So for computing $TP\uparrow_{W}(\rho)$, costs are accumulated along the transitions of $\rho$, but if at some point it goes above $W$. it is reset to $W$ i.e. all possible increases above $W$ are simply discarded.
+	
+	\item \textit{Soft bounds.} In this thesis, we introduce another notion of relaxation of bound and name it as soft bound. Again, let's consider the soft upper bound only, the lower bound will be analogous. The notion of soft upper bound is, it can be violated but the violation is bounded.
 \end{itemize}
 \vskip 0.6cm
 
-\textbf{Finite Memory\& Memoryless strategies.} A strategy for $P1$, $\sigma : Q^{*} Q_1 \rightarrow Q$ is called a \textit{finite-memory} strategy if every move depends on finite amount of history. The strategy is called a \textit{memoryless} one, if it does not depend on the whole history and only depends on the current state he is in. Hence, a memoryless strategy can be seen as a function $\sigma:Q_1 \rightarrow Q$. The definitions are analogous for $P2$.
+\textbf{\textit{Finite Memory \& Memoryless strategies.}} Memory plays a very important role in Games. However, we only need to understand basic notions of finite memory strategies and memoryless ones for this thesis. A strategy for a player, $\sigma : Q^{*} Q_{player} \rightarrow Q$ is called a \textit{finite-memory} strategy if every move depends on finite amount of history. The strategy is called a \textit{memoryless} one, if it does not depend on the whole history and only depends on the current state he or she is in. Hence, a memoryless strategy can be seen as a function $\sigma:Q_{player} \rightarrow Q$.
 \vskip 0.6cm
 
-\textbf{Objectives.} In this thesis, we will focus on \textit{quantitative-reachability} objectives. We consider two kinds of quantitative functions $f: \varrho \rightarrow \mathbb{N}$, where $\varrho$ denotes the set of all finite paths in the corresponding game graph $G$\\
-\begin{itemize}
-\item[--] \textit{Total Payoff.} Total payoff function of a path $\rho= s_1 \rightarrow s_2 \rightarrow \ldots \rightarrow s_n$ is defined as $TP(\rho)= \sum_{i=1}^{n-1} w(s_i,s_i+1)$.\\
-\item[--] \textit{Mean Payoff.} Mean payoff function of a path $\rho= s_1 \rightarrow s_2 \rightarrow \ldots \rightarrow s_n$ is defined as $MP(\rho)= (1/n)\sum_{i=1}^{n-1} w(s_i,s_i+1)$.\\
+\textbf{\textit{Objectives.}} In this thesis, we will focus on a mixture of quantitative and qualitative objectives. The quantitative objective we name as \textit{Energy objective}, which can be stated as follows, given single/dual strong/weak bounds, a path $\rho$ will be winning in energy objective if starting from a designated initial vertex $q_{init}$ with the lower bound $L$ as the initial energy level $L + TP(\pi)$ will be always in the bound for any prefix $\pi$ of $\rho$. On the other hand the qualitative objective here is the reachability objective that says a path is winning if it ends in the designated target vertex(or one of the vertices) $q_T$.\\
+\begin{remark}
+Taking $L$ as the initial energy level results in no loss of generality, since any energy level can be obtained by adding a new initial vertex with an initial transition from $(q_0,L)$.
+\end{remark}
+\vskip 0.6cm
 
-\end{itemize}
- We will look at the two kind of objectives:\\
- \begin{itemize}
- \item \textit{Single Bound Objectives.} Given a game graph $G$, a starting vertex $q_0$ and a target vertex $t$, a quantitative function $f$ and a bound $b \in \mathbb{N}$, single bound objective of $P1$ asks that, if starting from $q_0$, $P1$ can reach $t$ in a path $\rho$, such that $f(\rho) \lessgtr b$.
- 
- \item \textit{Dual Bound Objectives.} Given a game graph $G$, a starting vertex $q_0$ and a target vertex $t$, a quantitative function $f$ and two bounds $U\  \& \ L \in \mathbb{N}$, single bound objective of $P1$ asks that, if starting from $q_0$, $P1$ can reach $t$ in a path $\rho$, such that $L \leq f(\rho) \leq U$. \\
-\vskip 1cm
-Note that, these bounds are kind of strong on the both upper and lower side. Hence, we are going to call these \textit{Strong Dual Bound Objectives}. Consequently, it is obvious that, we are going to define the notion of \textit{Weak Dual Bound Objectives} as follows:
+\textbf{\textit{Different Games.}} Now, we state what kinds of games we are going to deal with in this thesis. On the basis of bounds and objectives, we are going to analyze the following four kinds of games:
+\begin{itemize}
+\item \textit{Energy Reachability Games with Single Bound} Given a game graph $G$, a starting vertex $q_0$ and a target vertex $q_T$, and a strong lower bound(w.l.o.g) $L \in \mathbb{Z}$, ER Game with single bound asks that, if starting from $q_0$ with $L$ initial energy if \Pl1 can reach $q_T$ in a path $\rho$, such that energy level at every prefix $\pi$ of $\rho$ remains $\geq L$.
 \vskip 0.5cm
-\textit{Weak Dual Bound Objectives.} Let $A$ be a weighted graph. $c \in \mathbb{R} \cup \{- \infty\}$
-and let $\gamma =s_1 \rightarrow s_2 \rightarrow \cdots \rightarrow s_n \in Runs(A)$, starting from $s_1$. The accumulated weight with
-initial credit 0 under weak lower bound $c$ is $w\mathord{\downarrow}_{c}(\gamma) = r_n$, where $r_1, \ldots, r_n \in \mathbb{R}$
-are defined inductively by $r1 = max(0,c), r_{i+1} = max(r_i + w(s_i, s_{i+1}), c)$.\\
-So for computing $w\downarrow_{c}(\gamma)$, costs are accumulated along the transitions of $\gamma$,
-but if at some point it goes down below $c$. it is reset to $c$  i.e. all possible decreases below $c$ are
-simply discarded. \\
+\item \textit{Energy Reachability Games with Strong Dual Bounds.} Given a game graph $G$, a starting vertex $q_0$ and a target vertex $q_T$, a strong lower bound $L$ and a strong upper bound $U$, ER Game with strong dual bounds asks that, if starting from $q_0$ with $L$ initial energy if \Pl1 can reach $q_T$ in a path $\rho$, such that energy level at every prefix $\pi$ of $\rho$ remains in the interval $[L,U]$.
+\vskip 0.5cm
+\textit{Energy Reachability Games with Weak Dual Bounds.} Given a game graph $G$, a starting vertex $q_0$ and a target vertex $q_T$, a strong lower bound $L$ and a weak upper bound $W$(w.l.o.g.), ER Game with weak dual bounds asks that, if starting from $q_0$ with $L$ initial energy if \Pl1 can reach $q_T$ in a path $\rho$, such that $TP\uparrow{W}(\pi) \geq L$ for all prefix $\pi$ of $\rho$.
+\vskip 0.5cm
+\textit{APNA Games.\footnote{I call this as "APNA Games" as promised to a certain group of friends: APNA Group. In the language Hindi, "APNA" means your own.}} Given a game graph $G$, a starting vertex $q_0$ and a target vertex $q_T$, a strong lower bound $L$, a soft upper bound $S$, a strong upper bound $U$, and a violation bound $V$, APNA Game asks that, if starting from $q_0$ with $L$ initial energy if \Pl1 can reach $q_T$ in a path $\rho$, such that energy level at every prefix $\pi$ of $\rho$ remains in the interval $[L,U]$ but she can violate $S$ at most $V$ number of times.
  \end{itemize}
+ \vskip 0.6cm
+ 
+\section{Finite Mean-Payoff Reachability}
+In this section, lets check that what will happen if we take the mean-payoff instead of total payoff along the path. In general mean-payoff is used in theory mostly for the case of infinite games, but in this thesis we restrict ourselves to reachability, hence finite paths.
+\vskip 0.3cm
+Here again w.l.o.g. we consider the upper bound as the single bound; the lower bound will be analogous. Given a game graph $G=\langle Q_1, Q_2, E, w, q_0,q_T\rangle$ and an upper bound $U$, the decision problem for finite mean-payoff reachability game asks, starting from $q_0$ with 0 initial weight, if \Pl1 has a strategy to reach $q_T$ in some path $\rho$ such that, for all finite prefixes $\pi$ of $\rho$, if $MP(\pi) \leq U$. Now, we state the following theorem:
+\begin{theorem}
+Finite mean-payoff reachability game with single upper bound and 
+energy reachability game with single lower bound are inter-reducible.
+\end{theorem}
+\vskip 0.2cm
+\begin{proof}
+Here, we will show just one side reduction, the other side will be exactly similar. We will reduce an ER game with lower bound to FMPR game with upper bound. \\
+Let's consider a game graph $G=\langle Q_1, Q_2, E, w, q_0,T\rangle$ for energy reachability objective with lower bound $0$. From this we construct $G'=\langle Q_1, Q_2, E, w', q_0,q_T\rangle$, where we change the weight function from $w$ to $w'$, where $w'= U-w$. We will prove that, \Pl1 can win ER objective in $G$ with lower bound $0$ iff she can win FMPR objective in $G'$ with upper bound $U$.
+\vskip 0.1cm
+Let the winning strategy of \Pl1 in $G$ is $\sigma$. We will prove that, $\sigma$ is winning in $G'$ also. Consider an outcome $\rho$ of $\sigma$ in $G'$ which is also an outcome of $\sigma$ in $G$. As it is winning in $G$, it will surely reach $q_T$. Now, take any finite prefix $\pi = q_0 \cdot q_1 \cdots q_l$ of $\rho$. Let $|\pi|=l$ and total payoff of $\pi$ is $TP(\pi)$ for $G$ and $TP'(\pi)$ for $G'$. As, $\sigma$ is winning in $G$, $TP(\pi) \geq 0$. Now,
+\begin{align*}
+\notag
+\centering
+MP(\pi)=
+&= \frac{1}{l} \cdot TP'(\pi)\\
+&= \frac{1}{l} \cdot \Sigma_{i=0}^{l-1} w^{\prime}(q_i,q_{i+1})\\
+&=\frac{1}{l} \cdot \Sigma_{i=0}^{l-1} (U- w(q_i,q_{i+1}))\\
+&=\frac{1}{l} \cdot (l\cdot U - \Sigma_{i=0}^{l-1} w(q_i,q_{i+1})\\
+&=U - \frac{1}{l} \cdot \Sigma_{i=0}^{l-1} w(q_i,q_{i+1})\\
+&=U - \frac{1}{l} \cdot TP(\pi)\\
+& \leq U
+\end{align*}
+
+This shows one side of the reduction. The other side is exactly similar.
+\end{proof}
+\vskip 0.3cm
+Note that, the same reduction does not work for the dual bound case. 
+ 
  \vskip 0.2cm
  
  \section{Thesis Description}
  In this thesis, we will look at the following games:\\
- In \textbf{Chapter Three}, we will see \textit{Quantitative-Reachability Games with Single Bound}, in \textbf{Chapter Four}, we will see \textit{Quantitative-Reachability Games with Dual Bounds}, both strong and weak objectives. In \textbf{Chapter Five}, we will see a new kind of game, \textit{Quantitative-reachability game with bounded number of violations} which we call as \textit{Apna Game}.
- 
- 
-
-	
+ In \textbf{Chapter Three}, we will see \textit{Energy Reachability Games with Single Bound}, in \textbf{Chapter Four}, we will see \textit{Energy Reachability Games with Dual Bounds}, both strong and weak objectives. In \textbf{Chapter Five}, we analyze \textit{APNA Games}.

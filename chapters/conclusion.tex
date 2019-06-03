@@ -1,0 +1,44 @@
+In this thesis, we have considered several variants of energy games. The first variant defines games with upper and lower bound constraints, combined with reachability or infinite runs objectives. 
+The second variant proposed defines games with a strong lower bound and a relaxed upper bound that can be weak or temporarily exceeded, combined with reachability or infinite run objectives, and constraints on violations of upper bound. 
+\vskip 0.3cm
+In the one player case, complexities ranges from PTIME to PSPACE-Complete. and in the two-player case from NP $\cap$ coNP to EXPTIME-Complete. 
+In general, the complexity is the same for a reachability and for an infinite run objective. Interestingly, for \LWenergy games, the complexity of the single player case is PTIME, but reachability objectives require exponential memory (in the size of the weak upper bound) while strategies are memoryless for infinite run objectives.
+\vskip 0.3cm
+Table~\ref{table-results} summarizes known
+results, and the results obtained in this paper (where \LVenergyall
+gathers all three energy constraints with violations). We furthermore show that the minimization problem for \LVenergyall (reachability) games require algorithms that run in PSPACE in the one-player case, and in EXPTIME in the two-players case.
+
+
+\begin{table}[ht]
+  \centering
+  \def\arraystretch{2}
+  \def\comp{c.}
+  \scalebox{0.7}{
+  \begin{tabular}{|c||c|c||c|c|}
+    \hline
+    &\multicolumn{2}{c|}{Reachability}&\multicolumn{2}{c|}{Infinite runs}\\
+    \hline
+    & 1 player & 2 players & 1 player & 2 players
+    \\\hline\hline
+    \Lenergy & PTIME~(thm.~\ref{thm_reachability_games})&NP$\cap$ coNP~(thm.~\ref{thm_reachability_games}) 
+    & PTIME~\cite{BouyerFLMS08} & in NP $\cap$ coNP~\cite{BouyerFLMS08}\\\hline
+    %LUEnergy Games
+    \LUenergy&PSPACE-\comp~(thm.~\ref{pspace-complete})& EXPTIME-\comp ~(thm.~\ref{exp-complete})
+    & PSPACE-\comp~\cite{BouyerFLMS08} &EXPTIME-\comp~\cite{BouyerFLMS08}\\\hline
+    %
+    \LWenergy&PTIME~(thm.~\ref{one-player-weak-thm})&coNP~(thm.~\ref{two-player-weak-thm}) 
+    &PTIME~\cite{BouyerFLMS08} &NP $\cap$ coNP~\cite{BouyerFLMS08}\\\hline
+    %
+    APNA$^{*}$-games &PSPACE-\comp~(thm.~\ref{thm_apna_LUHV_2P}) &EXPTIME-\comp~(thm.~\ref{thm_apna_LUHV_2P})&PSPACE-\comp~(thm.~\ref{thm_apna_LUHV_2P}) &EXPTIME-\comp~(thm.~\ref{thm_apna_LUHV_2P}) \\\hline
+    
+    
+    Bound existence&PSPACE-\comp~(thm.~\ref{thm_Apnar_exists_min_exptimec})&EXPTIME-\comp~(thm.~\ref{thm_Apnar_exists_min_exptimec}) &PSPACE-\comp~(thm.~\ref{thm_Apnar_exists_min_exptimec})&EXPTIME-\comp~(thm.~\ref{thm_Apnar_exists_min_exptimec}) \\\hline
+  \end{tabular}
+  }
+  \caption{Summary of the results}
+  \label{table-results}
+\end{table}
+\vskip 1cm
+A possible extension of this work is to consider energy games with mean payoff function and discounted total payoff for the energy level and for the violation constraints, and the associated minimization and existence problems. 
+
+
